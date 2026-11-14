@@ -1,0 +1,42 @@
+[
+  {
+    "id": "nightlights",
+    "title": "Night Lights (VIIRS Day/Night Band)",
+    "layer": "VIIRS_SNPP_DayNightBand_At_Sensor_Radiance",
+    "dates": "2024-08-01 to 2024-10-29",
+    "source": "NASA GIBS",
+    "url": "https://gibs.earthdata.nasa.gov",
+    "credits": "NASA Global Imagery Browse Services (GIBS) / EOSDIS",
+    "source_file": "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&LAYERS=VIIRS_SNPP_DayNightBand_At_Sensor_Radiance&FORMAT=image%2Fjpeg&SRS=EPSG%3A4326&BBOX=-180%2C-90%2C180%2C90&WIDTH=854&HEIGHT=427&TIME=2024-08-01"
+  },
+  {
+    "id": "ocean",
+    "title": "Sea Surface Temperature (GHRSST MUR)",
+    "layer": "GHRSST_L4_MUR_Sea_Surface_Temperature",
+    "dates": "2024-08-01 to 2024-10-29",
+    "source": "NASA GIBS",
+    "url": "https://gibs.earthdata.nasa.gov",
+    "credits": "NASA Global Imagery Browse Services (GIBS) / EOSDIS",
+    "source_file": "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&LAYERS=GHRSST_L4_MUR_Sea_Surface_Temperature&FORMAT=image%2Fjpeg&SRS=EPSG%3A4326&BBOX=-180%2C-90%2C180%2C90&WIDTH=854&HEIGHT=427&TIME=2024-08-01"
+  },
+  {
+    "id": "lightning",
+    "title": "Active fires",
+    "layer": "MODIS_Terra_Thermal_Anomalies_All",
+    "dates": "2024-08-01 to 2024-10-29",
+    "source": "NASA GIBS",
+    "url": "https://gibs.earthdata.nasa.gov",
+    "credits": "NASA Global Imagery Browse Services (GIBS) / EOSDIS",
+    "source_file": "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&LAYERS=VIIRS_Black_Marble%2CMODIS_Terra_Thermal_Anomalies_All&FORMAT=image%2Fjpeg&SRS=EPSG%3A4326&BBOX=-180%2C-90%2C180%2C90&WIDTH=854&HEIGHT=427&TIME=2024-08-01"
+  },
+  {
+    "id": "aerosols",
+    "title": "GEOS Aerosols (AOD)",
+    "layer": "MODIS_Combined_Value_Added_AOD",
+    "dates": "2024-08-01 to 2024-10-29",
+    "source": "NASA GIBS",
+    "url": "https://gibs.earthdata.nasa.gov",
+    "credits": "NASA Global Imagery Browse Services (GIBS) / EOSDIS",
+    "source_file": "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&LAYERS=VIIRS_Black_Marble%2CMODIS_Combined_Value_Added_AOD&FORMAT=image%2Fjpeg&SRS=EPSG%3A4326&BBOX=-180%2C-90%2C180%2C90&WIDTH=854&HEIGHT=427&TIME=2024-08-01"
+  }
+]

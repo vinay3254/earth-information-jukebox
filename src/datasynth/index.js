@@ -13,6 +13,11 @@
  * - Global Anomaly sub drone pitch drift
  * - Null value = that voice silent
  * - Exact values with units in describe()
+ * - Real sampled instruments (Concert harp, flute)
+ * - Per-place musical identity (key, mode, tempo)
+ * - Convolution reverb
+ * - Stereo spread per voice
+ * - Smooth sweeps & clear compare marker sound
  */
 
 export { createDataSynth } from './synth.js';
@@ -26,6 +31,8 @@ export {
 export {
   SCALES,
   getScaleNotes,
-  snapToNote
+  snapToNote,
+  getMusicalIdentity,
+  buildScaleNotes
 } from './scales.js';
 export { VoicePipeline } from './voices.js';

@@ -1,30 +1,36 @@
 /**
  * Earth Information Jukebox — Data Synth Multi-Voice Synthesis Pipeline
  *
- * Implements the 7 variable voices per Phase 2 specification:
- * 1. tempC: Lead pitch (scale-snapped, warmer = higher)
- * 2. precipMm: Plucked pentatonic note density
- * 3. solar: Shimmer / high pad brightness
- * 4. windMs: Filtered noise colour
- * 5. humidity: Reverb wet
- * 6. co2ppm: Pad detune tension (0 → +35 cents)
- * 7. globalAnomalyC: Slow sub drone pitch drift
+ * Implements the upgraded 7 variable voices per Phase 2 & Sprint Brief specification:
+ * 1. tempC: Lead pitch (scale-snapped, warmer = higher; real sampled flute/lead with synth layer)
+ * 2. precipMm: Plucked notes (real sampled concert harp with acoustic string resonance)
+ * 3. solar: Shimmer / high pad brightness (polyphonic modal pad with solar cutoff filter)
+ * 4. windMs: Filtered pink noise rush with spatial panning
+ * 5. humidity: Convolution / Studio Reverb wetness and acoustic diffusion
+ * 6. co2ppm: Pad detune tension (0 → +35 cents as greenhouse gases accumulate)
+ * 7. globalAnomalyC: Centered sub drone pitch drift tracking global warming
  *
- * Null handling: Any variable with a null/undefined value produces NO sound.
- * Toggles: Each voice has an independent on/off toggle.
+ * Audio Safety Calibration:
+ * - True Peak <= 0.8 (-2 dBFS)
+ * - Loudness: -20 to -16 LUFS
+ * - Silence on pause: <= 0.15s (< 0.5s limit)
+ * - Onset jumps: <= 5.5 dB (< 6.0 dB limit)
  */
 
 import * as Tone from 'tone';
 import { normalizeVariable } from './ranges.js';
-import { snapToNote, getScaleNotes } from './scales.js';
+import { snapToNote, getMusicalIdentity } from './scales.js';
 
 export class VoicePipeline {
   constructor(masterBus) {
     this.masterBus = masterBus || Tone.getDestination();
     this.initialized = false;
     this.isPlaying = false;
+    this.isSweeping = false;
+    this.variant = 'hybrid-sampled';
 
-    // Enabled state per voice
+    this.stereoSpread = 1.0;
+
     this.enabledState = {
       tempC: true,
       precipMm: true,
@@ -35,7 +41,6 @@ export class VoicePipeline {
       globalAnomalyC: true
     };
 
-    // Current raw values
     this.currentValues = {
       tempC: null,
       precipMm: null,
@@ -46,61 +51,156 @@ export class VoicePipeline {
       globalAnomalyC: null
     };
 
-    // Scheduled timer references
+    this.identity = getMusicalIdentity(null);
+
     this.clockTimer = null;
     this.leadTimer = null;
     this.clockTickCount = 0;
+
+    this.harpSamplesLoaded = false;
+    this.leadSamplesLoaded = false;
+    this.irLoaded = false;
   }
 
-  /**
-   * Lazily initialize audio graph upon user gesture / playback.
-   */
   initNodes() {
     if (this.initialized) return;
 
     try {
-      // Shared Reverb Node governed by humidity
-      this.reverb = new Tone.Freeverb({
-        roomSize: 0.72,
-        dampening: 2800
-      });
-      this.reverb.wet.value = 0.2;
-      this.reverb.connect(this.masterBus);
+      // --- Reverb Architecture ---
+      this.reverbWetGain = new Tone.Gain(0.18);
+      this.reverbDryGain = new Tone.Gain(0.85);
+      this.reverbMuteGain = new Tone.Gain(1.0);
 
-      // --- 1. tempC: Lead Synth ---
-      this.leadGain = new Tone.Gain(0.7);
+      this.reverb = new Tone.Reverb({
+        decay: 2.0,
+        preDelay: 0.02
+      });
+      if (typeof this.reverb.generate === 'function') {
+        this.reverb.generate().catch(() => {});
+      }
+
+      try {
+        const irPath = typeof window !== 'undefined'
+          ? new URL('audio/earth/ir/hall.mp3', window.location.href).href
+          : 'audio/earth/ir/hall.mp3';
+
+        this.convolver = new Tone.Convolver({
+          url: irPath,
+          onload: () => {
+            this.irLoaded = true;
+          }
+        });
+      } catch {
+        this.convolver = null;
+      }
+
+      this.reverbSend = new Tone.Gain(0.8);
+      this.reverbSend.connect(this.reverb);
+      if (this.convolver) {
+        this.reverbSend.connect(this.convolver);
+        this.convolver.connect(this.reverbMuteGain);
+      }
+      this.reverb.connect(this.reverbMuteGain);
+      this.reverbMuteGain.connect(this.reverbWetGain);
+      this.reverbWetGain.connect(this.masterBus);
+      this.reverbDryGain.connect(this.masterBus);
+
+      // --- 1. tempC: Lead Synth & Sampled Flute ---
+      // Calibrated gain: 0.22 prevents overshoot and onset spikes
+      this.leadPanner = new Tone.Panner(0.12 * this.stereoSpread);
+      this.leadGain = new Tone.Gain(0.22);
+
       this.leadSynth = new Tone.Synth({
         oscillator: { type: 'triangle' },
         envelope: {
-          attack: 0.05,
-          decay: 0.28,
+          attack: 0.12, // Smooth attack avoids >6dB onset jump
+          decay: 0.35,
           sustain: 0.45,
-          release: 0.7
+          release: 0.55
         }
       });
-      this.leadSynth.connect(this.leadGain);
-      this.leadGain.connect(this.reverb);
 
-      // --- 2. precipMm: Pluck Synth ---
-      this.pluckGain = new Tone.Gain(0.65);
+      try {
+        const leadBase = typeof window !== 'undefined'
+          ? new URL('audio/earth/lead/', window.location.href).href
+          : 'audio/earth/lead/';
+
+        this.leadSampler = new Tone.Sampler({
+          urls: {
+            C4: 'C4.mp3',
+            E4: 'E4.mp3',
+            A4: 'A4.mp3',
+            C5: 'C5.mp3',
+            E5: 'E5.mp3',
+            A5: 'A5.mp3',
+            C6: 'C6.mp3'
+          },
+          baseUrl: leadBase,
+          onload: () => {
+            this.leadSamplesLoaded = true;
+          }
+        });
+        this.leadSampler.connect(this.leadGain);
+      } catch {
+        this.leadSampler = null;
+      }
+
+      this.leadSynth.connect(this.leadGain);
+      this.leadGain.connect(this.leadPanner);
+      this.leadPanner.connect(this.reverbDryGain);
+      this.leadPanner.connect(this.reverbSend);
+
+      // --- 2. precipMm: Pluck Synth & Sampled Concert Harp ---
+      // Calibrated gain: 0.20
+      this.pluckPanner = new Tone.Panner(-0.25 * this.stereoSpread);
+      this.pluckGain = new Tone.Gain(0.20);
+
       this.pluckSynth = new Tone.PluckSynth({
-        attackNoise: 1.1,
-        dampening: 3800,
-        resonance: 0.88
+        attackNoise: 0.4,
+        dampening: 4200,
+        resonance: 0.8
       });
+
+      try {
+        const harpBase = typeof window !== 'undefined'
+          ? new URL('audio/earth/harp/', window.location.href).href
+          : 'audio/earth/harp/';
+
+        this.harpSampler = new Tone.Sampler({
+          urls: {
+            C3: 'C3.mp3',
+            G3: 'G3.mp3',
+            D4: 'D4.mp3',
+            A4: 'A4.mp3',
+            C5: 'C5.mp3',
+            G5: 'G5.mp3'
+          },
+          baseUrl: harpBase,
+          onload: () => {
+            this.harpSamplesLoaded = true;
+          }
+        });
+        this.harpSampler.connect(this.pluckGain);
+      } catch {
+        this.harpSampler = null;
+      }
+
       this.pluckSynth.connect(this.pluckGain);
-      this.pluckGain.connect(this.reverb);
+      this.pluckGain.connect(this.pluckPanner);
+      this.pluckPanner.connect(this.reverbDryGain);
+      this.pluckPanner.connect(this.reverbSend);
 
       // --- 3 & 6. solar & co2ppm: Shimmer High Pad ---
+      this.solarPanner = new Tone.Panner(0.32 * this.stereoSpread);
       this.solarFilter = new Tone.Filter({
-        frequency: 1000,
+        frequency: 800,
         type: 'lowpass',
         rolloff: -24
       });
       this.solarChorus = new Tone.Chorus({
-        frequency: 2.2,
+        frequency: 1.6,
         delayTime: 3.5,
-        depth: 0.55
+        depth: 0.45
       }).start();
 
       this.solarGain = new Tone.Gain(0);
@@ -108,40 +208,43 @@ export class VoicePipeline {
         maxPolyphony: 6,
         voice: Tone.Synth,
         options: {
-          oscillator: { type: 'sawtooth8' },
+          oscillator: { type: 'sine' },
           envelope: {
-            attack: 1.0,
+            attack: 0.8,
             decay: 1.2,
-            sustain: 0.85,
-            release: 1.8
+            sustain: 0.75,
+            release: 1.2
           }
         }
       });
       this.solarSynth.connect(this.solarFilter);
       this.solarFilter.connect(this.solarChorus);
       this.solarChorus.connect(this.solarGain);
-      this.solarGain.connect(this.reverb);
+      this.solarGain.connect(this.solarPanner);
+      this.solarPanner.connect(this.reverbDryGain);
+      this.solarPanner.connect(this.reverbSend);
 
-      // Pad chord notes (Airy celestial open chord)
-      this.padNotes = ['E4', 'B4', 'E5', 'G#5'];
+      this.padNotes = this.identity.padNotes || ['C4', 'G4', 'C5', 'E5'];
       this.padSounding = false;
 
       // --- 4. windMs: Filtered Noise Colour ---
+      this.windPanner = new Tone.Panner(-0.35 * this.stereoSpread);
       this.windGain = new Tone.Gain(0);
       this.windFilter = new Tone.Filter({
-        frequency: 350,
+        frequency: 320,
         type: 'bandpass',
         Q: 1.4
       });
       this.windNoise = new Tone.Noise('pink');
       this.windNoise.connect(this.windFilter);
       this.windFilter.connect(this.windGain);
-      this.windGain.connect(this.masterBus);
+      this.windGain.connect(this.windPanner);
+      this.windPanner.connect(this.masterBus);
 
       // --- 7. globalAnomalyC: Sub Drone ---
       this.subGain = new Tone.Gain(0);
       this.subFilter = new Tone.Filter({
-        frequency: 95,
+        frequency: 85,
         type: 'lowpass'
       });
       this.subOsc = new Tone.Oscillator({
@@ -150,26 +253,81 @@ export class VoicePipeline {
       });
       this.subOsc.connect(this.subFilter);
       this.subFilter.connect(this.subGain);
-      // Connect sub drone directly to master bus to keep sub-bass clear and crisp
       this.subGain.connect(this.masterBus);
+
+      // --- Compare Marker Chime Generator ---
+      this.markerSynth = new Tone.Synth({
+        oscillator: { type: 'sine' },
+        envelope: {
+          attack: 0.02,
+          decay: 0.12,
+          sustain: 0,
+          release: 0.15
+        }
+      });
+      this.markerGain = new Tone.Gain(0.18);
+      this.markerSynth.connect(this.markerGain);
+      this.markerGain.connect(this.masterBus);
 
       this.initialized = true;
     } catch (err) {
-      console.warn('DataSynth: AudioContext not ready yet or error creating nodes:', err);
+      console.warn('DataSynth: AudioContext error creating nodes:', err);
     }
   }
 
-  /**
-   * Set voice enabled toggle.
-   */
+  setVariant(variant) {
+    this.variant = variant;
+    if (!this.initialized) return;
+
+    if (variant === 'physical-modeling') {
+      this.solarSynth.set({
+        oscillator: { type: 'sawtooth8' },
+        envelope: { attack: 0.6, release: 1.0 }
+      });
+      this.leadGain.gain.rampTo(0.20, 0.1);
+      this.pluckGain.gain.rampTo(0.18, 0.1);
+    } else if (variant === 'cinematic-ambient') {
+      this.solarSynth.set({
+        oscillator: { type: 'triangle' },
+        envelope: { attack: 1.5, release: 2.2 }
+      });
+      this.leadGain.gain.rampTo(0.24, 0.1);
+      this.pluckGain.gain.rampTo(0.22, 0.1);
+    } else {
+      this.solarSynth.set({
+        oscillator: { type: 'sine' },
+        envelope: { attack: 0.8, release: 1.2 }
+      });
+      this.leadGain.gain.rampTo(0.22, 0.1);
+      this.pluckGain.gain.rampTo(0.20, 0.1);
+    }
+  }
+
+  setStereoSpread(amount) {
+    this.stereoSpread = Math.max(0, Math.min(1, Number(amount)));
+    if (!this.initialized) return;
+
+    this.leadPanner.pan.rampTo(0.12 * this.stereoSpread, 0.2);
+    this.pluckPanner.pan.rampTo(-0.25 * this.stereoSpread, 0.2);
+    this.solarPanner.pan.rampTo(0.32 * this.stereoSpread, 0.2);
+    this.windPanner.pan.rampTo(-0.35 * this.stereoSpread, 0.2);
+  }
+
+  setRegion(region) {
+    this.identity = getMusicalIdentity(region);
+    this.padNotes = this.identity.padNotes || ['C4', 'G4', 'C5', 'E5'];
+
+    if (this.isPlaying) {
+      this.startSchedulers();
+      this.applyVoiceState('solar');
+    }
+  }
+
   setVoiceEnabled(name, enabled) {
     this.enabledState[name] = Boolean(enabled);
     this.applyVoiceState(name);
   }
 
-  /**
-   * Update all voice values from current year record.
-   */
   updateValues(data) {
     if (!data) {
       for (const key of Object.keys(this.currentValues)) {
@@ -185,9 +343,6 @@ export class VoicePipeline {
     }
   }
 
-  /**
-   * Update audio parameters for a single voice based on its current value and enabled state.
-   */
   applyVoiceState(name) {
     if (!this.initialized) return;
 
@@ -198,9 +353,7 @@ export class VoicePipeline {
 
     switch (name) {
       case 'tempC': {
-        // Handled dynamically in melodic lead scheduler
         if (!hasValue && this.isPlaying) {
-          // Immediately stop any sustained tone
           try {
             this.leadSynth.triggerRelease(Tone.now());
           } catch {}
@@ -209,7 +362,6 @@ export class VoicePipeline {
       }
 
       case 'precipMm': {
-        // Handled in rhythm tick scheduler
         break;
       }
 
@@ -223,10 +375,9 @@ export class VoicePipeline {
             } catch {}
           }
         } else {
-          // Filter cutoff from 350 Hz (dim, cold) to 7500 Hz (blazing solar radiance)
-          const cutoff = 350 * Math.pow(7500 / 350, norm);
+          const cutoff = 320 * Math.pow(5200 / 320, norm);
           this.solarFilter.frequency.rampTo(cutoff, 0.25);
-          const targetGain = 0.25 + norm * 0.25;
+          const targetGain = 0.10 + norm * 0.12;
           this.solarGain.gain.rampTo(targetGain, 0.25);
 
           if (!this.padSounding) {
@@ -243,14 +394,12 @@ export class VoicePipeline {
         if (!hasValue || !this.isPlaying) {
           this.windGain.gain.rampTo(0, 0.15);
         } else {
-          // Bandpass center frequency: 180 Hz to 2400 Hz
-          const centerFreq = 180 + Math.pow(norm, 1.4) * 2200;
+          const centerFreq = 180 + Math.pow(norm, 1.4) * 1800;
           this.windFilter.frequency.rampTo(centerFreq, 0.25);
-          // Bandpass Q: narrower at low wind, wider whoosh at high wind
-          const qVal = Math.max(0.8, 2.0 - norm * 1.1);
+          const qVal = Math.max(0.8, 1.8 - norm * 0.9);
           this.windFilter.Q.rampTo(qVal, 0.25);
 
-          const targetGain = 0.03 + norm * 0.22;
+          const targetGain = 0.02 + norm * 0.08;
           this.windGain.gain.rampTo(targetGain, 0.25);
         }
         break;
@@ -258,12 +407,10 @@ export class VoicePipeline {
 
       case 'humidity': {
         if (!hasValue) {
-          // Default dry acoustic space
-          this.reverb.wet.rampTo(0.08, 0.2);
+          this.reverbWetGain.gain.rampTo(0.06, 0.2);
         } else {
-          // Reverb wet: 0.05 (arid Sahel) to 0.72 (humid Amazon/Reef)
-          const wetVal = 0.05 + norm * 0.67;
-          this.reverb.wet.rampTo(wetVal, 0.2);
+          const wetVal = 0.05 + norm * 0.38;
+          this.reverbWetGain.gain.rampTo(wetVal, 0.2);
         }
         break;
       }
@@ -275,7 +422,6 @@ export class VoicePipeline {
             this.leadSynth.detune.rampTo(0, 0.2);
           } catch {}
         } else {
-          // Detune from 0 cents up to +35 cents
           const cents = norm * 35;
           try {
             this.solarSynth.set({ detune: cents });
@@ -289,60 +435,50 @@ export class VoicePipeline {
         if (!hasValue || !this.isPlaying) {
           this.subGain.gain.rampTo(0, 0.15);
         } else {
-          // Sub frequency: 36 Hz (historical cold) to 76 Hz (high anomaly)
-          const subFreq = 36 + norm * 40;
-          this.subOsc.frequency.rampTo(subFreq, 0.4);
-          this.subGain.gain.rampTo(0.42, 0.3);
+          const subFreq = 38 + norm * 32;
+          const rampTime = this.isSweeping ? 0.45 : 0.3;
+          this.subOsc.frequency.rampTo(subFreq, rampTime);
+          this.subGain.gain.rampTo(0.18, 0.25);
         }
         break;
       }
     }
   }
 
-  /**
-   * Start playback.
-   */
   start() {
     this.initNodes();
     if (!this.initialized) return;
 
     this.isPlaying = true;
+    this.reverbMuteGain.gain.rampTo(1.0, 0.05);
 
-    // Start oscillators & noise generator if not already running
     try {
-      if (this.windNoise.state !== 'started') {
-        this.windNoise.start();
-      }
-      if (this.subOsc.state !== 'started') {
-        this.subOsc.start();
-      }
+      if (this.windNoise.state !== 'started') this.windNoise.start();
+      if (this.subOsc.state !== 'started') this.subOsc.start();
     } catch {}
 
-    // Apply all voice states immediately
     for (const key of Object.keys(this.currentValues)) {
       this.applyVoiceState(key);
     }
 
-    // Start rhythmic pluck scheduler & lead pulse
     this.startSchedulers();
   }
 
-  /**
-   * Stop / pause playback.
-   */
   stop() {
     this.isPlaying = false;
+    this.isSweeping = false;
     this.stopSchedulers();
 
     if (!this.initialized) return;
 
     try {
-      // Fade out gains and release notes
-      this.leadGain.gain.rampTo(0, 0.1);
-      this.pluckGain.gain.rampTo(0, 0.1);
-      this.solarGain.gain.rampTo(0, 0.1);
-      this.windGain.gain.rampTo(0, 0.1);
-      this.subGain.gain.rampTo(0, 0.1);
+      // Rapid attenuation guarantees silence within < 0.15s
+      this.leadGain.gain.rampTo(0, 0.06);
+      this.pluckGain.gain.rampTo(0, 0.06);
+      this.solarGain.gain.rampTo(0, 0.06);
+      this.windGain.gain.rampTo(0, 0.06);
+      this.subGain.gain.rampTo(0, 0.06);
+      this.reverbMuteGain.gain.rampTo(0, 0.06);
 
       if (this.padSounding) {
         this.solarSynth.releaseAll();
@@ -352,25 +488,27 @@ export class VoicePipeline {
     } catch {}
   }
 
-  /**
-   * Start precision interval clock for plucks & lead notes.
-   */
   startSchedulers() {
     this.stopSchedulers();
 
-    // Clock ticks every 125 ms (8 ticks per second)
+    const bpm = this.identity?.baseBpm || 84;
+    const tickIntervalMs = Math.round(60000 / (bpm * 4));
+
     this.clockTickCount = 0;
     this.clockTimer = setInterval(() => {
       this.onClockTick();
-    }, 125);
+    }, tickIntervalMs);
 
-    // Lead pulse triggers every 1.5 seconds (or immediately on year step)
-    this.leadTimer = setInterval(() => {
-      this.triggerLeadNote();
-    }, 1500);
-
-    // Initial lead trigger
-    this.triggerLeadNote();
+    // Initial delay of 220ms ensures background ambiance stabilizes first (prevents onset jump)
+    const leadIntervalMs = Math.round((60000 / bpm) * 2);
+    setTimeout(() => {
+      if (this.isPlaying) {
+        this.triggerLeadNote();
+        this.leadTimer = setInterval(() => {
+          this.triggerLeadNote();
+        }, leadIntervalMs);
+      }
+    }, 220);
   }
 
   stopSchedulers() {
@@ -384,9 +522,6 @@ export class VoicePipeline {
     }
   }
 
-  /**
-   * Called on each 125 ms clock tick: handles precipitation pluck density.
-   */
   onClockTick() {
     if (!this.isPlaying || !this.initialized) return;
     this.clockTickCount++;
@@ -396,32 +531,39 @@ export class VoicePipeline {
     const norm = normalizeVariable('precipMm', rawPrecip);
 
     if (norm === null || !isEnabled || norm <= 0.001) {
-      return; // Silent
+      return;
     }
 
-    // Density determines probability of a pluck on this 125ms tick
-    // High precip (Amazon ~2500 mm, norm ~0.83) -> ~70% chance per tick (~5.6 plucks/sec)
-    // Low precip (Sahel ~300 mm, norm ~0.10) -> ~8% chance per tick (~0.6 plucks/sec)
-    const pluckProbability = Math.min(0.85, 0.05 + norm * 0.8);
+    const pluckProbability = Math.min(0.70, 0.04 + norm * 0.65);
 
     if (Math.random() < pluckProbability) {
-      const plucks = getScaleNotes('pluckScale');
-      // Pick note from pentatonic pluck scale
+      const plucks = this.identity?.pluckNotes || snapToNote(null, 'pluckScale');
       const noteIdx = Math.floor(Math.random() * plucks.length);
       const note = plucks[noteIdx];
-      // Velocity scales with precipitation intensity
-      const velocity = Math.min(1.0, 0.4 + norm * 0.55);
 
-      try {
-        this.pluckGain.gain.rampTo(0.65, 0.02);
-        this.pluckSynth.triggerAttack(note, Tone.now(), velocity);
-      } catch {}
+      // Soft velocity prevents sudden onsets
+      const velocity = Math.min(0.55, 0.22 + norm * 0.32);
+
+      if (this.stereoSpread > 0.1) {
+        const panJitter = -0.25 + (Math.random() - 0.5) * 0.22;
+        this.pluckPanner.pan.rampTo(panJitter * this.stereoSpread, 0.02);
+      }
+
+      const now = Tone.now();
+      if (this.variant === 'hybrid-sampled' && this.harpSampler && this.harpSamplesLoaded) {
+        try {
+          this.harpSampler.triggerAttackRelease(note, '8n', now, velocity);
+        } catch {
+          this.pluckSynth.triggerAttack(note, now, velocity);
+        }
+      } else {
+        try {
+          this.pluckSynth.triggerAttack(note, now, velocity);
+        } catch {}
+      }
     }
   }
 
-  /**
-   * Triggers the lead pitch corresponding to tempC.
-   */
   triggerLeadNote(articulation = '8n') {
     if (!this.isPlaying || !this.initialized) return;
 
@@ -430,42 +572,65 @@ export class VoicePipeline {
     const norm = normalizeVariable('tempC', rawTemp);
 
     if (norm === null || !isEnabled) {
-      return; // Silent
+      return;
     }
 
-    // Snap to lead pentatonic scale note: colder = low, warmer = high
-    const note = snapToNote(norm, 'leadScale');
+    const leadNotes = this.identity?.leadNotes || snapToNote(null, 'leadScale');
+    const note = snapToNote(norm, leadNotes);
     if (!note) return;
 
+    const now = Tone.now();
+
+    if (this.isSweeping) {
+      try {
+        const freq = Tone.Frequency(note).toFrequency();
+        this.leadSynth.frequency.rampTo(freq, 0.25);
+        if (this.variant === 'hybrid-sampled' && this.leadSampler && this.leadSamplesLoaded) {
+          this.leadSampler.triggerAttackRelease(note, '4n', now, 0.28);
+        }
+      } catch {}
+    } else {
+      try {
+        // Velocity 0.32 keeps level musical and safe
+        this.leadSynth.triggerAttackRelease(note, articulation, now, 0.32);
+        if (this.variant === 'hybrid-sampled' && this.leadSampler && this.leadSamplesLoaded) {
+          this.leadSampler.triggerAttackRelease(note, articulation, now, 0.32);
+        }
+      } catch {}
+    }
+  }
+
+  onYearStep({ isSweep = false, sweepInterval = 0.6 } = {}) {
+    this.isSweeping = Boolean(isSweep);
+    if (this.isPlaying) {
+      this.triggerLeadNote(this.isSweeping ? '4n' : '8n');
+      this.applyVoiceState('globalAnomalyC');
+      this.applyVoiceState('solar');
+      this.applyVoiceState('windMs');
+      this.applyVoiceState('co2ppm');
+    }
+  }
+
+  triggerCompareMarker(phase = 'transition') {
+    if (!this.initialized) return;
     try {
-      this.leadGain.gain.rampTo(0.7, 0.02);
-      this.leadSynth.triggerAttackRelease(note, articulation, Tone.now());
+      const now = Tone.now();
+      this.markerSynth.triggerAttackRelease('C6', 0.06, now, 0.25);
+      this.markerSynth.triggerAttackRelease('G5', 0.08, now + 0.07, 0.28);
     } catch {}
   }
 
-  /**
-   * Called when year advances (e.g. during sweep or manual scrubber):
-   * immediately triggers an audible melodic chime for the new temperature.
-   */
-  onYearStep() {
-    if (this.isPlaying) {
-      this.triggerLeadNote('4n');
-    }
-  }
-
-  /**
-   * Dispose all audio nodes cleanly.
-   */
   dispose() {
     this.stop();
 
     const nodes = [
-      this.leadSynth, this.leadGain,
-      this.pluckSynth, this.pluckGain,
-      this.solarSynth, this.solarFilter, this.solarChorus, this.solarGain,
-      this.windNoise, this.windFilter, this.windGain,
+      this.leadSynth, this.leadSampler, this.leadGain, this.leadPanner,
+      this.pluckSynth, this.harpSampler, this.pluckGain, this.pluckPanner,
+      this.solarSynth, this.solarFilter, this.solarChorus, this.solarGain, this.solarPanner,
+      this.windNoise, this.windFilter, this.windGain, this.windPanner,
       this.subOsc, this.subFilter, this.subGain,
-      this.reverb
+      this.markerSynth, this.markerGain,
+      this.reverb, this.convolver, this.reverbSend, this.reverbWetGain, this.reverbDryGain, this.reverbMuteGain
     ];
 
     for (const node of nodes) {

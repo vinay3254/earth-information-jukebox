@@ -6,7 +6,8 @@
  * - Canvas feature extraction at ~15 Hz (requestAnimationFrame throttled)
  * - Tone.js audio synthesis and master volume/limiter
  * - Sweep scanline progression (scanX 0..1 over ~8 s)
- * - Explore mode probing
+ * - Explore mode probing with brightness (pitch) and colour (timbre) encoding
+ * - Earcon on track switch/start
  * - Event bus for 'frame' and 'caption' events
  *
  * Conforms to spec contract in docs/superpowers/specs/2026-11-14-earth-jukebox-design.md
@@ -119,6 +120,7 @@ export function createEngine() {
   return {
     /**
      * Load a track by ID and bind the video element.
+     * Plays a short signature earcon when track is selected/loaded.
      * @param {string} trackId - 'nightlights' | 'ocean' | 'lightning' | 'aerosols'
      * @param {HTMLVideoElement} videoElement
      */
@@ -145,6 +147,11 @@ export function createEngine() {
         height: 90,
         colorClasses: activeTrack.colorClasses
       });
+
+      // Always play earcon on track switch/selection
+      try {
+        audio.playEarcon(trackId);
+      } catch {}
 
       if (isPlaying && audioReady) {
         activeTrack.start(audio);
@@ -216,6 +223,9 @@ export function createEngine() {
      */
     setExplore(bool) {
       isExplore = Boolean(bool);
+      if (audio && typeof audio.setExploreBed === 'function') {
+        audio.setExploreBed(isExplore);
+      }
       if (isExplore && isPlaying) {
         this.pause();
       }
@@ -223,6 +233,7 @@ export function createEngine() {
 
     /**
      * Probe sound and features for a normalized coordinate (0..1, 0..1).
+     * Clearly encodes brightness (pitch) and colour (timbre) with spatial panning.
      * @param {number} xNorm
      * @param {number} yNorm
      */
@@ -249,7 +260,7 @@ export function createEngine() {
       }
 
       const region = extractor.sampleAt(xNorm, yNorm);
-      activeTrack.probe(region, audio);
+      activeTrack.probe(region, audio, xNorm);
 
       // Emit caption for explored coordinate
       const xPct = Math.round(xNorm * 100);
@@ -274,6 +285,41 @@ export function createEngine() {
       };
     },
 
+    /**
+     * Set active sound variant for a track.
+     * @param {string} trackId
+     * @param {string} variantName
+     */
+    setTrackVariant(trackId, variantName) {
+      const mod = TRACK_MODULES[trackId];
+      if (mod && typeof mod.setVariant === 'function') {
+        mod.setVariant(variantName);
+        if (isPlaying && audioReady && activeTrackId === trackId) {
+          mod.start(audio);
+        }
+      }
+    },
+
+    /**
+     * Get active sound variant for a track.
+     * @param {string} trackId
+     * @returns {string|null}
+     */
+    getTrackVariant(trackId) {
+      const mod = TRACK_MODULES[trackId];
+      return mod && typeof mod.getVariant === 'function' ? mod.getVariant() : null;
+    },
+
+    /**
+     * Get list of available variants for a track.
+     * @param {string} trackId
+     * @returns {string[]}
+     */
+    getVariants(trackId) {
+      const mod = TRACK_MODULES[trackId];
+      return mod && mod.variants ? [...mod.variants] : [];
+    },
+
     // Additional state accessors for UI and tests
     getTrackId() {
       return activeTrackId;
@@ -293,3 +339,4 @@ export function createEngine() {
 // Re-export audio and feature extractor for convenience
 export { initAudio, audio } from './audio.js';
 export { createExtractor } from './features.js';
+export { TRACK_MODULES };

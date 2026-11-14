@@ -1,202 +1,232 @@
 /**
- * Earth Information Jukebox — ISS Lightning Track Module
+ * Earth Information Jukebox — Active Fires & Optical Pulses Track Module
  *
- * SVS 5011: ISS Lightning 2017–2023
- * Feature: New bright spots per frame (frame diff hotspots).
- * Sound: Crisp percussion hits; x position = stereo pan (-1..1); count = strike density.
+ * SVS 5011 / MODIS Terra: Thermal Anomalies & Active Fires
+ * Feature: New thermal fire hotspots per frame (frame diff hotspots).
+ * Sound: Crisp percussion hits; x position = stereo pan (-0.95..+0.95); count = strike density.
+ *
+ * Variants:
+ * - 'electro-snap': Pure electro-acoustic membrane strike with snappy transient
+ * - 'acoustic-wood-strike' (Default): Resonant drum body + snapping ember crackle transient
+ * - 'spatial-fire-burst': Dual-voice 3D spatial percussion with distant low rumble
  *
  * Conforms to spec contract in docs/superpowers/specs/2026-11-14-earth-jukebox-design.md
  */
 
 import * as Tone from 'tone';
 
+let currentVariant = 'acoustic-wood-strike';
+
 const VOICE_COUNT = 4;
 let voices = [];
 let thunderSynth = null;
 let reverb = null;
+let fireBed = null;
+let fireBedFilter = null;
 let voiceIndex = 0;
 let lastRumbleTime = 0;
+
+function initNodes(audio) {
+  if (typeof window === 'undefined') return;
+
+  try {
+    reverb = new Tone.Reverb({ decay: 2.2, wet: 0.24 });
+    reverb.connect(audio.master);
+
+    // Warm nocturnal fire bed: maintains running energy to prevent > 6 dB onset jumps
+    fireBedFilter = new Tone.Filter(500, 'lowpass');
+    fireBedFilter.connect(reverb);
+    fireBed = new Tone.Noise('pink');
+    fireBed.volume.value = -24;
+    fireBed.connect(fireBedFilter);
+    fireBed.start();
+
+    voices = [];
+    for (let i = 0; i < VOICE_COUNT; i++) {
+      const panner = new Tone.Panner(0);
+      panner.connect(reverb);
+
+      // Resonant drum body synth with smooth 16ms attack
+      const synth = new Tone.MembraneSynth({
+        pitchDecay: 0.03,
+        octaves: 2.8,
+        oscillator: { type: 'triangle' },
+        envelope: {
+          attack: 0.016,
+          decay: 0.24,
+          sustain: 0.02,
+          release: 0.16
+        }
+      });
+      synth.volume.value = -5.5;
+      synth.connect(panner);
+
+      // Snappy crackle / spark noise transient synth for Variant B & C
+      const noiseSynth = new Tone.NoiseSynth({
+        noise: { type: 'white' },
+        envelope: { attack: 0.014, decay: 0.06, sustain: 0.0 }
+      });
+      noiseSynth.volume.value = -14;
+      noiseSynth.connect(panner);
+
+      voices.push({ synth, noiseSynth, panner });
+    }
+
+    // Low resonant thunder / fire-plume sub bass rumble
+    thunderSynth = new Tone.MembraneSynth({
+      pitchDecay: 0.08,
+      octaves: 2.0,
+      oscillator: { type: 'triangle' },
+      envelope: {
+        attack: 0.04,
+        decay: 0.8,
+        sustain: 0.04,
+        release: 0.4
+      }
+    });
+    thunderSynth.volume.value = -9;
+    thunderSynth.connect(reverb);
+  } catch {
+    // Non-browser fallback
+  }
+}
 
 export default {
   id: 'lightning',
   colorClasses: undefined,
 
-  /**
-   * Initialize and connect instruments.
-   * @param {import('../audio.js').audio} audio
-   */
-  start(audio) {
-    if (voices.length > 0) this.stop(audio);
-
-    try {
-      reverb = new Tone.Reverb({ decay: 1.8, wet: 0.25 });
-      reverb.connect(audio.master);
-
-      // Create pool of panned percussion voices
-      voices = [];
-      for (let i = 0; i < VOICE_COUNT; i++) {
-        const panner = new Tone.Panner(0);
-        panner.connect(reverb);
-
-        // Crisp electro-acoustic strike synthesizer
-        const synth = new Tone.MembraneSynth({
-          pitchDecay: 0.02,
-          octaves: 3,
-          oscillator: { type: 'sine' },
-          envelope: {
-            attack: 0.001,
-            decay: 0.18,
-            sustain: 0.0,
-            release: 0.1
-          }
-        });
-        synth.volume.value = -2;
-        synth.connect(panner);
-
-        voices.push({ synth, panner });
-      }
-
-      // Distant low thunder rumble synth
-      thunderSynth = new Tone.MembraneSynth({
-        pitchDecay: 0.08,
-        octaves: 2,
-        oscillator: { type: 'triangle' },
-        envelope: {
-          attack: 0.05,
-          decay: 0.9,
-          sustain: 0.05,
-          release: 0.8
-        }
-      });
-      thunderSynth.volume.value = -8;
-      thunderSynth.connect(reverb);
-    } catch {
-      // AudioContext may not be active in tests
+  setVariant(v) {
+    if (['electro-snap', 'acoustic-wood-strike', 'spatial-fire-burst'].includes(v)) {
+      currentVariant = v;
     }
+  },
+
+  getVariant() {
+    return currentVariant;
+  },
+
+  get variants() {
+    return ['electro-snap', 'acoustic-wood-strike', 'spatial-fire-burst'];
+  },
+
+  start(audio) {
+    this.stop(audio);
+    initNodes(audio);
 
     voiceIndex = 0;
     lastRumbleTime = 0;
   },
 
-  /**
-   * Called ~15 Hz while playing.
-   * Strikes percussion voices for each detected lightning hotspot panned in stereo.
-   *
-   * @param {import('../features.js').FrameFeatures} features
-   * @param {import('../audio.js').audio} audio
-   * @param {{ scanX: number }} state
-   */
   update(features, audio, state) {
     if (!voices.length || !features) return;
 
     const hotspots = features.hotspots || [];
     if (hotspots.length === 0) return;
 
-    const notes = audio.scale('lightning');
+    const scaleName = currentVariant === 'acoustic-wood-strike' ? 'fireBlues' : 'lightning';
+    const notes = audio.scale(scaleName);
     const now = Tone.now();
 
-    // Trigger percussion hits for up to 3 hotspots per frame to prevent overload
     const limit = Math.min(3, hotspots.length);
     for (let i = 0; i < limit; i++) {
       const spot = hotspots[i];
       const voice = voices[voiceIndex];
       voiceIndex = (voiceIndex + 1) % VOICE_COUNT;
 
-      // X position -> stereo pan [-1 .. +1]
-      const panVal = Math.max(-1, Math.min(1, (spot.x - 0.5) * 2.0));
+      // X position -> stereo pan [-0.95 .. +0.95]
+      const panVal = audio.panFromX ? audio.panFromX(spot.x) : Math.max(-0.95, Math.min(0.95, (spot.x - 0.5) * 1.9));
       if (voice.panner && voice.panner.pan) {
-        voice.panner.pan.setValueAtTime(panVal, now + i * 0.025);
+        voice.panner.pan.setValueAtTime(panVal, now + i * 0.03);
       }
 
-      // Y position -> pitch in scale (higher in frame = higher pitch)
       const latNorm = 1.0 - Math.max(0, Math.min(1, spot.y));
       const noteIdx = Math.floor(latNorm * (notes.length - 1));
       const note = notes[noteIdx] || 'C3';
 
-      const velocity = Math.min(1.0, Math.max(0.3, (spot.strength || 0.5) * 1.5));
+      const strength = spot.strength || 0.5;
+      const velocity = Math.min(0.85, Math.max(0.3, strength * 1.3));
 
       try {
-        voice.synth.triggerAttackRelease(note, '16n', now + i * 0.025, velocity);
+        voice.synth.triggerAttackRelease(note, '16n', now + i * 0.03, velocity);
+
+        if (currentVariant !== 'electro-snap' && voice.noiseSynth) {
+          voice.noiseSynth.triggerAttackRelease('32n', now + i * 0.03, velocity * 0.5);
+        }
       } catch {}
     }
 
-    // If multiple simultaneous strikes occur, add a distant thunder rumble
     if (hotspots.length >= 3 && thunderSynth && now - lastRumbleTime > 1.2) {
       try {
-        thunderSynth.triggerAttackRelease('A1', '4n', now + 0.08, 0.6);
+        thunderSynth.triggerAttackRelease('A1', '4n', now + 0.08, 0.5);
         lastRumbleTime = now;
       } catch {}
     }
   },
 
-  /**
-   * Generates a concise screen-reader caption describing lightning activity.
-   * @param {import('../features.js').FrameFeatures} features
-   * @returns {string}
-   */
   describe(features) {
     const hotspots = features?.hotspots || [];
     const count = hotspots.length;
 
     if (count === 0) {
-      return 'ISS Lightning: calm orbital view, no active optical pulses.';
+      return 'Active Fires: calm night observation, no thermal anomalies detected.';
     }
 
     if (count === 1) {
       const spot = hotspots[0];
-      const side = spot.x < 0.35 ? 'western limb' : (spot.x > 0.65 ? 'eastern limb' : 'central track');
-      return `ISS Lightning: single localized optical flash detected near ${side}.`;
+      const side = spot.x < 0.35 ? 'western flank' : (spot.x > 0.65 ? 'eastern flank' : 'central region');
+      return `Active Fires: thermal hotspot detected near ${side}.`;
     }
 
     if (count <= 3) {
-      return `ISS Lightning: active convective cell with ${count} optical flash pulses.`;
+      return `Active Fires: ${count} active fire clusters burning across landscape.`;
     }
 
-    return `ISS Lightning: intense multi-cluster storm system with ${count} simultaneous strikes.`;
+    return `Active Fires: intense regional wildfire outbreak with ${count} simultaneous fire fronts.`;
   },
 
-  /**
-   * Play sound for a probed region in explore mode.
-   * @param {{ luma: number, hueName: string, motion: number }} region
-   * @param {import('../audio.js').audio} audio
-   */
-  probe(region, audio) {
-    if (!voices.length) this.start(audio);
-    if (!voices.length) return;
+  probe(region, audio, xNorm = 0.5) {
+    if (audio && typeof audio.playProbe === 'function') {
+      audio.playProbe(region, xNorm);
+    } else {
+      const voice = voices[0];
+      if (!voice) return;
+      const notes = audio.scale('fireBlues');
+      const lum = region?.luma || 0;
+      const note = notes[Math.floor(Math.min(0.999, lum * 1.5) * notes.length)] || 'C3';
 
-    const voice = voices[0];
-    const notes = audio.scale('lightning');
-    const lum = region?.luma || 0;
-    const note = notes[Math.floor(Math.min(0.999, lum * 1.5) * notes.length)] || 'C3';
-
-    try {
-      voice.synth.triggerAttackRelease(note, '8n', Tone.now(), Math.min(1, lum * 2.0 + 0.3));
-    } catch {}
+      try {
+        voice.synth.triggerAttackRelease(note, '8n', Tone.now(), Math.min(0.85, lum * 2.0 + 0.3));
+      } catch {}
+    }
   },
 
-  /**
-   * Release and dispose instruments.
-   * @param {import('../audio.js').audio} audio
-   */
   stop(audio) {
+    if (fireBed) {
+      try {
+        fireBed.stop();
+        fireBed.dispose();
+      } catch {}
+      fireBed = null;
+    }
+    if (fireBedFilter) {
+      try { fireBedFilter.dispose(); } catch {}
+      fireBedFilter = null;
+    }
     for (const voice of voices) {
       try {
         voice.synth.dispose();
+        if (voice.noiseSynth) voice.noiseSynth.dispose();
         voice.panner.dispose();
       } catch {}
     }
     voices = [];
 
     if (thunderSynth) {
-      try {
-        thunderSynth.dispose();
-      } catch {}
+      try { thunderSynth.dispose(); } catch {}
       thunderSynth = null;
     }
     if (reverb) {
-      try {
-        reverb.dispose();
-      } catch {}
+      try { reverb.dispose(); } catch {}
       reverb = null;
     }
   }
