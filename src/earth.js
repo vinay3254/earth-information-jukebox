@@ -60,14 +60,14 @@ void main() {
   vec3 V = normalize(cameraPosition - vWorldPos);
   vec3 L = normalize(uSunPos - vWorldPos);
   float ndl = dot(N, L);
-  float lit = smoothstep(-0.62, 0.22, ndl);
+  // Fully daylit globe: the rim glows evenly instead of fading on the far side.
+  float lit = 0.75 + 0.25 * smoothstep(-0.62, 0.22, ndl);
   float rim = pow(clamp(1.0 - abs(dot(N, V)), 0.0, 1.0), uPower);
   float forward = pow(clamp(dot(V, -L), 0.0, 1.0), 4.0);
   vec3 deep = vec3(0.14, 0.36, 0.92);
   vec3 high = vec3(0.62, 0.78, 1.0);
   vec3 sunset = vec3(1.0, 0.72, 0.45);
   vec3 col = mix(deep, high, smoothstep(-0.15, 0.55, ndl));
-  col = mix(col, sunset, pow(clamp(1.0 - abs(ndl) * 3.4, 0.0, 1.0), 2.2) * 0.5 * uDayBias);
   float body = rim * (0.28 + 0.72 * lit);
   float glow = forward * lit * 0.55;
   float a = clamp((body * 1.35 + glow) * uIntensity, 0.0, 1.0);
@@ -86,7 +86,7 @@ void main() {
   vec3 V = normalize(cameraPosition - vWorldPos);
   vec3 L = normalize(uSunPos - vWorldPos);
   float ndl = dot(N, L);
-  float lit = smoothstep(-0.35, 0.35, ndl);
+  float lit = 0.75 + 0.25 * smoothstep(-0.35, 0.35, ndl);
   float rim = pow(clamp(1.0 - abs(dot(N, V)), 0.0, 1.0), uRim);
   float a = rim * lit * uIntensity;
   vec3 col = mix(vec3(0.2, 0.44, 0.95), vec3(0.78, 0.86, 1.0), smoothstep(0.0, 0.6, ndl));
@@ -112,9 +112,9 @@ void main() {
   if (a < 0.018) discard;
   vec3 L = normalize(uSunPos - vWorldPos);
   float ndl = dot(normalize(vNormalW), L);
-  float lit = smoothstep(-0.16, 0.30, ndl);
-  float term = pow(clamp(1.0 - abs(ndl) * 2.8, 0.0, 1.0), 2.0);
-  vec3 col = mix(vec3(0.84, 0.89, 0.97), vec3(1.0, 0.85, 0.66), term * 0.6);
+  // Fully daylit globe: clouds stay white on every side, a little brighter sunward.
+  float lit = 0.82 + 0.18 * smoothstep(-0.16, 0.30, ndl);
+  vec3 col = vec3(0.9, 0.93, 0.98);
   gl_FragColor = vec4(col * lit, a);
 }
 `;
@@ -151,7 +151,12 @@ export class Earth {
       normalScale: new THREE.Vector2(0.85, 0.85),
       roughnessMap: this.textures.earth_roughness,
       roughness: 1.0,
-      metalness: 0.0
+      metalness: 0.0,
+      // Fully daylit globe: the day map is also emitted, so the side facing
+      // away from the sun keeps its natural colours instead of going dark.
+      emissiveMap: this.textures['earth_day.jpg'],
+      emissive: new THREE.Color(0xffffff),
+      emissiveIntensity: 0.9
     });
     this.surface = new THREE.Mesh(geometry, this.surfaceMaterial);
     this.surface.name = 'earth-surface';
@@ -174,6 +179,8 @@ export class Earth {
     });
     this.night = new THREE.Mesh(geometry, this.nightMaterial);
     this.night.renderOrder = 1;
+    // City lights belong to a night side; the globe is fully daylit, so hide them.
+    this.night.visible = false;
     this.spin.add(this.night);
   }
 

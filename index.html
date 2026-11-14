@@ -10,8 +10,11 @@
 <script>
   // A return from the Acoustic Lab skips the loader entirely. Mark the
   // document before first paint so the loading screen and dive never appear.
+  // A browser refresh is always a cold load, so the splash plays every time.
   try {
-    if (sessionStorage.getItem('hearth:warmed') === '1') {
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var isReload = nav ? nav.type === 'reload' : (performance.navigation && performance.navigation.type === 1);
+    if (!isReload && sessionStorage.getItem('hearth:warmed') === '1') {
       document.documentElement.classList.add('is-warm-return');
     }
   } catch (error) {

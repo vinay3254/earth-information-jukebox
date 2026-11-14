@@ -1528,7 +1528,8 @@ body.destination-open .hint {
   inset: 0;
   z-index: 40;
   display: flex;
-  align-items: center;
+  /* Type sits below the globe so the Earth splash stays unobstructed. */
+  align-items: flex-end;
   justify-content: center;
   overflow: hidden;
   background:
@@ -1544,32 +1545,29 @@ body.destination-open .hint {
   background: #020407;
 }
 
-/* Darken the centre just enough for the loader type to stay readable. */
+/* Darken the bottom band just enough for the loader type to stay readable. */
 .loader::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: auto 0 0;
+  height: 34%;
   pointer-events: none;
-  background: radial-gradient(
-    ellipse 48% 44% at 50% 50%,
-    rgba(2, 4, 7, 0.68) 0%,
-    rgba(2, 4, 7, 0.34) 52%,
-    rgba(2, 4, 7, 0) 78%
-  );
+  background: linear-gradient(to top, rgba(2, 4, 7, 0.78) 0%, rgba(2, 4, 7, 0.4) 55%, rgba(2, 4, 7, 0) 100%);
 }
 
 .loader-inner {
   position: relative;
   z-index: 1;
   text-align: center;
-  padding: 0 24px;
+  padding: 0 24px max(36px, calc(env(safe-area-inset-bottom, 0px) + 24px));
 }
 
 .loader-mark {
-  margin: 0 0 26px;
+  margin: 0 0 18px;
   display: flex;
-  flex-direction: column;
-  gap: 7px;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0;
   font-size: clamp(21px, 2.6vw, 33px);
   font-weight: 200;
   letter-spacing: 0.42em;
