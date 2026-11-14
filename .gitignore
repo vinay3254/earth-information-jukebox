@@ -5,3 +5,4 @@ raw/
 sample_datasets/.~lock*
 *.png
 !public/**/*.png
+.playwright-mcp/

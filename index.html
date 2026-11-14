@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Listen to NASA Earth data. Pick a place on the globe or a NASA visualization and hear it change over time." />
+    <title>Earth Information Jukebox</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap"
+    />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to controls</a>
+
+    <header class="bar">
+      <p class="name">Earth Information Jukebox</p>
+
+      <nav class="views" aria-label="Views">
+        <button type="button" class="view-tab" data-view="globe" aria-pressed="true">Globe <kbd>G</kbd></button>
+        <button type="button" class="view-tab" data-view="lab" aria-pressed="false">Frame Lab <kbd>L</kbd></button>
+      </nav>
+
+      <div class="bar-tools">
+        <button type="button" id="voice-toggle" class="tool" aria-pressed="false">Voice guide <kbd>V</kbd></button>
+        <label class="volume">
+          <span>Volume</span>
+          <input id="volume" type="range" min="0" max="100" value="80" aria-describedby="volume-hint" />
+          <span id="volume-hint" class="sr">Plus and minus keys change volume. M mutes.</span>
+        </label>
+        <button type="button" id="help-open" class="tool" aria-haspopup="dialog">Keys <kbd>?</kbd></button>
+      </div>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <!-- Globe view -->
+      <section id="view-globe" class="view" aria-labelledby="globe-heading">
+        <div class="stage">
+          <div id="globe-mount" class="globe-mount" aria-hidden="true"></div>
+          <p id="globe-status" class="stage-note" hidden></p>
+          <figure id="plate" class="plate" hidden>
+            <img id="plate-img" alt="" />
+            <figcaption id="plate-cap"></figcaption>
+          </figure>
+        </div>
+
+        <div class="panel">
+          <h1 id="globe-heading" class="title">Hear a place change</h1>
+          <p class="lede">Choose a place. Each sound follows one real measurement, year by year, from NASA and NOAA records.</p>
+
+          <fieldset class="regions">
+            <legend>Place</legend>
+            <div id="region-list" class="region-list"></div>
+          </fieldset>
+
+          <div id="listen" class="listen" hidden>
+            <div class="year-block">
+              <label for="year" class="year-label">
+                <span id="region-name"></span>
+                <output id="year-out" for="year" class="year-out"></output>
+              </label>
+              <div class="ribbon-wrap">
+                <canvas id="ribbon" class="ribbon" aria-hidden="true"></canvas>
+                <input id="year" type="range" class="year" min="1981" max="2025" step="1" value="1981" />
+              </div>
+              <p class="ribbon-key" aria-hidden="true"><span class="cool">cooler year</span><span class="warm">warmer year</span></p>
+            </div>
+
+            <div class="transport">
+              <button type="button" id="synth-play" class="primary" aria-pressed="false">Play this year</button>
+              <button type="button" id="synth-sweep" class="secondary">Play all years</button>
+            </div>
+
+            <details class="compare" id="compare">
+              <summary>Compare two years <kbd>C</kbd></summary>
+              <div class="compare-body">
+                <label>From <select id="cmp-a"></select></label>
+                <label>To <select id="cmp-b"></select></label>
+                <button type="button" id="cmp-go" class="secondary">Play comparison</button>
+              </div>
+              <div class="presets" id="cmp-presets"></div>
+              <p id="cmp-result" class="cmp-result"></p>
+            </details>
+
+            <fieldset class="voices">
+              <legend>Sounds</legend>
+              <ul id="voice-list" class="voice-list"></ul>
+            </fieldset>
+          </div>
+
+          <p id="globe-caption" class="caption" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <!-- Frame Lab view -->
+      <section id="view-lab" class="view" aria-labelledby="lab-heading" hidden>
+        <div class="stage">
+          <div class="screen" id="screen">
+            <video id="lab-video" playsinline loop muted crossorigin="anonymous" preload="metadata"></video>
+            <canvas id="lab-overlay" class="overlay" aria-hidden="true"></canvas>
+          </div>
+          <p id="lab-status" class="stage-note" hidden></p>
+        </div>
+
+        <div class="panel">
+          <h1 id="lab-heading" class="title">Hear a NASA visualization</h1>
+          <p class="lede">The sound is made live from the pictures on screen, frame by frame.</p>
+
+          <fieldset class="tracks">
+            <legend>Visualization</legend>
+            <div id="track-list" class="track-list"></div>
+          </fieldset>
+
+          <div class="transport">
+            <button type="button" id="lab-play" class="primary" aria-pressed="false">Play</button>
+            <button type="button" id="lab-explore" class="secondary" aria-pressed="false">Explore by hand <kbd>E</kbd></button>
+          </div>
+          <p id="explore-hint" class="hint" hidden>Arrow keys move the listening point. You hear the spot under it.</p>
+
+          <section class="about" aria-labelledby="about-heading">
+            <h2 id="about-heading" class="sub">What you hear</h2>
+            <p id="track-summary"></p>
+            <p id="track-mapping"></p>
+            <p id="track-source" class="source"></p>
+          </section>
+
+          <p id="lab-caption" class="caption" aria-live="polite"></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p>Data and imagery: NASA Scientific Visualization Studio, NASA POWER, NASA GISS, NASA GIBS, NOAA GML. Built for NASA Space Apps 2026.</p>
+      <p id="credits"></p>
+    </footer>
+
+    <dialog id="help" aria-labelledby="help-title">
+      <h2 id="help-title" class="sub">Keyboard</h2>
+      <dl class="keys">
+        <div><dt>Space</dt><dd>Play or pause</dd></div>
+        <div><dt>G / L</dt><dd>Globe or Frame Lab</dd></div>
+        <div><dt>V</dt><dd>Voice guide on or off</dd></div>
+        <div><dt>+ / −, M</dt><dd>Volume, mute</dd></div>
+        <div><dt>/</dt><dd>Globe: jump to the place list</dd></div>
+        <div><dt>← / →</dt><dd>Globe: previous or next year</dd></div>
+        <div><dt>C</dt><dd>Globe: compare two years</dd></div>
+        <div><dt>1–4</dt><dd>Frame Lab: pick a visualization</dd></div>
+        <div><dt>E, arrows</dt><dd>Frame Lab: explore by hand</dd></div>
+        <div><dt>Esc</dt><dd>Close this, skip the globe flight</dd></div>
+      </dl>
+      <form method="dialog"><button class="secondary">Close</button></form>
+    </dialog>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
