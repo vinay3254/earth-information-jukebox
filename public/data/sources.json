@@ -1,0 +1,52 @@
+{
+  "retrieval_date": "2026-11-14",
+  "description": "Public NASA and NOAA datasets fetched for Earth Information Jukebox Phase 2",
+  "sources": [
+    {
+      "id": "nasa_power",
+      "name": "NASA Prediction Of Worldwide Energy Resources (POWER)",
+      "url": "https://power.larc.nasa.gov/api/temporal/monthly/point",
+      "license": "NASA Open Data Policy (public domain / free worldwide access)",
+      "variables": {
+        "T2M": "Temperature at 2 Meters (deg C, annual mean)",
+        "T2M_MAX": "Maximum Temperature at 2 Meters (deg C, annual maximum)",
+        "PRECTOTCORR": "Precipitation Corrected (mm/day monthly mean; converted to annual total mm)",
+        "ALLSKY_SFC_SW_DWN": "All Sky Surface Shortwave Downward Irradiance (kW-hr/m^2/day, annual mean)",
+        "WS2M": "Wind Speed at 2 Meters (m/s, annual mean)",
+        "RH2M": "Relative Humidity at 2 Meters (%, annual mean)"
+      },
+      "coverage_years": "1981-2025"
+    },
+    {
+      "id": "nasa_gistemp",
+      "name": "NASA Goddard Institute for Space Studies (GISS) Surface Temperature Analysis (GISTEMP v4)",
+      "url": "https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv",
+      "license": "U.S. Government Work / Public Domain",
+      "variable": "GLB.Ts+dSST Land-Ocean Global Temperature Anomaly (deg C relative to 1951-1980 baseline, J-D mean)",
+      "coverage_years": "1981-2025"
+    },
+    {
+      "id": "noaa_gml_co2",
+      "name": "NOAA Global Monitoring Laboratory (GML) Mauna Loa Atmospheric CO2",
+      "url": "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_annmean_mlo.txt",
+      "license": "U.S. Government Work / Freely available public domain data",
+      "variable": "Annual mean atmospheric carbon dioxide mole fraction (ppm)",
+      "coverage_years": "1981-2025"
+    },
+    {
+      "id": "nasa_gibs",
+      "name": "NASA Global Imagery Browse Services (GIBS) WMS",
+      "url": "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi",
+      "license": "NASA Earth Science Data Systems (ESDS) Open Access Policy",
+      "layer": "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "resolution": "512x512 JPEG, ~2x2 degree bounding box centered at region lat/lon",
+      "cloud_filter": "Seasonal candidate dates evaluated via white-pixel fraction; lowest cloud fraction chosen",
+      "coverage_years": "2001-2025"
+    }
+  ],
+  "optional_layers_checked": {
+    "VIIRS_Black_Marble": "Tested; dynamic tile requests require specific projection bounds",
+    "MODIS_Terra_NDVI_8Day": "Tested; valid NDVI composite layer available on GIBS",
+    "VIIRS_CityLights_2012": "Reachable as static reference layer"
+  }
+}

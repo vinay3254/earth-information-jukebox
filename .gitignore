@@ -6,3 +6,4 @@ sample_datasets/.~lock*
 *.png
 !public/**/*.png
 .playwright-mcp/
+__pycache__/
