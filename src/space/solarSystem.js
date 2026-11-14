@@ -55,7 +55,7 @@ function makeStars(count, radius) {
   return new THREE.Points(geo, mat);
 }
 
-export function createSolarSystem(container, { onSelect = () => {}, onChime = () => {}, reducedMotion = false } = {}) {
+export function createSolarSystem(container, { onSelect = () => {}, onChime = () => {}, onPan = null, reducedMotion = false } = {}) {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x02050c);
 
@@ -287,12 +287,15 @@ export function createSolarSystem(container, { onSelect = () => {}, onChime = ()
     }
     controls.update();
 
-    // Labels
+    // Labels (and, ~10 times a second, each planet's left/right screen side for audio panning)
     const w = container.clientWidth, h = container.clientHeight;
+    const sendPan = onPan && time - (frame.lastPan || 0) > 0.1;
+    if (sendPan) frame.lastPan = time;
     for (const b of bodies) {
       b.mesh.getWorldPosition(proj);
       proj.y += b.radius * 1.35;
       proj.project(camera);
+      if (sendPan) onPan(b.p.id, Math.max(-1, Math.min(1, proj.z < 1 ? proj.x : -proj.x)));
       // The followed planet is named in the panel, so its label would only crowd the view.
       const visible = b !== follow && proj.z < 1 && Math.abs(proj.x) < 1.1 && Math.abs(proj.y) < 1.1;
       b.label.style.display = visible ? '' : 'none';

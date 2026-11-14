@@ -2,6 +2,7 @@
 import { $, el } from './dom.js';
 import { createSolarSystem } from '../space/solarSystem.js';
 import { createChimes } from '../space/chimes.js';
+import { createPlanetVoices } from '../space/audio/planetVoices.js';
 
 const fmtNum = (n) => n.toLocaleString('en-US', { maximumFractionDigits: n < 10 ? 2 : 0 });
 
@@ -16,6 +17,8 @@ function dayText(hours) {
 export function createSpaceView({ voice, onEarth }) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const chimes = createChimes();
+  const planetVoices = createPlanetVoices();
+  let systemOn = false;
   let system = null;
   let selected = null;
 
@@ -41,6 +44,7 @@ export function createSpaceView({ voice, onEarth }) {
     for (const b of listEl.querySelectorAll('.choice')) b.setAttribute('aria-pressed', String(b.dataset.id === id));
     showCard(p);
     chimes.ring(p, true);
+    planetVoices.focus(p);
     voice.say(`${p.name}. ${p.fact} One year is ${yearText(p.periodDays)}.`);
     await system.focus(id);
   }
@@ -48,6 +52,7 @@ export function createSpaceView({ voice, onEarth }) {
   async function goEarth() {
     if (!system) { onEarth(); return; }
     voice.say('Flying down to Earth.');
+    planetVoices.unfocus();
     await system.focus('earth', 3.2);
     await system.diveInto('earth');
     const fade = $('#fade');
@@ -63,12 +68,20 @@ export function createSpaceView({ voice, onEarth }) {
     selected = null;
     card.hidden = true;
     for (const b of listEl.querySelectorAll('.choice')) b.setAttribute('aria-pressed', 'false');
+    planetVoices.unfocus();
     system?.overview();
   });
   chimeBtn.addEventListener('click', () => {
     chimes.set(!chimes.enabled);
     chimeBtn.setAttribute('aria-pressed', String(chimes.enabled));
     voice.say(chimes.enabled ? 'Orbit chimes on.' : 'Orbit chimes off.');
+  });
+  const systemBtn = $('#space-system');
+  systemBtn.addEventListener('click', () => {
+    systemOn = !systemOn;
+    planetVoices.setSystem(systemOn);
+    systemBtn.setAttribute('aria-pressed', String(systemOn));
+    voice.say(systemOn ? 'Hearing all planets. Each one sounds from its side of the screen.' : 'All planets off.');
   });
   $('#space-speed').addEventListener('change', (e) => system?.setSpeed(Number(e.target.value)));
 
@@ -77,6 +90,7 @@ export function createSpaceView({ voice, onEarth }) {
       system = createSolarSystem($('#space-mount'), {
         onSelect: (id) => select(id),
         onChime: (p) => chimes.ring(p),
+        onPan: (id, pan) => planetVoices.setPan(id, pan),
         reducedMotion: reduced
       });
     } catch (err) {
@@ -96,9 +110,12 @@ export function createSpaceView({ voice, onEarth }) {
     intro: () => system?.intro(),
     skipIntro: () => system?.skipIntro(),
     setRunning: (on) => system?.setRunning(on),
-    setVolume: (v) => chimes.setVolume(v),
+    setVolume: (v) => { chimes.setVolume(v); planetVoices.setVolume(v); },
     togglePlay: () => chimeBtn.click(),
-    stop: () => {},
+    stop: () => {
+      planetVoices.unfocus();
+      if (systemOn) { systemOn = false; planetVoices.setSystem(false); systemBtn.setAttribute('aria-pressed', 'false'); }
+    },
     focusList: () => (listEl.querySelector('[aria-pressed="true"]') || listEl.querySelector('button'))?.focus(),
     goEarth
   };

@@ -1,5 +1,17 @@
 import './style.css';
 import * as Tone from 'tone';
+
+// One master safety limiter on the final output. Each module also limits its
+// own bus, but several modules can sound at once and their peaks add up.
+// Tone's Limiter has no lookahead, so fast plucks overshoot it; the soft clipper
+// after it is a hard ceiling at 0.8 (-2 dBFS) that only bends the loudest peaks.
+const ceiling = new Tone.WaveShaper((x) => (0.8 * Math.tanh(1.6 * x)) / Math.tanh(1.6), 4096);
+ceiling.oversample = '4x';
+Tone.getDestination().chain(
+  new Tone.Compressor({ threshold: -12, ratio: 3, attack: 0.005, release: 0.25 }),
+  new Tone.Limiter(-4),
+  ceiling
+);
 import { $ } from './ui/dom.js';
 import { createVoiceGuide } from './ui/voice.js';
 import { createGlobeView } from './ui/globeView.js';
