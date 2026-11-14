@@ -100,7 +100,7 @@ class Jukebox {
 
   bounds() {
     const ui = this.app?.ui;
-    return ui ? ui.regionYearBounds(ui.activeRegion) : { first: 1985, last: 2026 };
+    return ui ? ui.regionYearBounds(ui.activeRegion) : { first: 1985, last: 2025 };
   }
 
   syncStatic() {

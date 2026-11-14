@@ -280,14 +280,16 @@ export class Sonifier {
   // audio clock, so playback survives a stalled or throttled frame loop.
   tick(sound, now = this.ctx.currentTime) {
     if (!this.ready) return;
-    const interval = 1 / Math.max(0.2, sound.pulseRate);
+    const rate = Math.max(0.2, sound.pulseRate);
 
     if (this.nextPulse < now - 0.4) this.nextPulse = now + 0.05;
 
     let guard = 0;
     while (this.nextPulse < now + 0.12 && guard < 6) {
       this.spawnPulse(sound, this.nextPulse);
-      this.nextPulse += interval;
+      // Exponential (Poisson) gaps at the same average rate: a fixed 1/rate
+      // interval ticked like a metronome.
+      this.nextPulse += Math.max(0.08, -Math.log(1 - Math.random()) / rate);
       guard += 1;
     }
   }

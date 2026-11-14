@@ -875,7 +875,7 @@ export class UI {
     const btn = this.el.exportWavBtn;
     if (!btn) return;
     const regionName = this.activeRegion?.name || 'Planetary_Observatory';
-    const year = this.activeYear || 2026;
+    const year = this.activeYear || 2025;
 
     try {
       btn.disabled = true;
@@ -974,7 +974,7 @@ export class UI {
       // the year automatically, and a tick there sounded like a metronome.
       if (this.earconsEnabled && !fromCompare) playEarcon('tick');
       if (this.hapticsEnabled) {
-        if ([1985, 2000, 2025, 2026].includes(value)) triggerHaptic('milestone');
+        if ([1985, 2000, 2025].includes(value)) triggerHaptic('milestone');
         else triggerHaptic('click');
       }
     }

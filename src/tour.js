@@ -12,14 +12,14 @@ export const TOUR_STOPS = [
   {
     regionId: 'california_wildfires',
     year: 2020,
-    compareYear: 2026,
+    compareYear: 2025,
     title: 'California Wildfire Front, USA',
     narrative: 'Flying north to the California Sierra Nevada. Here, extreme thermal infrared anomalies and low soil moisture trigger crackling wildfire textures and ascending temperature pitch.'
   },
   {
     regionId: 'wayanad_landslide',
     year: 2024,
-    compareYear: 2026,
+    compareYear: 2025,
     title: 'Wayanad Western Ghats, India',
     narrative: 'Now crossing to Wayanad in the Western Ghats of India. Intense precipitation bursts of over 500 millimeters saturated steep slopes, culminating in historic landslides sonified by deep low-frequency sub-bass.'
   },
@@ -33,7 +33,7 @@ export const TOUR_STOPS = [
   {
     regionId: 'taj_mahal',
     year: 1985,
-    compareYear: 2026,
+    compareYear: 2025,
     title: 'Taj Mahal & Yamuna Basin, India',
     narrative: 'Concluding at the majestic Taj Mahal in Agra, India. Listen to the interplay of Yamuna river basin hydrology and air quality particle density framing this world wonder.'
   }

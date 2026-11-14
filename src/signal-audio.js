@@ -1,6 +1,13 @@
 // Web Audio engine for HEARTH Planetary Geospatial Sonification Observatory.
 // Spans 28 planetary destinations: authentic spatial environment audio soundscapes
-// paired with lush, harmonic, cinematic climate telemetry layers.
+// paired with harmonic layers driven by real yearly data (NASA POWER per place,
+// NOAA Mauna Loa CO2), 1985-2025.
+//
+// Mix layout (frequency band / stereo position), so layers do not mask each other:
+//   soil -> sub-bass 50-100 Hz, centre      temperature -> melody A3-E5, centre
+//   cloud -> pad 110-330 Hz (+ haze 0.7-1.5 kHz, left)
+//   rain -> drops 440-880 Hz, random pan    sunlight -> chimes 880-1760 Hz, random pan
+//   wind -> noise 2.5-5 kHz, right          humidity -> reverb depth, CO2 -> detune
 //
 // Zero buzzing synth presets: pure harmonic sine/triangle ambient pads,
 // crystalline glass-harp pentatonic arpeggiations, soft water droplets,
@@ -9,19 +16,58 @@
 import { SIGNALS } from './regions.js';
 
 const PENTATONIC = [0, 3, 5, 7, 10, 12];
+// Melody notes for temperature: A-minor pentatonic from A3 to E5.
+const LEAD_SCALE = [0, 3, 5, 7, 10, 12, 15, 17, 19];
 const clamp01 = (value) => (value < 0 ? 0 : value > 1 ? 1 : value);
 
-// Dataset ranges for normalized audio mapping
-const AUDIO_RANGES = {
-  rain: [0, 6000]
-};
+// Psychoacoustic helpers. Loudness is heard on a log scale, so levels are set
+// in decibels; pitch and brightness are heard as ratios, so frequencies sweep
+// geometrically rather than linearly.
+const db = (decibels) => Math.pow(10, decibels / 20);
+const dbRange = (n, lowDb, highDb) => db(lowDb + (highDb - lowDb) * n);
+const logMap = (n, low, high) => low * Math.pow(high / low, clamp01(n));
 
-function normalise(value, range) {
-  if (value === null || value === undefined || !Number.isFinite(Number(value))) return null;
-  const min = range[0];
-  const max = range[1];
-  return clamp01((Number(value) - min) / (max - min));
+// Scaling: each value is compared with the place's own 1985-2000 baseline,
+// z = (v - mean) / sd, then n = 1 / (1 + e^(-z / ANOMALY_SCALE)), so a typical
+// year sits near 0.5 and unusual years move away from it. CO2 rises smoothly
+// everywhere, so it uses the place's 1985-2025 span instead.
+const BASELINE = [1985, 2000];
+const ANOMALY_SCALE = 1.5;
+const SPAN_KEYS = new Set(['carbon']);
+
+// Character: where the value sits among Earth's climates, so a cold dry place
+// and a hot wet place sound different. Ranges cover the 28 destinations; rain
+// spans two orders of magnitude, so it is compared on a log scale.
+const ABSOLUTE = {
+  temperature: { range: [-5, 30] },
+  rain: { range: [30, 4500], log: true },
+  humidity: { range: [20, 90] },
+  wind: { range: [0, 7] },
+  sunlight: { range: [3, 7] },
+  cloud: { range: [20, 90] },
+  soil: { range: [0.2, 1] }
+};
+// n = CHARACTER_WEIGHT * character + (1 - CHARACTER_WEIGHT) * change
+const CHARACTER_WEIGHT = 0.6;
+
+function absoluteNorm(key, value) {
+  const spec = ABSOLUTE[key];
+  if (!spec) return null;
+  const [a, b] = spec.range;
+  if (spec.log) return clamp01(Math.log(Math.max(value, a) / a) / Math.log(b / a));
+  return clamp01((value - a) / (b - a));
 }
+
+// Each place plays in its own key, set by its long-term mean temperature:
+// colder places sit lower and darker, hotter places higher. Semitone offsets
+// from A, chosen from keys that keep the pentatonic voicing consonant.
+const KEY_OFFSETS = [-5, -3, 0, 2, 5, 7];
+const PAD_BASE = [110, 164.81, 220, 329.63];
+
+// Random arrivals at rate lambda per second (a Poisson process): the gap is
+// exponential, -ln(1 - U) / lambda. A small floor keeps two events from
+// landing on top of each other.
+const poissonGap = (lambda) => Math.max(0.08, -Math.log(1 - Math.random()) / lambda);
 
 function makeNoiseBuffer(ctx, seconds = 3) {
   const length = Math.max(1, Math.floor(ctx.sampleRate * seconds));
@@ -331,7 +377,10 @@ export class SignalAudio {
     seaGain.gain.value = 0;
     sea.connect(seaFilter);
     seaFilter.connect(seaGain);
-    seaGain.connect(master);
+    const hazePan = ctx.createStereoPanner();
+    hazePan.pan.value = -0.4;
+    seaGain.connect(hazePan);
+    hazePan.connect(master);
     seaGain.connect(reverbSend);
     sea.start();
     this.seaFilter = seaFilter;
@@ -359,7 +408,10 @@ export class SignalAudio {
     airGain.gain.value = 0;
     air.connect(airFilter);
     airFilter.connect(airGain);
-    airGain.connect(master);
+    const windPan = ctx.createStereoPanner();
+    windPan.pan.value = 0.45;
+    airGain.connect(windPan);
+    windPan.connect(master);
     airGain.connect(reverbSend);
     air.start();
     this.airFilter = airFilter;
@@ -526,43 +578,66 @@ export class SignalAudio {
     return true;
   }
 
-  // Each value is scaled mostly against this place's own 1985-2026 span and
-  // partly against the global range. With global ranges alone, places outside
-  // them (Everest at -15 C against a 10-40 C range) were pinned to 0 and the
-  // layer never moved; local spans make every place's change audible.
-  regionSpan(region, key) {
-    if (!this.spanCache) this.spanCache = new WeakMap();
-    let spans = this.spanCache.get(region);
-    if (!spans) {
-      spans = {};
-      this.spanCache.set(region, spans);
+  stats(region, key) {
+    if (!this.statsCache) this.statsCache = new WeakMap();
+    let cache = this.statsCache.get(region);
+    if (!cache) {
+      cache = {};
+      this.statsCache.set(region, cache);
     }
-    if (!(key in spans)) {
-      const values = Object.values(region.years || {})
-        .map((row) => Number(row?.[key]))
-        .filter((value) => Number.isFinite(value));
-      spans[key] = values.length ? [Math.min(...values), Math.max(...values)] : null;
+    if (!(key in cache)) {
+      const all = [];
+      const base = [];
+      for (const [year, row] of Object.entries(region.years || {})) {
+        const value = Number(row?.[key]);
+        if (row?.[key] === null || !Number.isFinite(value)) continue;
+        all.push(value);
+        if (Number(year) >= BASELINE[0] && Number(year) <= BASELINE[1]) base.push(value);
+      }
+      if (!all.length) {
+        cache[key] = null;
+      } else {
+        const ref = base.length >= 5 ? base : all;
+        const mean = ref.reduce((a, b) => a + b, 0) / ref.length;
+        const sd = Math.sqrt(ref.reduce((a, b) => a + (b - mean) ** 2, 0) / Math.max(1, ref.length - 1));
+        cache[key] = { mean, sd, min: Math.min(...all), max: Math.max(...all) };
+      }
     }
-    return spans[key];
+    return cache[key];
+  }
+
+  // Semitone offset for the current place, from its 1985-2025 mean temperature.
+  placeTranspose() {
+    const stats = this.region ? this.stats(this.region, 'temperature') : null;
+    if (!stats) return 0;
+    const all = Object.values(this.region.years || {}).map((row) => Number(row?.temperature)).filter(Number.isFinite);
+    const mean = all.reduce((a, b) => a + b, 0) / all.length;
+    const k = absoluteNorm('temperature', mean);
+    return KEY_OFFSETS[Math.min(KEY_OFFSETS.length - 1, Math.floor(k * KEY_OFFSETS.length))];
   }
 
   readValues() {
     const norms = {};
+    this.keyRatio = Math.pow(2, this.placeTranspose() / 12);
+    this.changes = {};
     for (const signal of SIGNALS) {
-      if (!this.region || !this.isAvailable(signal.key)) {
+      const row = this.region && this.isAvailable(signal.key) ? this.region.years[this.year] : null;
+      const raw = row ? row[signal.key] : null;
+      const stats = raw === null || raw === undefined ? null : this.stats(this.region, signal.key);
+      if (!stats || !Number.isFinite(Number(raw))) {
         norms[signal.key] = null;
         continue;
       }
-      const row = this.region.years[this.year];
-      const value = row ? row[signal.key] : null;
-      const global = normalise(value, AUDIO_RANGES[signal.key] || signal.range);
-      if (global === null) {
-        norms[signal.key] = null;
+      const value = Number(raw);
+      const span = stats.max - stats.min;
+      if (SPAN_KEYS.has(signal.key)) {
+        norms[signal.key] = span > 1e-9 ? clamp01((value - stats.min) / span) : 0.5;
         continue;
       }
-      const span = this.regionSpan(this.region, signal.key);
-      const local = span && span[1] - span[0] > 1e-9 ? clamp01((Number(value) - span[0]) / (span[1] - span[0])) : 0.5;
-      norms[signal.key] = clamp01(local * 0.7 + global * 0.3);
+      const change = stats.sd < 1e-9 ? 0.5 : 1 / (1 + Math.exp(-((value - stats.mean) / stats.sd) / ANOMALY_SCALE));
+      this.changes[signal.key] = change;
+      const character = absoluteNorm(signal.key, value);
+      norms[signal.key] = character === null ? change : clamp01(CHARACTER_WEIGHT * character + (1 - CHARACTER_WEIGHT) * change);
     }
     this.norms = norms;
   }
@@ -572,53 +647,60 @@ export class SignalAudio {
     const n = this.norms;
     const on = (key) => this.enabled.has(key) && n[key] !== null && n[key] !== undefined;
     const glide = 0.45;
+    const key = this.keyRatio || 1;
 
-    // Temperature: Gentle celestial sine melody, octave glide
+    // The place's key moves the whole harmony (pad voices keep their chord).
+    PAD_BASE.forEach((freq, i) => this.padVoices[i]?.frequency.setTargetAtTime(freq * key, now, 0.8));
+
+    // Temperature -> melody note, snapped to A-minor pentatonic (A3-E5) so it
+    // always agrees with the pad.
     const temp = on('temperature') ? n.temperature : null;
-    this.lead.frequency.setTargetAtTime(164.81 * Math.pow(3, temp === null ? 0 : temp), now, glide);
-    this.leadGain.gain.setTargetAtTime(temp === null ? 0 : 0.075, now, glide);
+    if (temp !== null) {
+      // The place's key already carries how hot it is; the note within the key
+      // follows the year-to-year change, so warming years climb the scale.
+      const change = this.changes?.temperature ?? temp;
+      const step = LEAD_SCALE[Math.round(change * (LEAD_SCALE.length - 1))];
+      this.lead.frequency.setTargetAtTime(220 * key * Math.pow(2, step / 12), now, glide);
+    }
+    this.leadGain.gain.setTargetAtTime(temp === null ? 0 : db(-23), now, glide);
 
-    // Vegetation: Silk ambient harmonic pad brightness
-    const veg = on('vegetation') ? n.vegetation : null;
-    this.padFilter.frequency.setTargetAtTime(280 + (veg === null ? 0 : veg) * 650, now, glide);
-    this.padGain.gain.setTargetAtTime(veg === null ? 0 : 0.3 + veg * 0.45, now, glide);
+    // Cloud cover -> pad brightness (clear sky = bright, log-scaled cutoff
+    // 350-2400 Hz) and a soft haze band (700-1500 Hz) panned left.
+    const cloud = on('cloud') ? n.cloud : null;
+    this.padFilter.frequency.setTargetAtTime(logMap(cloud === null ? 0.5 : 1 - cloud, 350, 2400), now, glide);
+    this.padGain.gain.setTargetAtTime(cloud === null ? 0 : 0.55, now, glide);
+    this.seaFilter.frequency.setTargetAtTime(logMap(cloud ?? 0, 700, 1500), now, glide);
+    this.seaGain.gain.setTargetAtTime(cloud === null ? 0 : dbRange(cloud, -44, -26), now, glide);
 
-    // Groundwater: Sub-bass body
-    const ground = on('groundwater') ? n.groundwater : null;
-    // 55-110 Hz: low enough to feel like groundwater, high enough for laptop speakers.
-    this.sub.frequency.setTargetAtTime(55 + (ground === null ? 0 : ground) * 55, now, glide);
-    this.subGain.gain.setTargetAtTime(ground === null ? 0 : 0.05 + ground * 0.09, now, glide);
+    // Soil moisture -> sub-bass 50-100 Hz, -30 to -18 dB.
+    const soil = on('soil') ? n.soil : null;
+    this.sub.frequency.setTargetAtTime(logMap(soil ?? 0, 50, 100), now, glide);
+    this.subGain.gain.setTargetAtTime(soil === null ? 0 : dbRange(soil, -30, -18), now, glide);
 
-    // Sea level: Ocean wave wash
-    const sea = on('seaLevel') ? n.seaLevel : null;
-    this.seaFilter.frequency.setTargetAtTime(240 + (sea === null ? 0 : sea) * 450, now, glide);
-    this.seaGain.gain.setTargetAtTime(sea === null ? 0 : 0.03 + sea * 0.08, now, glide);
+    // Wind -> high wind noise 2.5-5 kHz panned right, -46 to -26 dB.
+    const wind = on('wind') ? n.wind : null;
+    this.airFilter.frequency.setTargetAtTime(logMap(wind ?? 0, 2500, 5000), now, glide);
+    this.airGain.gain.setTargetAtTime(wind === null ? 0 : dbRange(wind, -46, -26), now, glide);
 
-    // Air quality: Wind breath
-    const air = on('air') ? n.air : null;
-    this.airFilter.frequency.setTargetAtTime(900 + (air === null ? 0 : air) * 600, now, glide);
-    this.airGain.gain.setTargetAtTime(air === null ? 0 : 0.014 + air * 0.05, now, glide);
+    // Humidity -> reverb depth (damp air, wetter space).
+    const humidity = on('humidity') ? n.humidity : null;
+    this.reverbWet.gain.setTargetAtTime(humidity === null ? 0.05 : 0.06 + humidity * 0.5, now, 0.5);
 
-    // Canopy: Reverb depth
-    const canopy = on('canopy') ? n.canopy : null;
-    this.reverbWet.gain.setTargetAtTime(canopy === null ? 0.04 : 0.08 + canopy * 0.55, now, 0.5);
-
-    // Carbon: Subtle celestial micro-detune
+    // CO2 (global) -> detune of pad and melody, 0-22 cents.
     const carbon = on('carbon') ? n.carbon : null;
     const cents = carbon === null ? 0 : carbon * 22;
     for (const voice of this.padVoices) voice.detune.setTargetAtTime(cents, now, 0.5);
     this.lead.detune.setTargetAtTime(cents, now, 0.5);
 
-    // Events per second, kept sparse so they read as texture rather than a
-    // beat: rain up to ~2 drops/s, lights up to ~1 chime/s, disasters one
-    // swell every ~5-50 s.
-    this.rates.rain = on('rain') ? 0.15 + n.rain * 1.8 : 0;
-    this.rates.lights = on('lights') ? 0.12 + n.lights * 0.85 : 0;
-    this.rates.disasters = on('disasters') ? 0.02 + n.disasters * 0.18 : 0;
+    // Event layers, as random (Poisson) arrivals per second:
+    // rain drops up to ~2.3/s, sunlight chimes up to ~1/s.
+    this.rates.rain = on('rain') ? 0.1 + n.rain * 2.2 : 0;
+    this.rates.lights = on('sunlight') ? 0.08 + n.sunlight * 0.9 : 0;
+    this.rates.disasters = 0;
 
     this.rainBus.gain.setTargetAtTime(on('rain') ? 0.55 : 0, now, 0.2);
-    this.lightsBus.gain.setTargetAtTime(on('lights') ? 0.45 : 0, now, 0.2);
-    this.hitBus.gain.setTargetAtTime(on('disasters') ? 0.5 : 0, now, 0.2);
+    this.lightsBus.gain.setTargetAtTime(on('sunlight') ? 0.45 : 0, now, 0.2);
+    this.hitBus.gain.setTargetAtTime(0, now, 0.2);
   }
 
   async togglePlay() {
@@ -705,7 +787,7 @@ export class SignalAudio {
       let guard = 0;
       while (this.nextRain < now + 0.12 && guard < 6) {
         this.spawnPluck(this.nextRain);
-        this.nextRain += (0.8 + Math.random() * 0.6) / this.rates.rain;
+        this.nextRain += poissonGap(this.rates.rain);
         guard += 1;
       }
     } else {
@@ -718,8 +800,7 @@ export class SignalAudio {
       let guard = 0;
       while (this.nextLights < now + 0.12 && guard < 8) {
         this.spawnArp(this.nextLights);
-        // Irregular spacing: a fixed 1/rate interval sounded like a metronome.
-        this.nextLights += (0.55 + Math.random() * 0.9) / this.rates.lights;
+        this.nextLights += poissonGap(this.rates.lights);
         guard += 1;
       }
     } else {
@@ -748,22 +829,26 @@ export class SignalAudio {
     const gain = ctx.createGain();
     const degree = PENTATONIC[Math.floor(Math.random() * PENTATONIC.length)];
 
-    // Warm, rounded water register (164 - 330 Hz)
-    const baseFreq = 164.81 * Math.pow(2, degree / 12);
+    // Drops sit above the melody (440-880 Hz) so they never mask it.
+    const baseFreq = 440 * (this.keyRatio || 1) * Math.pow(2, degree / 12);
     osc.type = 'sine';
     osc.frequency.setValueAtTime(baseFreq * 1.25, time);
     osc.frequency.exponentialRampToValueAtTime(baseFreq, time + 0.045);
 
     filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(520, time);
+    filter.frequency.setValueAtTime(1800, time);
 
     gain.gain.setValueAtTime(0.0001, time);
     gain.gain.linearRampToValueAtTime(0.028, time + 0.012);
     gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.32);
 
+    // Each drop lands at a random point across the stereo field.
+    const pan = ctx.createStereoPanner();
+    pan.pan.setValueAtTime(Math.random() * 1.2 - 0.6, time);
     osc.connect(filter);
     filter.connect(gain);
-    gain.connect(this.rainBus);
+    gain.connect(pan);
+    pan.connect(this.rainBus);
     osc.start(time);
     osc.stop(time + 0.35);
   }
@@ -777,22 +862,26 @@ export class SignalAudio {
     // A random note rather than stepping up the scale, so it never ticks.
     const degree = PENTATONIC[Math.floor(Math.random() * PENTATONIC.length)];
 
-    // Warm A-minor pentatonic around A3-A4, rung like a soft glass bell.
+    // Sunlight chimes: A-minor pentatonic around A5, the top band of the mix,
+    // rung like a soft glass bell at a random stereo position.
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(220 * Math.pow(2, degree / 12), time);
+    osc.frequency.setValueAtTime(880 * (this.keyRatio || 1) * Math.pow(2, degree / 12), time);
 
     filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(1400, time);
+    filter.frequency.setValueAtTime(3200, time);
 
     gain.gain.setValueAtTime(0.0001, time);
-    gain.gain.linearRampToValueAtTime(0.03, time + 0.04);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + 1.6);
+    gain.gain.linearRampToValueAtTime(0.022, time + 0.03);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + 1.8);
 
+    const pan = ctx.createStereoPanner();
+    pan.pan.setValueAtTime(Math.random() * 1.4 - 0.7, time);
     osc.connect(filter);
     filter.connect(gain);
-    gain.connect(this.lightsBus);
+    gain.connect(pan);
+    pan.connect(this.lightsBus);
     osc.start(time);
-    osc.stop(time + 1.65);
+    osc.stop(time + 1.85);
   }
 
   // Soft cinematic sub-thump and wind sweep
