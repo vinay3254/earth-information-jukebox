@@ -1,228 +1,280 @@
-<!doctype html>
-<html lang="en" data-theme="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Listen to NASA Earth data. Pick a place on the globe or a NASA visualization and hear it change over time." />
-    <title>Earth Information Jukebox</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap"
-    />
-  </head>
-  <body>
-    <a class="skip" href="#main">Skip to controls</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>HEARTH — Planetary Geospatial Sonification Observatory</title>
+<meta name="description" content="HEARTH: Translating 42 years of multi-sensor satellite telemetry and climate records into real-time interactive soundscapes." />
+<link rel="icon" href="data:," />
+<link rel="stylesheet" href="./styles.css" />
+<script>
+  // A return from the Acoustic Lab skips the loader entirely. Mark the
+  // document before first paint so the loading screen and dive never appear.
+  try {
+    if (sessionStorage.getItem('hearth:warmed') === '1') {
+      document.documentElement.classList.add('is-warm-return');
+    }
+  } catch (error) {
+    // Private browsing or a blocked storage partition: fall back to a cold load.
+  }
+</script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three.module.js"
+  }
+}
+</script>
+</head>
+<body>
+<a href="#audio-controls" class="skip-link" id="skip-link">Skip to planetary audio controls &bull; Press P to play, 1–7 for biomes, ? for shortcuts</a>
 
-    <div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
-      <div class="gate-inner">
-        <h1 id="gate-title" class="gate-title">Earth Information Jukebox</h1>
-        <p class="gate-line">Start among the planets, fly down to Earth, and listen to forty years of NASA measurements turned into sound.</p>
-        <p class="gate-note">Best with headphones. Everything works with a keyboard and a screen reader.</p>
-        <div class="gate-actions">
-          <button type="button" id="gate-go" class="primary big">Start listening</button>
-          <button type="button" id="gate-voice" class="secondary big">Start with voice guide</button>
-        </div>
-      </div>
+
+<div id="stage">
+  <canvas id="scene"></canvas>
+</div>
+
+<div id="veil" aria-hidden="true"></div>
+<div id="veil-noise" aria-hidden="true"></div>
+<div id="vignette" aria-hidden="true"></div>
+<div id="grain" aria-hidden="true"></div>
+
+<header id="masthead" data-loader-inert inert>
+  <div class="mast-brand">
+    <img src="./assets/logo-transparent.png" alt="HEARTH Logo" class="mast-logo" />
+    <div class="mast-text">
+      <strong>HEARTH</strong>
+      <span>Planetary Sonification Observatory</span>
+    </div>
+  </div>
+  <button id="tour-btn" class="mast-tour-btn" type="button" aria-label="Start Guided 2-Minute Audio Tour">Guided Tour &#9654;</button>
+  <a class="mast-lab-btn" href="./studio.html" aria-label="Open Acoustic Lab">Acoustic Lab <span aria-hidden="true">&#8599;</span></a>
+</header>
+
+<div id="readout" aria-hidden="true">
+  <div class="ro-row"><span class="ro-key">view</span><span class="ro-val" id="ro-state">solar system</span></div>
+  <div class="ro-row"><span class="ro-key">target</span><span class="ro-val" id="ro-target">mount everest · 27.99°N 86.93°E</span></div>
+</div>
+
+<section id="audio-controls" class="audio-controls" aria-label="Audio controls" data-loader-inert inert>
+  <canvas id="audio-visualizer" class="audio-visualizer" width="130" height="34" aria-hidden="true" title="Real-time planetary spectrum"></canvas>
+  <span id="audio-status" class="audio-status" role="status" aria-live="polite">Audio idle</span>
+  <button id="audio-toggle" class="audio-button" type="button" aria-label="Pause audio" hidden>Pause</button>
+  <button id="speak-toggle" class="audio-button" type="button" aria-pressed="false" title="Voice Guide (V)">Voice</button>
+  <button id="audio-mute" class="audio-button" type="button" aria-label="Mute audio (M)" aria-pressed="false">Mute</button>
+  <input id="audio-volume" class="audio-volume" type="range" min="0" max="1" step="0.01" value="1" aria-label="Audio volume" aria-valuetext="100%" />
+  <button id="audio-export-btn" class="audio-button" type="button" aria-label="Export WAV Audio (E)" title="Export WAV (E)">Export</button>
+  <button id="a11y-toggle-btn" class="audio-button a11y-trigger" type="button" aria-expanded="false" aria-controls="a11y-panel" aria-label="Accessibility &amp; Shortcuts Menu (?)">A11y &#9881;</button>
+</section>
+
+<div id="a11y-panel" class="a11y-panel" role="region" aria-label="Accessibility and Screen Reader Controls" hidden>
+  <div class="a11y-head">
+    <strong>Multi-Sensory Superpowers</strong>
+    <button id="a11y-close-btn" class="a11y-close-btn" type="button" aria-label="Close Accessibility Menu">&times;</button>
+  </div>
+  <div class="a11y-body">
+    <div class="a11y-row">
+      <label for="high-contrast-toggle" class="a11y-label">High Contrast (WCAG AAA)</label>
+      <input id="high-contrast-toggle" class="a11y-checkbox" type="checkbox" />
+    </div>
+    <div class="a11y-row">
+      <label for="speech-rate-select" class="a11y-label">Voice Guide Speed</label>
+      <select id="speech-rate-select" class="a11y-select">
+        <option value="0.75">0.75&times; (Relaxed)</option>
+        <option value="1.0" selected>1.0&times; (Standard)</option>
+        <option value="1.25">1.25&times; (Brisk)</option>
+        <option value="1.5">1.5&times; (Fast)</option>
+        <option value="2.0">2.0&times; (Screen-Reader Power)</option>
+      </select>
+    </div>
+    <div class="a11y-row">
+      <label for="speech-voice-select" class="a11y-label">Synthesized Voice</label>
+      <select id="speech-voice-select" class="a11y-select">
+        <option value="">Default Voice</option>
+      </select>
+    </div>
+    <div class="a11y-row">
+      <label for="earcons-toggle" class="a11y-label">Audio Earcons (UI Cues)</label>
+      <input id="earcons-toggle" class="a11y-checkbox" type="checkbox" checked />
+    </div>
+    <div class="a11y-row">
+      <label for="haptic-toggle" class="a11y-label">Haptic Vibration</label>
+      <input id="haptic-toggle" class="a11y-checkbox" type="checkbox" checked />
     </div>
 
-    <header class="bar">
-      <p class="name">Earth Information Jukebox</p>
+    <div class="a11y-shortcuts">
+      <p class="a11y-shortcuts-title">Blind Explorer Keypad Shortcuts:</p>
+      <ul class="a11y-shortcuts-list">
+        <li><kbd>1</kbd>–<kbd>7</kbd> : Jump to Biome Category</li>
+        <li><kbd>P</kbd> : Play / Pause Audio</li>
+        <li><kbd>M</kbd> : Mute / Unmute</li>
+        <li><kbd>C</kbd> : 40-Yr Benchmark Compare</li>
+        <li><kbd>V</kbd> : Speak Climate Summary</li>
+        <li><kbd>H</kbd> : Toggle High-Contrast (WCAG AAA)</li>
+        <li><kbd>T</kbd> : Start/Stop Guided Tour</li>
+        <li><kbd>E</kbd> : 1-Click WAV Audio Export</li>
+        <li><kbd>?</kbd> : Read Keyboard Shortcuts Aloud</li>
+        <li><kbd>&larr;</kbd>/<kbd>&rarr;</kbd> : Step Year Backward / Forward</li>
+      </ul>
+      <button id="read-shortcuts-btn" class="a11y-speak-btn" type="button">Read Shortcuts Aloud</button>
+    </div>
+  </div>
+</div>
 
-      <nav class="views" aria-label="Views">
-        <button type="button" class="view-tab" data-view="space" aria-pressed="true">Solar system <kbd>S</kbd></button>
-        <button type="button" class="view-tab" data-view="globe" aria-pressed="false">Earth <kbd>G</kbd></button>
-        <button type="button" class="view-tab" data-view="lab" aria-pressed="false">Frame Lab <kbd>L</kbd></button>
-      </nav>
+<aside id="panel" class="panel" data-sheet="peek" data-view="places" data-search="closed" aria-label="Place explorer" data-loader-inert inert>
+  <button id="panel-peek" class="panel-peek" type="button" aria-expanded="false" aria-controls="panel-body">
+    <span class="peek-handle" aria-hidden="true"></span>
+    <span class="peek-row">
+      <span class="peek-label" id="peek-label">destinations &middot; 28</span>
+      <span class="peek-value" id="peek-value">Mount Everest</span>
+      <span class="peek-chevron" aria-hidden="true">&#8593;</span>
+    </span>
+  </button>
+  <div class="panel-inner" id="panel-body">
 
-      <div class="bar-tools">
-        <button type="button" id="voice-toggle" class="tool" aria-pressed="false">Voice guide <kbd>V</kbd></button>
-        <label class="volume">
-          <span>Volume</span>
-          <input id="volume" type="range" min="0" max="100" value="80" aria-describedby="volume-hint" />
-          <span id="volume-hint" class="sr">Plus and minus keys change volume. M mutes.</span>
-        </label>
-        <button type="button" id="help-open" class="tool" aria-haspopup="dialog">Keys and sources <kbd>?</kbd></button>
+    <section class="panel-view" id="places-view">
+      <h1 class="panel-title">Earth Observational Telemetry</h1>
+
+      <div class="search">
+        <svg class="search-glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <circle cx="7" cy="7" r="4.4" fill="none" stroke="currentColor" stroke-width="1.2" />
+          <line x1="10.4" y1="10.4" x2="14" y2="14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+        </svg>
+        <input id="search-input" class="search-input" type="text" placeholder="Search places&hellip;" autocomplete="off" spellcheck="false" aria-label="Search places" />
+        <button id="search-clear" class="search-clear" type="button" aria-label="Clear search" hidden>&#215;</button>
+        <kbd class="search-key" aria-hidden="true">/</kbd>
       </div>
-    </header>
 
-    <main id="main" tabindex="-1">
-      <!-- Solar system view -->
-      <section id="view-space" class="view" aria-labelledby="space-heading">
-        <div class="stage">
-          <div id="space-mount" class="globe-mount"></div>
-          <p id="space-status" class="stage-note" hidden></p>
-        </div>
-
-        <div class="panel">
-          <h2 id="space-heading" class="title">The solar system</h2>
-          <p class="lede">Eight planets on their real orbits, sped up so Earth circles the Sun in under a minute. Pick one to visit.</p>
-
-          <fieldset>
-            <legend>Planet</legend>
-            <div id="planet-list" class="planet-list"></div>
-          </fieldset>
-
-          <section id="planet-card" class="planet-card" aria-live="polite" hidden>
-            <h3 id="planet-name" class="sub"></h3>
-            <p id="planet-fact"></p>
-            <dl class="facts">
-              <div><dt>From the Sun</dt><dd id="pf-au"></dd></div>
-              <div><dt>One year</dt><dd id="pf-year"></dd></div>
-              <div><dt>One day</dt><dd id="pf-day"></dd></div>
-              <div><dt>Average temperature</dt><dd id="pf-temp"></dd></div>
-              <div><dt>Moons</dt><dd id="pf-moons"></dd></div>
-            </dl>
-          </section>
-
-          <div class="transport">
-            <button type="button" id="go-earth" class="primary">Fly down to Earth</button>
-            <button type="button" id="space-overview" class="secondary">See all planets</button>
+      <div class="panel-scroll" id="place-scroll">
+        <div id="map-status" class="map-status" hidden>
+          <p id="map-status-text" role="status" aria-live="polite" aria-atomic="true"></p>
+          <div class="map-actions">
+            <button id="map-retry" class="status-button" type="button" hidden>Retry</button>
+            <button id="map-cancel" class="status-button" type="button">Cancel</button>
           </div>
-
-          <div class="transport">
-            <button type="button" id="chimes" class="secondary" aria-pressed="false">Orbit chimes</button>
-            <button type="button" id="space-system" class="secondary" aria-pressed="false">Hear all planets</button>
-            <label class="inline-select">Speed
-              <select id="space-speed">
-                <option value="0.25">Slow</option>
-                <option value="1" selected>Normal</option>
-                <option value="4">Fast</option>
-              </select>
-            </label>
-          </div>
-          <p class="hint-small">Orbit chimes: each planet rings once per trip around the Sun. Hear all planets: every planet hums at once, from its side of the screen. Picking a planet brings its own voice forward.</p>
         </div>
-      </section>
+        <p class="place-guidance">Select a global wonder, cataclysmic incident, or wildfire to sonify its multi-decade climate record.</p>
+        <div id="place-list" class="place-list" role="listbox" aria-label="Destinations"></div>
+      </div>
+      <a class="mobile-lab-link" href="./studio.html" aria-label="Open the Sonification Lab">Sound lab <span aria-hidden="true">&#8599;</span></a>
 
-      <!-- Globe view -->
-      <section id="view-globe" class="view" aria-labelledby="globe-heading" hidden>
-        <div class="stage">
-          <div id="globe-mount" class="globe-mount" aria-hidden="true"></div>
-          <p id="globe-status" class="stage-note" hidden></p>
-          <figure id="plate" class="plate" hidden>
-            <img id="plate-img" alt="" />
-            <figcaption id="plate-cap"></figcaption>
-          </figure>
+      <p class="panel-foot">
+        <span class="key-hint"><b>&uarr;&darr;</b> move</span>
+        <span class="key-hint"><b>&crarr;</b> select</span>
+        <span class="key-hint"><b>/</b> search</span>
+      </p>
+    </section>
+
+    <section class="panel-view" id="signals-view" hidden>
+      <div class="region-switcher" id="region-switcher">
+        <p class="eyebrow" id="signal-country">Nepal &middot; Wonders of the World</p>
+        <div class="region-switcher-head">
+          <h1 class="panel-title" id="signal-region">Mount Everest</h1>
+          <button id="region-switcher-toggle" class="region-switcher-toggle" type="button"
+                  aria-haspopup="listbox" aria-expanded="false" aria-controls="region-switcher-menu"
+                  aria-label="Switch destination">
+            <span class="region-switcher-chevron" aria-hidden="true">&#9662;</span>
+          </button>
         </div>
+        <div id="region-switcher-menu" class="region-switcher-menu" role="listbox"
+             aria-label="Destinations" hidden></div>
+      </div>
 
-        <div class="panel">
-          <h2 id="globe-heading" class="title">Hear a place change</h2>
-          <p class="lede">Choose a place. Each sound follows one real measurement, year by year, from NASA and NOAA records.</p>
+      <div class="signal-head">
+        <span>Sound layers</span>
+        <span id="signal-count">10 of 10 on</span>
+      </div>
 
-          <fieldset class="regions">
-            <legend>Place</legend>
-            <div id="region-list" class="region-list"></div>
-          </fieldset>
+      <div class="panel-scroll" id="signal-scroll">
+        <div id="signal-list" class="signal-list"></div>
+        <p id="map-provenance" class="signal-explanation"></p>
+        <p id="signal-unavailable" class="signal-explanation" hidden>N/A means no source value is available for this place and year. That sound layer is silent.</p>
+      </div>
 
-          <div id="listen" class="listen" hidden>
-            <div class="year-block">
-              <label for="year" class="year-label">
-                <span id="region-name"></span>
-                <output id="year-out" for="year" class="year-out"></output>
-              </label>
-              <div class="ribbon-wrap">
-                <canvas id="ribbon" class="ribbon" aria-hidden="true"></canvas>
-                <input id="year" type="range" class="year" min="1981" max="2025" step="1" value="1981" />
-              </div>
-              <p class="ribbon-key" aria-hidden="true"><span class="cool">cooler year</span><span class="warm">warmer year</span></p>
-            </div>
-
-            <div class="transport">
-              <button type="button" id="synth-play" class="primary" aria-pressed="false">Play this year</button>
-              <button type="button" id="synth-sweep" class="secondary">Play all years</button>
-            </div>
-
-            <details class="compare" id="compare">
-              <summary>Compare two years <kbd>C</kbd></summary>
-              <div class="compare-body">
-                <label>From <select id="cmp-a"></select></label>
-                <label>To <select id="cmp-b"></select></label>
-                <button type="button" id="cmp-go" class="secondary">Play comparison</button>
-              </div>
-              <div class="presets" id="cmp-presets"></div>
-              <p id="cmp-result" class="cmp-result"></p>
-            </details>
-
-            <fieldset class="voices">
-              <legend>Sounds</legend>
-              <ul id="voice-list" class="voice-list"></ul>
-            </fieldset>
-          </div>
-
-          <p id="globe-caption" class="caption" aria-live="polite"></p>
+      <div class="yearbar">
+        <div class="year-row">
+          <span id="year-min">1985</span>
+          <span class="year-current" id="year-label">1985</span>
+          <span id="year-max">2026</span>
         </div>
-      </section>
-
-      <!-- Frame Lab view -->
-      <section id="view-lab" class="view" aria-labelledby="lab-heading" hidden>
-        <div class="stage">
-          <div class="screen" id="screen">
-            <video id="lab-video" playsinline loop muted crossorigin="anonymous" preload="metadata"></video>
-            <canvas id="lab-overlay" class="overlay" aria-hidden="true"></canvas>
-          </div>
-          <p id="lab-status" class="stage-note" hidden></p>
+        <input id="year-input" class="year-input" type="range" min="1985" max="2026" step="1" value="1985" aria-label="Listening year" />
+        <div class="compare-pair">
+          <span class="compare-pair-label" aria-hidden="true">Compare</span>
+          <select id="compare-pair-select" class="compare-pair-select" aria-label="Comparison interval">
+            <option value="1985:2025" selected>1985 &harr; 2025 (40-yr benchmark)</option>
+            <option value="1985:2026">1985 &harr; 2026 (Full 41-yr span)</option>
+            <option value="1985:1995">1985 &harr; 1995 (Decade 1)</option>
+            <option value="1995:2005">1995 &harr; 2005 (Decade 2)</option>
+            <option value="2005:2015">2005 &harr; 2015 (Decade 3)</option>
+            <option value="2015:2025">2015 &harr; 2025 (Decade 4)</option>
+            <option value="1985:1990">1985 &harr; 1990 (5-yr step)</option>
+            <option value="1990:1995">1990 &harr; 1995 (5-yr step)</option>
+            <option value="1995:2000">1995 &harr; 2000 (5-yr step)</option>
+            <option value="2000:2005">2000 &harr; 2005 (5-yr step)</option>
+            <option value="2005:2010">2005 &harr; 2010 (5-yr step)</option>
+            <option value="2010:2015">2010 &harr; 2015 (5-yr step)</option>
+            <option value="2015:2020">2015 &harr; 2020 (5-yr step)</option>
+            <option value="2020:2025">2020 &harr; 2025 (5-yr step)</option>
+            <option value="2021:2026">2021 &harr; 2026 (Latest 5-yr)</option>
+          </select>
         </div>
-
-        <div class="panel">
-          <h2 id="lab-heading" class="title">Hear a NASA visualization</h2>
-          <p class="lede">The sound is made live from the pictures on screen, frame by frame.</p>
-
-          <fieldset class="tracks">
-            <legend>Visualization</legend>
-            <div id="track-list" class="track-list"></div>
-          </fieldset>
-
-          <div class="transport">
-            <button type="button" id="lab-play" class="primary" aria-pressed="false">Play</button>
-            <button type="button" id="lab-explore" class="secondary" aria-pressed="false">Explore by hand <kbd>E</kbd></button>
-          </div>
-          <p id="explore-hint" class="hint" hidden>Arrow keys move the listening point. You hear the spot under it.</p>
-
-          <section class="readout" aria-labelledby="readout-heading">
-            <h3 id="readout-heading" class="sub">This frame</h3>
-            <dl id="readout" class="meters"></dl>
-          </section>
-
-          <section class="about" aria-labelledby="about-heading">
-            <h3 id="about-heading" class="sub">What you hear</h3>
-            <p id="track-summary"></p>
-            <p id="track-mapping"></p>
-            <p id="track-source" class="source"></p>
-          </section>
-
-          <p id="lab-caption" class="caption" aria-live="polite"></p>
+        <div class="year-actions">
+          <button id="play-1985" class="year-btn" type="button">Play 1985</button>
+          <button id="compare-btn" class="year-btn year-btn-wide" type="button">Compare 1985 &harr; 2025</button>
+          <button id="play-2025" class="year-btn" type="button">Play 2025</button>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
 
-    <div id="fade" class="fade" aria-hidden="true"></div>
+  </div>
+</aside>
 
-    <footer class="foot">
-      <p>Data: NASA GIBS, NASA POWER, NASA GISS, NOAA GML. Built for NASA Space Apps 2026</p>
-      <p id="credits"></p>
-    </footer>
+<div id="sheet-scrim" class="sheet-scrim" aria-hidden="true"></div>
 
-    <dialog id="help" aria-labelledby="help-title">
-      <h2 id="help-title" class="sub">Keys and sources</h2>
-      <dl class="keys">
-        <div><dt>Space</dt><dd>Play or pause</dd></div>
-        <div><dt>S / G / L</dt><dd>Solar system, Earth, Frame Lab</dd></div>
-        <div><dt>V</dt><dd>Voice guide on or off</dd></div>
-        <div><dt>+ / −, M</dt><dd>Volume, mute</dd></div>
-        <div><dt>/</dt><dd>Globe: jump to the place list</dd></div>
-        <div><dt>← / →</dt><dd>Globe: previous or next year</dd></div>
-        <div><dt>C</dt><dd>Globe: compare two years</dd></div>
-        <div><dt>1–4</dt><dd>Frame Lab: pick a visualization</dd></div>
-        <div><dt>E, arrows</dt><dd>Frame Lab: explore by hand</dd></div>
-        <div><dt>Esc</dt><dd>Close this, skip a camera flight</dd></div>
-      </dl>
-      <h2 class="sub">Sources</h2>
-      <p class="sources">Satellite imagery and Earth textures: NASA GIBS (MODIS, VIIRS, GHRSST, Blue Marble, Black Marble). Place data: NASA POWER, NASA GISS GISTEMP v4, NOAA GML Mauna Loa CO₂. Planets are drawn in code from NASA Planetary Fact Sheet values.</p>
-      <form method="dialog"><button class="secondary">Close</button></form>
-    </dialog>
+<div id="selection-note" class="selection-note" aria-live="polite">
+  <span class="sn-eyebrow" id="sn-eyebrow">Explore Earth</span>
+  <span class="sn-line">Select a destination to listen.</span>
+  <span class="sn-dest" id="sn-dest">Destination available · Mount Everest</span>
+</div>
 
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<div id="anchor" class="anchor" aria-hidden="true">
+  <span class="anchor-reticle"></span>
+  <span class="anchor-copy">
+    <strong>Mount Everest</strong>
+    <em>Available region</em>
+  </span>
+</div>
+
+<nav id="backbar" class="backbar" aria-hidden="true" data-loader-inert inert>
+  <button id="back-btn" class="back-btn">
+    <span class="back-arrow">&#8592;</span>
+    <span id="back-label">Back to solar system</span>
+  </button>
+</nav>
+
+<div id="hint" class="hint" aria-live="polite"></div>
+
+<button id="skip-btn" class="skip-btn" type="button" aria-label="Skip the cinematic and reveal the destination (Esc)" title="Skip (Esc)" data-loader-inert inert disabled>
+  <span class="skip-label">Skip</span>
+  <span class="skip-key" aria-hidden="true">Esc</span>
+  <span class="skip-arrow" aria-hidden="true">&#8594;</span>
+</button>
+
+<div id="loader" class="loader">
+  <canvas id="loader-scene" class="loader-scene" aria-hidden="true"></canvas>
+  <div class="loader-inner">
+    <p class="loader-mark">
+      <span>H</span><span>E</span><span>A</span><span>R</span><span>T</span><span>H</span>
+    </p>
+    <p class="loader-sub" id="loader-sub" role="status" aria-live="polite" aria-atomic="true">Initializing Planetary Observatory&hellip;</p>
+    <div class="loader-track" id="loader-progress" role="progressbar" aria-label="Initializing Planetary Observatory" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="loader-fill" id="loader-fill"></span></div>
+    <button id="loader-retry" class="status-button loader-retry" type="button" hidden>Retry loading</button>
+    <p class="loader-foot">Planetary Telemetry &amp; Multi-Voice Acoustic Synthesis</p>
+  </div>
+</div>
+
+<div id="sr-announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script type="module" src="./src/main.js"></script>
+</body>
 </html>
