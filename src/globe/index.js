@@ -88,6 +88,7 @@ export function createGlobe(container, { regions = [], onSelect = () => {} } = {
   const earthRadius = 1.0;
   const earthGeometry = new THREE.SphereGeometry(earthRadius, 64, 64);
   const sunDirection = new THREE.Vector3(1.2, 0.5, 0.9).normalize();
+  const UP = new THREE.Vector3(0, 1, 0);
   const earthMaterial = createEarthMaterial({ dayTexture, nightTexture, sunDirection });
   const earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
   scene.add(earthMesh);
@@ -204,6 +205,12 @@ export function createGlobe(container, { regions = [], onSelect = () => {} } = {
 
     // Update marker animations (pulse rings and billboard rotation)
     markerManager.update(timeSeconds);
+
+    // Keep the Sun behind the viewer's right shoulder so the face we look at
+    // is in daylight, with the night side and city lights along the left edge.
+    sunDirection.copy(camera.position).normalize().applyAxisAngle(UP, 0.6);
+    sunDirection.y += 0.25;
+    earthMaterial.uniforms.sunDirection.value.copy(sunDirection).normalize();
 
     renderer.render(scene, camera);
   }

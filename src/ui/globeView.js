@@ -357,6 +357,7 @@ export function createGlobeView({ voice, getVolume }) {
     },
     focusRegions() { (listEl.querySelector('[aria-pressed="true"]') || listEl.querySelector('button'))?.focus(); },
     skipIntro() { state.globe?.skipIntro?.(); },
+    onShow() { if (!state.region) state.globe?.showAll?.(); },
     setVolume(v) { state.synth?.setVolume?.(v); }
   };
 }

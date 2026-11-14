@@ -4,11 +4,11 @@ export const TRACKS = [
     id: 'nightlights',
     key: '1',
     title: 'Night lights',
-    svsId: 5313,
+    source: 'NASA GIBS, VIIRS Day/Night Band, Aug–Oct 2024',
     video: 'media/nightlights.mp4',
     poster: 'media/nightlights.jpg',
     summary:
-      'Earth at night, 2012 to 2023, seen by the Suomi NPP satellite. Cities, roads and gas flares glow. Oceans and deserts stay dark.',
+      'Earth at night, day by day through autumn 2024, seen by the Suomi NPP satellite. Cities, roads and gas flares glow. Oceans and deserts stay dark.',
     mappingText:
       'A line sweeps across the map from west to east every eight seconds. Where it crosses bright city lights you hear plucked notes. Brighter places play louder and higher. Dark land and ocean are silent, so silence means no people.'
   },
@@ -16,35 +16,35 @@ export const TRACKS = [
     id: 'ocean',
     key: '2',
     title: 'Ocean currents',
-    svsId: 3912,
+    source: 'NASA GIBS, GHRSST MUR sea surface temperature, Aug–Oct 2024',
     video: 'media/ocean.mp4',
     poster: 'media/ocean.jpg',
     summary:
-      'Surface currents and sea temperature from the ECCO2 ocean model. Warm water flows away from the tropics, cold water swirls near the poles.',
+      'Daily sea surface temperature from satellites, autumn 2024. Warm tropical water, cold polar water, and the swirling edges between them.',
     mappingText:
-      'You hear a held chord. Warmer water on screen lifts the chord higher. Faster, swirling currents open the sound up and make it brighter, like water rushing past.'
+      'You hear a held chord. Warmer water on screen lifts the chord higher. When the pattern shifts quickly from day to day, the sound opens up and gets brighter.'
   },
   {
     id: 'lightning',
     key: '3',
-    title: 'Lightning from space',
-    svsId: 5011,
+    title: 'Active fires',
+    source: 'NASA GIBS, MODIS Terra thermal anomalies (fires), Aug–Oct 2024',
     video: 'media/lightning.mp4',
     poster: 'media/lightning.jpg',
     summary:
-      'Lightning flashes detected from the International Space Station, 2017 to 2023, shown as a moving ten-day window.',
+      'Fires detected each day by the MODIS instrument on NASA\'s Terra satellite, autumn 2024, shown over Earth at night.',
     mappingText:
-      'Each new flash is a drum hit. Flashes on the left of the map sound in your left ear, flashes on the right in your right ear. Storm seasons turn into fast, dense rhythms.'
+      'Each new fire is a drum hit. Fires on the left of the map sound in your left ear, fires on the right in your right ear. Fire seasons turn into fast, dense rhythms.'
   },
   {
     id: 'aerosols',
     key: '4',
     title: 'Dust, smoke and sea salt',
-    svsId: 5669,
+    source: 'NASA GIBS, MODIS aerosol optical depth, Aug–Oct 2024',
     video: 'media/aerosols.mp4',
     poster: 'media/aerosols.jpg',
     summary:
-      'A NASA GEOS model of particles in the air: desert dust, wildfire smoke, sea salt and sulfate pollution, carried by the wind.',
+      'Daily haze in the air measured by MODIS, autumn 2024: desert dust, wildfire smoke and pollution carried by the wind.',
     mappingText:
       'Each kind of particle has its own instrument. Dust is a low wooden mallet, smoke a soft reed, sea salt a bright chime, sulfate a quiet hiss. The more of the screen a particle covers, the louder its instrument.'
   }

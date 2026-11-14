@@ -18,7 +18,7 @@
     <div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
       <div class="gate-inner">
         <h1 id="gate-title" class="gate-title">Earth Information Jukebox</h1>
-        <p class="gate-line">Listen to a changing planet. Forty years of NASA measurements and satellite visualizations, turned into sound.</p>
+        <p class="gate-line">Start among the planets, fly down to Earth, and listen to forty years of NASA measurements turned into sound.</p>
         <p class="gate-note">Best with headphones. Everything works with a keyboard and a screen reader.</p>
         <div class="gate-actions">
           <button type="button" id="gate-go" class="primary big">Start listening</button>
@@ -31,7 +31,8 @@
       <p class="name">Earth Information Jukebox</p>
 
       <nav class="views" aria-label="Views">
-        <button type="button" class="view-tab" data-view="globe" aria-pressed="true">Globe <kbd>G</kbd></button>
+        <button type="button" class="view-tab" data-view="space" aria-pressed="true">Solar system <kbd>S</kbd></button>
+        <button type="button" class="view-tab" data-view="globe" aria-pressed="false">Earth <kbd>G</kbd></button>
         <button type="button" class="view-tab" data-view="lab" aria-pressed="false">Frame Lab <kbd>L</kbd></button>
       </nav>
 
@@ -47,8 +48,55 @@
     </header>
 
     <main id="main" tabindex="-1">
+      <!-- Solar system view -->
+      <section id="view-space" class="view" aria-labelledby="space-heading">
+        <div class="stage">
+          <div id="space-mount" class="globe-mount"></div>
+          <p id="space-status" class="stage-note" hidden></p>
+        </div>
+
+        <div class="panel">
+          <h2 id="space-heading" class="title">The solar system</h2>
+          <p class="lede">Eight planets on their real orbits, sped up so Earth circles the Sun in under a minute. Pick one to visit.</p>
+
+          <fieldset>
+            <legend>Planet</legend>
+            <div id="planet-list" class="planet-list"></div>
+          </fieldset>
+
+          <section id="planet-card" class="planet-card" aria-live="polite" hidden>
+            <h3 id="planet-name" class="sub"></h3>
+            <p id="planet-fact"></p>
+            <dl class="facts">
+              <div><dt>From the Sun</dt><dd id="pf-au"></dd></div>
+              <div><dt>One year</dt><dd id="pf-year"></dd></div>
+              <div><dt>One day</dt><dd id="pf-day"></dd></div>
+              <div><dt>Average temperature</dt><dd id="pf-temp"></dd></div>
+              <div><dt>Moons</dt><dd id="pf-moons"></dd></div>
+            </dl>
+          </section>
+
+          <div class="transport">
+            <button type="button" id="go-earth" class="primary">Fly down to Earth</button>
+            <button type="button" id="space-overview" class="secondary">See all planets</button>
+          </div>
+
+          <div class="transport">
+            <button type="button" id="chimes" class="secondary" aria-pressed="false">Orbit chimes</button>
+            <label class="inline-select">Speed
+              <select id="space-speed">
+                <option value="0.25">Slow</option>
+                <option value="1" selected>Normal</option>
+                <option value="4">Fast</option>
+              </select>
+            </label>
+          </div>
+          <p class="hint-small">Orbit chimes: each planet rings once per trip around the Sun. Mercury rings often and high, Neptune almost never, low.</p>
+        </div>
+      </section>
+
       <!-- Globe view -->
-      <section id="view-globe" class="view" aria-labelledby="globe-heading">
+      <section id="view-globe" class="view" aria-labelledby="globe-heading" hidden>
         <div class="stage">
           <div id="globe-mount" class="globe-mount" aria-hidden="true"></div>
           <p id="globe-status" class="stage-note" hidden></p>
@@ -148,8 +196,10 @@
       </section>
     </main>
 
+    <div id="fade" class="fade" aria-hidden="true"></div>
+
     <footer class="foot">
-      <p>Data and imagery: NASA Scientific Visualization Studio, NASA POWER, NASA GISS, NASA GIBS, NOAA GML. Built for NASA Space Apps 2026.</p>
+      <p>Data and imagery: NASA GIBS (MODIS, VIIRS, GHRSST, Blue Marble, Black Marble), NASA POWER, NASA GISS GISTEMP, NOAA GML CO₂. Planets drawn in code from NASA fact sheet values. Built for NASA Space Apps 2026.</p>
       <p id="credits"></p>
     </footer>
 
@@ -157,7 +207,7 @@
       <h2 id="help-title" class="sub">Keyboard</h2>
       <dl class="keys">
         <div><dt>Space</dt><dd>Play or pause</dd></div>
-        <div><dt>G / L</dt><dd>Globe or Frame Lab</dd></div>
+        <div><dt>S / G / L</dt><dd>Solar system, Earth, Frame Lab</dd></div>
         <div><dt>V</dt><dd>Voice guide on or off</dd></div>
         <div><dt>+ / −, M</dt><dd>Volume, mute</dd></div>
         <div><dt>/</dt><dd>Globe: jump to the place list</dd></div>
@@ -165,7 +215,7 @@
         <div><dt>C</dt><dd>Globe: compare two years</dd></div>
         <div><dt>1–4</dt><dd>Frame Lab: pick a visualization</dd></div>
         <div><dt>E, arrows</dt><dd>Frame Lab: explore by hand</dd></div>
-        <div><dt>Esc</dt><dd>Close this, skip the globe flight</dd></div>
+        <div><dt>Esc</dt><dd>Close this, skip a camera flight</dd></div>
       </dl>
       <form method="dialog"><button class="secondary">Close</button></form>
     </dialog>

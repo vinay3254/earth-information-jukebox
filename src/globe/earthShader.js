@@ -21,7 +21,7 @@ export function createEarthMaterial({ dayTexture, nightTexture, sunDirection }) 
 
     void main() {
       vUv = uv;
-      vNormal = normalize(normalMatrix * normal);
+      vNormal = normalize(mat3(modelMatrix) * normal); // world space, same as sunDirection
       vec4 worldPos = modelMatrix * vec4(position, 1.0);
       vWorldPosition = worldPos.xyz;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
@@ -72,6 +72,7 @@ export function createEarthMaterial({ dayTexture, nightTexture, sunDirection }) 
       vec3 finalColor = blended + vec3(specular) + sunsetGlow;
 
       gl_FragColor = vec4(finalColor, 1.0);
+      #include <colorspace_fragment>
     }
   `;
 

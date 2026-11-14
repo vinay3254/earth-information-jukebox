@@ -69,11 +69,11 @@ export function createLabView({ voice, getVolume }) {
 
   // ---------- live readout ----------
   const meters = [
-    ['brightness', 'Brightness', (f) => f.meanLuma],
-    ['motion', 'Motion', (f) => Math.min(1, (f.motion || 0) * 8)],
+    ['brightness', 'Brightness', (f) => Math.min(1, (f.meanLuma || 0) * 5)],
+    ['motion', 'Change since last frame', (f) => Math.min(1, (f.motion || 0) * 25)],
     ['warm', 'Warm colour', (f) => f.hue?.warm],
     ['cool', 'Cool colour', (f) => f.hue?.cool],
-    ['spots', 'New bright spots', (f) => Math.min(1, (f.hotspots?.length || 0) / 30)]
+    ['spots', 'New bright spots', (f) => Math.min(1, (f.hotspots?.length || 0) / 10)]
   ];
   const readout = $('#readout');
   const meterEls = meters.map(([id, label]) => {
@@ -117,7 +117,7 @@ export function createLabView({ voice, getVolume }) {
     $('#track-summary').textContent = t.summary;
     $('#track-mapping').textContent = t.mappingText;
     const src = $('#track-source');
-    src.replaceChildren('Source: ', el('a', { href: `https://svs.gsfc.nasa.gov/${t.svsId}/` }, [`NASA SVS ${t.svsId}`]));
+    src.replaceChildren('Source: ', el('a', { href: 'https://www.earthdata.nasa.gov/engage/open-data-services-software/earthdata-developer-portal/gibs-api' }, [t.source]));
     video.poster = t.poster;
     video.src = t.video;
     video.setAttribute('aria-label', `${t.title}. ${t.summary}`);

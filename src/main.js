@@ -4,6 +4,7 @@ import { $ } from './ui/dom.js';
 import { createVoiceGuide } from './ui/voice.js';
 import { createGlobeView } from './ui/globeView.js';
 import { createLabView } from './ui/labView.js';
+import { createSpaceView } from './ui/spaceView.js';
 
 const voice = createVoiceGuide();
 const volumeIn = $('#volume');
@@ -12,20 +13,24 @@ const getVolume = () => (muted ? 0 : Number(volumeIn.value) / 100);
 
 const globe = createGlobeView({ voice, getVolume });
 const lab = createLabView({ voice, getVolume });
-let view = 'globe';
+const space = createSpaceView({ voice, onEarth: () => showView('globe') });
+const VIEWS = { space, globe, lab };
+const SAY = { space: 'Solar system. Pick a planet.', globe: 'Earth. Pick a place.', lab: 'Frame Lab. Pick a visualization.' };
+let view = 'space';
 
 // ---------- views ----------
 function showView(name) {
   if (name === view) return;
-  (view === 'globe' ? globe : lab).stop();
+  VIEWS[view].stop();
   view = name;
-  $('#view-globe').hidden = name !== 'globe';
-  $('#view-lab').hidden = name !== 'lab';
+  for (const v of Object.keys(VIEWS)) $(`#view-${v}`).hidden = v !== name;
+  space.setRunning(name === 'space');
   for (const b of document.querySelectorAll('.view-tab')) {
     b.setAttribute('aria-pressed', String(b.dataset.view === name));
   }
   if (name === 'lab') lab.onShow();
-  voice.say(name === 'globe' ? 'Globe. Pick a place.' : 'Frame Lab. Pick a visualization.');
+  if (name === 'globe') globe.onShow();
+  voice.say(SAY[name]);
   $('#main').focus({ preventScroll: true });
 }
 for (const b of document.querySelectorAll('.view-tab')) {
@@ -48,6 +53,7 @@ function applyVolume() {
   const v = getVolume();
   globe.setVolume(v);
   lab.setVolume(v);
+  space.setVolume(v);
 }
 volumeIn.addEventListener('input', () => { muted = false; applyVolume(); });
 function nudgeVolume(d) {
@@ -73,7 +79,8 @@ async function enter(withVoice) {
   gate.classList.add('leaving');
   setTimeout(() => { gate.hidden = true; }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 900);
   $('#main').focus({ preventScroll: true });
-  voice.say('Earth Information Jukebox. Pick a place from the list, or press slash. Press question mark for keys.');
+  space.intro();
+  voice.say('Earth Information Jukebox. You are approaching the solar system. Pick a planet, or fly down to Earth. Press question mark for keys.');
 }
 $('#gate-go').addEventListener('click', () => enter(false));
 $('#gate-voice').addEventListener('click', () => enter(true));
@@ -91,17 +98,23 @@ addEventListener('keydown', (e) => {
   const k = e.key;
 
   if (k === '?') { help.showModal(); e.preventDefault(); return; }
+  if (k === 's' || k === 'S') { showView('space'); return; }
   if (k === 'g' || k === 'G') { showView('globe'); return; }
   if (k === 'l' || k === 'L') { showView('lab'); return; }
   if (k === 'v' || k === 'V') { voiceBtn.click(); return; }
   if (k === 'm' || k === 'M') { muted = !muted; applyVolume(); voice.say(muted ? 'Muted.' : 'Sound on.'); return; }
   if (k === '+' || k === '=') { nudgeVolume(10); return; }
   if (k === '-' || k === '_') { nudgeVolume(-10); return; }
-  if (k === 'Escape') { globe.skipIntro(); return; }
+  if (k === 'Escape') { VIEWS[view].skipIntro?.(); return; }
 
   if (k === ' ' && !e.target.closest('button, summary')) {
     e.preventDefault();
-    (view === 'globe' ? globe : lab).togglePlay();
+    VIEWS[view].togglePlay();
+    return;
+  }
+
+  if (view === 'space') {
+    if (k === '/') { e.preventDefault(); space.focusList(); }
     return;
   }
 
@@ -123,14 +136,6 @@ addEventListener('keydown', (e) => {
   if (moves[k] && !onRange && lab.moveCursor(...moves[k])) e.preventDefault();
 });
 
-// ---------- credits ----------
-fetch('media/credits.json')
-  .then((r) => (r.ok ? r.json() : []))
-  .then((list) => {
-    if (!Array.isArray(list) || !list.length) return;
-    $('#credits').textContent = 'Videos: ' + list.map((c) => `${c.title} (SVS ${c.svs_id})`).join(', ') + '.';
-  })
-  .catch(() => {});
-
+space.init();
 globe.init();
 lab.init();

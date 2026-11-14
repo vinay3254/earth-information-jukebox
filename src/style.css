@@ -312,6 +312,38 @@ select {
 .source { font-size: 0.85rem; color: var(--muted); }
 .source a { color: var(--ice); }
 
+/* Solar system */
+.space-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.space-label {
+  position: absolute; left: 0; top: 0;
+  pointer-events: auto;
+  min-height: 0; padding: 0.2rem 0.6rem;
+  font: 600 0.8rem/1.2 var(--body);
+  color: var(--cloud);
+  background: rgb(12 26 46 / 0.55);
+  border: 1px solid rgb(156 195 224 / 0.35);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.space-label.on { border-color: var(--amber); color: var(--amber); }
+.planet-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s2); }
+.planet-list .choice { padding: var(--s2); text-align: center; font-size: 0.9rem; }
+.planet-card { border-top: 1px solid var(--line); padding-top: var(--s4); }
+.planet-card p { margin: 0 0 var(--s3); }
+.facts { margin: 0; display: grid; gap: var(--s1); }
+.facts div { display: grid; grid-template-columns: 11rem 1fr; gap: var(--s3); }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.inline-select { display: flex; align-items: center; gap: var(--s2); color: var(--muted); }
+.hint-small { margin: calc(var(--s3) * -1) 0 0; font-size: 0.85rem; color: var(--muted); max-width: 46ch; }
+
+/* Full-screen fade used when diving into Earth */
+.fade {
+  position: fixed; inset: 0; z-index: 15; pointer-events: none;
+  background: #cfe6ff; opacity: 0; transition: opacity 0.6s ease;
+}
+.fade.on { opacity: 1; }
+
 /* Lab readout meters */
 .meters { margin: 0; display: grid; gap: var(--s2); }
 .meter { display: grid; grid-template-columns: 7.5rem 1fr 3.5rem; align-items: center; gap: var(--s3); font-size: 0.9rem; }
