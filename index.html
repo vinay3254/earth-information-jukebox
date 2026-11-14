@@ -43,7 +43,7 @@
           <input id="volume" type="range" min="0" max="100" value="80" aria-describedby="volume-hint" />
           <span id="volume-hint" class="sr">Plus and minus keys change volume. M mutes.</span>
         </label>
-        <button type="button" id="help-open" class="tool" aria-haspopup="dialog">Keys <kbd>?</kbd></button>
+        <button type="button" id="help-open" class="tool" aria-haspopup="dialog">Keys and sources <kbd>?</kbd></button>
       </div>
     </header>
 
@@ -199,12 +199,12 @@
     <div id="fade" class="fade" aria-hidden="true"></div>
 
     <footer class="foot">
-      <p>Data and imagery: NASA GIBS (MODIS, VIIRS, GHRSST, Blue Marble, Black Marble), NASA POWER, NASA GISS GISTEMP, NOAA GML CO₂. Planets drawn in code from NASA fact sheet values. Built for NASA Space Apps 2026.</p>
+      <p>Data: NASA GIBS, NASA POWER, NASA GISS, NOAA GML. Built for NASA Space Apps 2026</p>
       <p id="credits"></p>
     </footer>
 
     <dialog id="help" aria-labelledby="help-title">
-      <h2 id="help-title" class="sub">Keyboard</h2>
+      <h2 id="help-title" class="sub">Keys and sources</h2>
       <dl class="keys">
         <div><dt>Space</dt><dd>Play or pause</dd></div>
         <div><dt>S / G / L</dt><dd>Solar system, Earth, Frame Lab</dd></div>
@@ -217,6 +217,8 @@
         <div><dt>E, arrows</dt><dd>Frame Lab: explore by hand</dd></div>
         <div><dt>Esc</dt><dd>Close this, skip a camera flight</dd></div>
       </dl>
+      <h2 class="sub">Sources</h2>
+      <p class="sources">Satellite imagery and Earth textures: NASA GIBS (MODIS, VIIRS, GHRSST, Blue Marble, Black Marble). Place data: NASA POWER, NASA GISS GISTEMP v4, NOAA GML Mauna Loa CO₂. Planets are drawn in code from NASA Planetary Fact Sheet values.</p>
       <form method="dialog"><button class="secondary">Close</button></form>
     </dialog>
 

@@ -70,7 +70,7 @@ export function createLabView({ voice, getVolume }) {
   // ---------- live readout ----------
   const meters = [
     ['brightness', 'Brightness', (f) => Math.min(1, (f.meanLuma || 0) * 5)],
-    ['motion', 'Change since last frame', (f) => Math.min(1, (f.motion || 0) * 25)],
+    ['motion', 'Change', (f) => Math.min(1, (f.motion || 0) * 25)],
     ['warm', 'Warm colour', (f) => f.hue?.warm],
     ['cool', 'Cool colour', (f) => f.hue?.cool],
     ['spots', 'New bright spots', (f) => Math.min(1, (f.hotspots?.length || 0) / 10)]

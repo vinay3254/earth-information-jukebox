@@ -293,11 +293,11 @@ export function createSolarSystem(container, { onSelect = () => {}, onChime = ()
       b.mesh.getWorldPosition(proj);
       proj.y += b.radius * 1.35;
       proj.project(camera);
-      const visible = proj.z < 1 && Math.abs(proj.x) < 1.1 && Math.abs(proj.y) < 1.1;
+      // The followed planet is named in the panel, so its label would only crowd the view.
+      const visible = b !== follow && proj.z < 1 && Math.abs(proj.x) < 1.1 && Math.abs(proj.y) < 1.1;
       b.label.style.display = visible ? '' : 'none';
       if (visible) b.label.style.transform = `translate(${((proj.x + 1) / 2) * w}px, ${((1 - proj.y) / 2) * h}px) translate(-50%, -100%)`;
     }
-    glow.material.opacity = 0.75 + Math.sin(time * 0.7) * 0.08;
     renderer.render(scene, camera);
   }
   frame();

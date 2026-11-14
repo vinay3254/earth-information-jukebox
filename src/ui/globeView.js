@@ -135,7 +135,7 @@ export function createGlobeView({ voice, getVolume }) {
     const synth = state.synth;
     const voices = synth?.voices || [];
     if (!voices.length) {
-      voiceList.replaceChildren(el('li', { class: 'voice' }, ['Sound engine is loading.']));
+      voiceList.replaceChildren(el('li', { class: 'voice' }, ['Sound engine is loading']));
       return;
     }
     voiceList.replaceChildren(
@@ -166,7 +166,7 @@ export function createGlobeView({ voice, getVolume }) {
     if (y?.imagery) {
       plateImg.src = y.imagery;
       plateImg.alt = `Satellite photo of ${state.region.name}, ${state.year}, from NASA MODIS.`;
-      plateCap.textContent = `${state.region.name}, ${state.year}. NASA MODIS true color.`;
+      plateCap.textContent = `${state.region.name}, ${state.year}, NASA MODIS true color`;
       plate.hidden = false;
     } else {
       plate.hidden = true;

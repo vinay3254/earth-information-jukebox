@@ -25,7 +25,7 @@ export const VARIABLES = [
   },
   {
     name: 'precipMm',
-    label: 'Precipitation',
+    label: 'Rain',
     unit: 'mm',
     role: 'plucked pentatonic note density',
     min: 0,
@@ -34,7 +34,7 @@ export const VARIABLES = [
   },
   {
     name: 'solar',
-    label: 'Solar Irradiance',
+    label: 'Sunlight',
     unit: 'kWh/m²/day',
     role: 'shimmer/high pad brightness',
     min: 1.5, // Greenland polar lows
@@ -42,7 +42,7 @@ export const VARIABLES = [
   },
   {
     name: 'windMs',
-    label: 'Wind Speed',
+    label: 'Wind speed',
     unit: 'm/s',
     role: 'filtered noise colour',
     min: 0.5, // Calm inland regions
@@ -50,7 +50,7 @@ export const VARIABLES = [
   },
   {
     name: 'humidity',
-    label: 'Relative Humidity',
+    label: 'Humidity',
     unit: '%',
     role: 'reverb wet',
     min: 10, // Arid Sahel dry season
@@ -58,7 +58,7 @@ export const VARIABLES = [
   },
   {
     name: 'co2ppm',
-    label: 'Atmospheric CO₂',
+    label: 'Carbon dioxide',
     unit: 'ppm',
     role: 'pad detune tension (0 → +35 cents)',
     min: 335, // 1981 historical baseline (~340 ppm)
@@ -66,7 +66,7 @@ export const VARIABLES = [
   },
   {
     name: 'globalAnomalyC',
-    label: 'Global Temp Anomaly',
+    label: 'Global warming',
     unit: '°C',
     role: 'slow sub drone pitch drift',
     min: -0.2, // Early 1980s baseline

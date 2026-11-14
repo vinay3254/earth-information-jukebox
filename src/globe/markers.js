@@ -65,15 +65,11 @@ function drawLabelCanvas(ctx, text, isHighlighted) {
   if (isHighlighted) {
     ctx.fillStyle = 'rgba(15, 30, 51, 0.92)';
     ctx.strokeStyle = '#f2b544'; // sodium amber accent
-    ctx.lineWidth = 4;
-    ctx.shadowColor = 'rgba(242, 181, 68, 0.5)';
-    ctx.shadowBlur = 16;
+    ctx.lineWidth = 3;
   } else {
     ctx.fillStyle = 'rgba(15, 30, 51, 0.78)';
     ctx.strokeStyle = 'rgba(148, 163, 184, 0.5)';
     ctx.lineWidth = 2;
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-    ctx.shadowBlur = 8;
   }
 
   ctx.fill();
@@ -228,10 +224,9 @@ export class MarkerManager {
 
       // 2. Pulse ring expansion and fade
       const isHigh = m.id === this.highlightedId;
-      const speed = isHigh ? 3.0 : 1.8;
-      const cycle = ((time * speed + m.pulsePhase) % 1); // 0 to 1
-      const ringScale = 1.0 + cycle * (isHigh ? 1.2 : 0.8);
-      const ringOpacity = (1.0 - cycle) * (isHigh ? 0.7 : 0.4) * alpha;
+      // Static ring: nothing here is live, so it does not pulse.
+      const ringScale = isHigh ? 1.0 : 0.8;
+      const ringOpacity = (isHigh ? 0.55 : 0.25) * alpha;
 
       m.ringMesh.scale.set(ringScale, ringScale, 1.0);
       m.ringMat.opacity = ringOpacity;
