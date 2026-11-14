@@ -376,6 +376,34 @@ body.pointing { cursor: pointer; }
 .audio-controls[data-status="blocked"] .audio-status,
 .audio-controls[data-status="unavailable"] .audio-status { color: var(--accent-warm); }
 
+/* Live ISS Mode: sits directly under the audio bar, same visual language. */
+.iss-live {
+  position: fixed;
+  top: calc(var(--pad) + 100px);
+  right: var(--pad);
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  height: 34px;
+  max-width: calc(100vw - var(--pad) * 2);
+  border: 1px solid var(--line-soft);
+  color: var(--ink-soft);
+}
+.iss-live[inert] { visibility: hidden; }
+.iss-toggle { min-height: 32px; }
+.iss-readout {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ink-dim);
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+}
+.iss-live[data-live] .iss-readout { color: var(--accent); }
+
 /* ------------------------------------------------------------------ explore panel */
 
 .panel {
@@ -1721,6 +1749,15 @@ body.destination-open .hint {
     grid-template-columns: auto auto minmax(44px, 1fr);
   }
   .audio-status { grid-column: 1 / -1; font-size: 11.5px; line-height: 1.35; }
+  .iss-live {
+    top: auto;
+    bottom: calc(var(--pad) + var(--safe-b, 0px) + 120px);
+    left: var(--pad);
+    right: var(--pad);
+    height: 44px;
+  }
+  .iss-live .iss-toggle { width: auto; flex: none; min-height: 42px; font-size: 12px; }
+  .iss-readout { flex: 1; min-width: 0; }
   .audio-volume { width: 100%; flex: none; }
   .audio-button { width: 100%; font-size: 12px; min-width: 44px; }
   body:has(.panel[data-sheet="full"]) #readout { visibility: hidden; }
@@ -2357,3 +2394,316 @@ body.high-contrast .mast-lab-btn:hover {
   outline-offset: 4px;
 }
 
+
+/* ------------------------------------------------------------------ cardless side panel
+   Visual only: the side panel keeps every control and behaviour, but drops
+   its card treatment (dark box, row backgrounds, frames, blur) so the text
+   floats over the scene. A soft text shadow keeps it legible over bright
+   imagery. */
+.panel::before,
+.panel[data-view="signals"]::before { background: none; }
+.panel,
+.panel .search,
+.panel .region-row,
+.panel .signal-row,
+.panel .group-head { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85), 0 0 14px rgba(0, 0, 0, 0.55); }
+
+.panel .search,
+.panel .search:focus-within {
+  background: transparent;
+  backdrop-filter: none;
+  border-color: transparent;
+  border-bottom-color: var(--line-soft);
+}
+.panel .search:focus-within { border-bottom-color: var(--line); }
+
+.panel .group-head { background: none; border-left-color: transparent; }
+
+.panel .region-row {
+  background: transparent;
+  border-left-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+.panel .region-row:hover,
+.panel .region-row:focus-visible,
+.panel .region-row.focused,
+.panel .region-row.active {
+  background: transparent;
+  box-shadow: none;
+  border-left-color: var(--accent);
+}
+
+.panel .signal-row:hover,
+.panel .signal-row:focus-visible { background: transparent; }
+
+@media (max-width: 820px), (max-width: 1024px) and (max-height: 560px) {
+  .panel { background: none; }
+  .panel .panel-inner,
+  .panel[data-sheet="half"] .panel-inner,
+  .panel[data-sheet="full"] .panel-inner {
+    background: none;
+    backdrop-filter: none;
+    border-color: transparent;
+  }
+  .panel .panel-peek {
+    background: none;
+    border-color: transparent;
+    border-top-color: var(--line-soft);
+  }
+}
+.panel .place-guidance,
+.panel .signal-explanation {
+  background: none;
+  border-left-color: transparent;
+  box-shadow: none;
+}
+
+/* ------------------------------------------------------------------ jukebox
+   A single frosted-glass pill: transport on the left, a "now playing"
+   capsule with the place's satellite plate as artwork and a thin year
+   progress line, and icon actions on the right. It drives existing controls. */
+.jukebox {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--pad) + 54px);
+  transform: translateX(-50%);
+  z-index: 12;
+  width: min(680px, calc(100vw - var(--pad) * 2));
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-family: var(--font);
+}
+.jukebox[hidden] { display: none; }
+
+.jb-transport,
+.jb-actions { display: flex; align-items: center; gap: 2px; flex: none; }
+
+.jb-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.92);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.12s ease;
+}
+.jb-icon svg { width: 22px; height: 22px; fill: currentColor; }
+.jb-icon:hover { background: rgba(255, 255, 255, 0.1); }
+.jb-icon:active { transform: scale(0.92); }
+.jb-icon:focus-visible,
+.jb-progress:focus-visible,
+.jb-volume:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.jb-play svg { width: 24px; height: 24px; }
+.jb-glyph-pause,
+.jukebox[data-playing] .jb-glyph-play { display: none; }
+.jukebox[data-playing] .jb-glyph-pause { display: block; }
+
+.jb-small { width: 36px; height: 36px; color: rgba(255, 255, 255, 0.8); }
+.jb-small svg { width: 19px; height: 19px; }
+.jb-speed { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; font-family: var(--font); }
+#jb-auto[aria-pressed="true"] { color: var(--accent); background: rgba(56, 189, 248, 0.14); }
+.jb-glyph-muted,
+.jukebox[data-muted] .jb-glyph-vol { display: none; }
+.jukebox[data-muted] .jb-glyph-muted { display: block; }
+
+/* Now-playing capsule */
+.jb-now {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px 0 4px;
+  border-radius: 12px;
+  background: rgba(8, 12, 22, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+.jb-art {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: radial-gradient(circle at 35% 30%, var(--accent), #0b2236 70%);
+  background-size: cover;
+  background-position: center;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+.jb-art-label { font-size: 15px; font-weight: 600; color: rgba(255, 255, 255, 0.9); }
+.jb-art[data-has-art] .jb-art-label { display: none; }
+
+.jb-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; line-height: 1.2; }
+.jb-title,
+.jb-sub { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jb-title { font-size: 13px; font-weight: 600; color: #fff; }
+.jb-sub { font-size: 11.5px; color: rgba(255, 255, 255, 0.6); }
+#jb-year-now { color: var(--accent); font-variant-numeric: tabular-nums; font-weight: 600; }
+
+.jb-meter { flex: none; width: 44px; height: 20px; opacity: 0.9; }
+
+/* Thin progress line along the capsule's bottom edge; the whole strip is the
+   year slider. */
+.jb-progress {
+  -webkit-appearance: none;
+  appearance: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 10px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  --fill: 0%;
+}
+.jb-progress::-webkit-slider-runnable-track {
+  height: 3px;
+  margin-top: 7px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.85) var(--fill), rgba(255, 255, 255, 0.12) var(--fill));
+}
+.jb-progress::-moz-range-track { height: 3px; background: rgba(255, 255, 255, 0.12); }
+.jb-progress::-moz-range-progress { height: 3px; background: rgba(255, 255, 255, 0.85); }
+.jb-progress::-webkit-slider-thumb { -webkit-appearance: none; width: 0; height: 3px; border: 0; }
+.jb-progress::-moz-range-thumb { width: 0; height: 3px; border: 0; background: transparent; }
+.jb-progress:hover::-webkit-slider-thumb { width: 10px; height: 10px; margin-top: -3.5px; border-radius: 50%; background: #fff; }
+
+/* Volume: icon, with a slim slider that opens on hover or focus */
+.jb-vol { display: flex; align-items: center; }
+.jb-volume {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 0;
+  height: 20px;
+  margin: 0;
+  opacity: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: width 0.25s ease, opacity 0.2s ease, margin 0.25s ease;
+  --fill: 100%;
+}
+.jb-vol:hover .jb-volume,
+.jb-vol:focus-within .jb-volume { width: 72px; opacity: 1; margin-right: 6px; }
+.jb-volume::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #fff var(--fill), rgba(255, 255, 255, 0.18) var(--fill));
+}
+.jb-volume::-moz-range-track { height: 3px; background: rgba(255, 255, 255, 0.18); }
+.jb-volume::-moz-range-progress { height: 3px; background: #fff; }
+.jb-volume::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; margin-top: -3.5px; border-radius: 50%; background: #fff; border: 0; }
+.jb-volume::-moz-range-thumb { width: 10px; height: 10px; border-radius: 50%; background: #fff; border: 0; }
+
+@media (max-width: 820px), (max-width: 1024px) and (max-height: 560px) {
+  .jukebox {
+    bottom: calc(var(--peek-h, 56px) + var(--safe-b, 0px) + 10px);
+    gap: 6px;
+    padding: 0 8px 0 10px;
+  }
+  .jb-icon { width: 34px; height: 34px; }
+  .jb-meter,
+  #jb-speed { display: none; }
+  body.destination-open .iss-live { bottom: calc(var(--peek-h, 56px) + var(--safe-b, 0px) + 90px); }
+}
+
+/* Destination view stays clean: the side panel's text is hidden while a
+   place is open (visual only; the jukebox covers play, year and volume). */
+body.destination-open .panel,
+body.destination-open .panel * {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+/* The destination hint points at the hidden layer list and sat on the pill. */
+body.destination-open .hint { display: none; }
+
+/* ------------------------------------------------------------------ clean dashboard
+   Visual only. Fewer words, fewer boxes: each place row shows its name and
+   country, category heads are plain labels, and the HUD controls lose their
+   frames. All controls, search, keyboard navigation and selection behave as
+   before. */
+
+/* Place list */
+.panel .place-guidance,
+.panel .panel-foot,
+.panel .region-badge,
+.panel .region-coord-line,
+.panel .region-dot,
+.panel .region-meta,
+.panel .region-chevron { display: none; }
+
+.panel .region-row {
+  padding: 9px 12px;
+  margin-bottom: 2px;
+  transform: none;
+}
+.panel .region-row:hover,
+.panel .region-row:focus-visible { transform: none; }
+.panel .region-row-main { gap: 2px; }
+.panel .region-name {
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: var(--ink);
+}
+.panel .region-row:not(.active):not(:hover) .region-name { color: var(--ink-soft); }
+.panel .region-sub-line { font-size: 11.5px; }
+.panel .region-country-tag { font-weight: 400; letter-spacing: 0.02em; color: var(--ink-dim); }
+
+.panel .group-head {
+  margin-top: 18px;
+  padding: 6px 12px;
+  border: 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--ink-dim);
+}
+.panel .group-head:hover { color: var(--ink-soft); }
+.panel .group-count {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--ink-dim);
+}
+
+/* Top-right HUD: no frames or dividers */
+#readout,
+.audio-controls,
+.iss-live { border-color: transparent; background: transparent; }
+.audio-status,
+.audio-button,
+.audio-volume { border-right-color: transparent; }
+
+/* Masthead buttons: quiet outlines */
+.mast-tour-btn,
+.mast-lab-btn {
+  background: transparent;
+  border-color: var(--line-soft);
+}
+.mast-tour-btn:hover,
+.mast-lab-btn:hover { border-color: var(--line); background: rgba(56, 189, 248, 0.08); }
+
+/* The list scrollbar drew a long accent line over the scene; scrolling by
+   wheel, touch and keyboard still works. */
+.panel #place-scroll { scrollbar-width: none; }
+.panel #place-scroll::-webkit-scrollbar { width: 0; height: 0; }

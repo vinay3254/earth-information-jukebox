@@ -237,7 +237,8 @@ export class SignalAudio {
 
     // Dedicated bus for spatial environmental ambient recordings
     const envBus = ctx.createGain();
-    envBus.gain.value = 0.85;
+    // Recordings sit under the data layers so the sonification stays audible.
+    envBus.gain.value = 0.45;
     envBus.connect(master);
     envBus.connect(reverbSend);
     this.envBus = envBus;
@@ -525,6 +526,26 @@ export class SignalAudio {
     return true;
   }
 
+  // Each value is scaled mostly against this place's own 1985-2026 span and
+  // partly against the global range. With global ranges alone, places outside
+  // them (Everest at -15 C against a 10-40 C range) were pinned to 0 and the
+  // layer never moved; local spans make every place's change audible.
+  regionSpan(region, key) {
+    if (!this.spanCache) this.spanCache = new WeakMap();
+    let spans = this.spanCache.get(region);
+    if (!spans) {
+      spans = {};
+      this.spanCache.set(region, spans);
+    }
+    if (!(key in spans)) {
+      const values = Object.values(region.years || {})
+        .map((row) => Number(row?.[key]))
+        .filter((value) => Number.isFinite(value));
+      spans[key] = values.length ? [Math.min(...values), Math.max(...values)] : null;
+    }
+    return spans[key];
+  }
+
   readValues() {
     const norms = {};
     for (const signal of SIGNALS) {
@@ -534,7 +555,14 @@ export class SignalAudio {
       }
       const row = this.region.years[this.year];
       const value = row ? row[signal.key] : null;
-      norms[signal.key] = normalise(value, AUDIO_RANGES[signal.key] || signal.range);
+      const global = normalise(value, AUDIO_RANGES[signal.key] || signal.range);
+      if (global === null) {
+        norms[signal.key] = null;
+        continue;
+      }
+      const span = this.regionSpan(this.region, signal.key);
+      const local = span && span[1] - span[0] > 1e-9 ? clamp01((Number(value) - span[0]) / (span[1] - span[0])) : 0.5;
+      norms[signal.key] = clamp01(local * 0.7 + global * 0.3);
     }
     this.norms = norms;
   }
@@ -548,27 +576,28 @@ export class SignalAudio {
     // Temperature: Gentle celestial sine melody, octave glide
     const temp = on('temperature') ? n.temperature : null;
     this.lead.frequency.setTargetAtTime(164.81 * Math.pow(3, temp === null ? 0 : temp), now, glide);
-    this.leadGain.gain.setTargetAtTime(temp === null ? 0 : 0.038, now, glide);
+    this.leadGain.gain.setTargetAtTime(temp === null ? 0 : 0.075, now, glide);
 
     // Vegetation: Silk ambient harmonic pad brightness
     const veg = on('vegetation') ? n.vegetation : null;
     this.padFilter.frequency.setTargetAtTime(280 + (veg === null ? 0 : veg) * 650, now, glide);
-    this.padGain.gain.setTargetAtTime(veg === null ? 0 : 0.035 + veg * 0.045, now, glide);
+    this.padGain.gain.setTargetAtTime(veg === null ? 0 : 0.3 + veg * 0.45, now, glide);
 
     // Groundwater: Sub-bass body
     const ground = on('groundwater') ? n.groundwater : null;
-    this.sub.frequency.setTargetAtTime(45 + (ground === null ? 0 : ground) * 35, now, glide);
-    this.subGain.gain.setTargetAtTime(ground === null ? 0 : 0.02 + ground * 0.045, now, glide);
+    // 55-110 Hz: low enough to feel like groundwater, high enough for laptop speakers.
+    this.sub.frequency.setTargetAtTime(55 + (ground === null ? 0 : ground) * 55, now, glide);
+    this.subGain.gain.setTargetAtTime(ground === null ? 0 : 0.05 + ground * 0.09, now, glide);
 
     // Sea level: Ocean wave wash
     const sea = on('seaLevel') ? n.seaLevel : null;
     this.seaFilter.frequency.setTargetAtTime(240 + (sea === null ? 0 : sea) * 450, now, glide);
-    this.seaGain.gain.setTargetAtTime(sea === null ? 0 : 0.008 + sea * 0.035, now, glide);
+    this.seaGain.gain.setTargetAtTime(sea === null ? 0 : 0.03 + sea * 0.08, now, glide);
 
     // Air quality: Wind breath
     const air = on('air') ? n.air : null;
     this.airFilter.frequency.setTargetAtTime(900 + (air === null ? 0 : air) * 600, now, glide);
-    this.airGain.gain.setTargetAtTime(air === null ? 0 : 0.004 + air * 0.025, now, glide);
+    this.airGain.gain.setTargetAtTime(air === null ? 0 : 0.014 + air * 0.05, now, glide);
 
     // Canopy: Reverb depth
     const canopy = on('canopy') ? n.canopy : null;
@@ -580,9 +609,12 @@ export class SignalAudio {
     for (const voice of this.padVoices) voice.detune.setTargetAtTime(cents, now, 0.5);
     this.lead.detune.setTargetAtTime(cents, now, 0.5);
 
-    this.rates.rain = on('rain') ? 0.3 + n.rain * 4.5 : 0;
-    this.rates.lights = on('lights') ? 1.2 + n.lights * 5 : 0;
-    this.rates.disasters = on('disasters') ? 0.05 + n.disasters * 0.85 : 0;
+    // Events per second, kept sparse so they read as texture rather than a
+    // beat: rain up to ~2 drops/s, lights up to ~1 chime/s, disasters one
+    // swell every ~5-50 s.
+    this.rates.rain = on('rain') ? 0.15 + n.rain * 1.8 : 0;
+    this.rates.lights = on('lights') ? 0.12 + n.lights * 0.85 : 0;
+    this.rates.disasters = on('disasters') ? 0.02 + n.disasters * 0.18 : 0;
 
     this.rainBus.gain.setTargetAtTime(on('rain') ? 0.55 : 0, now, 0.2);
     this.lightsBus.gain.setTargetAtTime(on('lights') ? 0.45 : 0, now, 0.2);
@@ -686,7 +718,8 @@ export class SignalAudio {
       let guard = 0;
       while (this.nextLights < now + 0.12 && guard < 8) {
         this.spawnArp(this.nextLights);
-        this.nextLights += 1 / this.rates.lights;
+        // Irregular spacing: a fixed 1/rate interval sounded like a metronome.
+        this.nextLights += (0.55 + Math.random() * 0.9) / this.rates.lights;
         guard += 1;
       }
     } else {
@@ -725,14 +758,14 @@ export class SignalAudio {
     filter.frequency.setValueAtTime(520, time);
 
     gain.gain.setValueAtTime(0.0001, time);
-    gain.gain.linearRampToValueAtTime(0.04, time + 0.008);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.22);
+    gain.gain.linearRampToValueAtTime(0.028, time + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.32);
 
     osc.connect(filter);
     filter.connect(gain);
     gain.connect(this.rainBus);
     osc.start(time);
-    osc.stop(time + 0.25);
+    osc.stop(time + 0.35);
   }
 
   // Crystalline glass celesta bell chime in middle octave (pure musical tone)
@@ -741,25 +774,25 @@ export class SignalAudio {
     const osc = ctx.createOscillator();
     const filter = ctx.createBiquadFilter();
     const gain = ctx.createGain();
-    const degree = PENTATONIC[this.lightsStep % PENTATONIC.length];
-    this.lightsStep += 1;
+    // A random note rather than stepping up the scale, so it never ticks.
+    const degree = PENTATONIC[Math.floor(Math.random() * PENTATONIC.length)];
 
-    // Warm middle octave (261 Hz C4 to 523 Hz C5)
+    // Warm A-minor pentatonic around A3-A4, rung like a soft glass bell.
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(261.63 * Math.pow(2, degree / 12), time);
+    osc.frequency.setValueAtTime(220 * Math.pow(2, degree / 12), time);
 
     filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(780, time);
+    filter.frequency.setValueAtTime(1400, time);
 
     gain.gain.setValueAtTime(0.0001, time);
-    gain.gain.linearRampToValueAtTime(0.024, time + 0.012);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.38);
+    gain.gain.linearRampToValueAtTime(0.03, time + 0.04);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + 1.6);
 
     osc.connect(filter);
     filter.connect(gain);
     gain.connect(this.lightsBus);
     osc.start(time);
-    osc.stop(time + 0.4);
+    osc.stop(time + 1.65);
   }
 
   // Soft cinematic sub-thump and wind sweep
@@ -769,30 +802,32 @@ export class SignalAudio {
     noise.buffer = this.noiseBuffer;
     noise.loop = true;
     const filter = ctx.createBiquadFilter();
+    // A slow rumble that swells in and dies away; the earlier 8 ms attack
+    // read as a click on a beat.
     filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(450 + Math.random() * 400, time);
+    filter.frequency.setValueAtTime(220 + Math.random() * 160, time);
     const gain = ctx.createGain();
     gain.gain.setValueAtTime(0.0001, time);
-    gain.gain.linearRampToValueAtTime(0.045, time + 0.008);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.4);
+    gain.gain.linearRampToValueAtTime(0.06, time + 0.5);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + 3.2);
     noise.connect(filter);
     filter.connect(gain);
     gain.connect(this.hitBus);
     noise.start(time);
-    noise.stop(time + 0.45);
+    noise.stop(time + 3.3);
 
     const thump = ctx.createOscillator();
     const thumpGain = ctx.createGain();
     thump.type = 'sine';
-    thump.frequency.setValueAtTime(65, time);
-    thump.frequency.exponentialRampToValueAtTime(38, time + 0.35);
+    thump.frequency.setValueAtTime(70, time);
+    thump.frequency.exponentialRampToValueAtTime(42, time + 2.2);
     thumpGain.gain.setValueAtTime(0.0001, time);
-    thumpGain.gain.linearRampToValueAtTime(0.04, time + 0.01);
-    thumpGain.gain.exponentialRampToValueAtTime(0.0001, time + 0.38);
+    thumpGain.gain.linearRampToValueAtTime(0.05, time + 0.35);
+    thumpGain.gain.exponentialRampToValueAtTime(0.0001, time + 2.6);
     thump.connect(thumpGain);
     thumpGain.connect(this.hitBus);
     thump.start(time);
-    thump.stop(time + 0.42);
+    thump.stop(time + 2.7);
   }
 
   async close() {

@@ -70,6 +70,55 @@
   <button id="a11y-toggle-btn" class="audio-button a11y-trigger" type="button" aria-expanded="false" aria-controls="a11y-panel" aria-label="Accessibility &amp; Shortcuts Menu (?)">A11y &#9881;</button>
 </section>
 
+<!-- Jukebox: horizontal transport for the open destination (src/jukebox.js). It only drives existing controls. -->
+<section id="jukebox" class="jukebox" aria-label="Jukebox" hidden>
+  <div class="jb-transport">
+    <button id="jb-prev" class="jb-icon" type="button" aria-label="Previous year" title="Previous year">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6.5v11L3.5 12 11 6.5Zm9 0v11L12.5 12 20 6.5Z"/></svg>
+    </button>
+    <button id="jb-play" class="jb-icon jb-play" type="button" aria-label="Play" aria-pressed="false" title="Play / pause (P)">
+      <svg class="jb-glyph-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5.5v13l11-6.5-11-6.5Z"/></svg>
+      <svg class="jb-glyph-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5.5" width="3.6" height="13" rx="1"/><rect x="13.9" y="5.5" width="3.6" height="13" rx="1"/></svg>
+    </button>
+    <button id="jb-next" class="jb-icon" type="button" aria-label="Next year" title="Next year">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 6.5v11l7.5-5.5L13 6.5Zm-9 0v11l7.5-5.5L4 6.5Z"/></svg>
+    </button>
+  </div>
+
+  <div class="jb-now">
+    <div class="jb-art" id="jb-disc" aria-hidden="true"><span class="jb-art-label" id="jb-disc-label"></span></div>
+    <div class="jb-text">
+      <span class="jb-title" id="jb-title">Choose a place</span>
+      <span class="jb-sub"><span id="jb-year-now">1985</span> &middot; <span id="jb-sub"></span></span>
+    </div>
+    <canvas id="jb-meter" class="jb-meter" width="44" height="20" aria-hidden="true"></canvas>
+    <span class="sr-only" id="jb-status" role="status">Ready</span>
+    <span class="sr-only" id="jb-first">1985</span><span class="sr-only" id="jb-last">2026</span>
+    <input id="jb-year" class="jb-progress" type="range" min="1985" max="2026" step="1" value="1985" aria-label="Year" />
+  </div>
+
+  <div class="jb-actions">
+    <button id="jb-auto" class="jb-icon jb-small" type="button" aria-pressed="false" aria-label="Play through the years" title="Play through the years">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3.5 20.5 7 17 10.5V8H7.5A2.5 2.5 0 0 0 5 10.5V12H3v-1.5A4.5 4.5 0 0 1 7.5 6H17V3.5ZM7 20.5 3.5 17 7 13.5V16h9.5a2.5 2.5 0 0 0 2.5-2.5V12h2v1.5a4.5 4.5 0 0 1-4.5 4.5H7v2.5Z"/></svg>
+    </button>
+    <button id="jb-speed" class="jb-icon jb-small jb-speed" type="button" aria-label="Year speed: normal" title="Year speed">1&times;</button>
+    <div class="jb-vol">
+      <button id="jb-mute" class="jb-icon jb-small" type="button" aria-label="Mute" aria-pressed="false" title="Mute (M)">
+        <svg class="jb-glyph-vol" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4v-5Zm11.2-1.8a6 6 0 0 1 0 8.6l-1.4-1.4a4 4 0 0 0 0-5.8l1.4-1.4Zm2.8-2.8a10 10 0 0 1 0 14.2l-1.4-1.4a8 8 0 0 0 0-11.4L18 4.9Z"/></svg>
+        <svg class="jb-glyph-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4v-5Zm11.3.3 1.4-1.4 2.3 2.2 2.2-2.2 1.4 1.4-2.2 2.2 2.2 2.3-1.4 1.4-2.2-2.2-2.3 2.2-1.4-1.4 2.2-2.3-2.2-2.2Z"/></svg>
+      </button>
+      <input id="jb-volume" class="jb-volume" type="range" min="0" max="1" step="0.01" value="1" aria-label="Volume" />
+    </div>
+  </div>
+</section>
+
+<!-- Live ISS Mode: real-time layer, independent of the historical sonification (src/live-iss.js). -->
+<section id="iss-live" class="iss-live" aria-label="Live ISS mode" data-loader-inert inert>
+  <button id="iss-toggle" class="audio-button iss-toggle" type="button" aria-pressed="false" title="Play a tone that follows the International Space Station live: latitude sets pitch, longitude sets stereo position">Live ISS Mode</button>
+  <span id="iss-readout" class="iss-readout" aria-live="off">LAT &mdash; &middot; LON &mdash;</span>
+  <span id="iss-status" class="sr-only" role="status" aria-live="polite"></span>
+</section>
+
 <div id="a11y-panel" class="a11y-panel" role="region" aria-label="Accessibility and Screen Reader Controls" hidden>
   <div class="a11y-head">
     <strong>Multi-Sensory Superpowers</strong>
@@ -279,5 +328,8 @@
 <div id="sr-announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <script type="module" src="./src/main.js"></script>
+<script type="module" src="./src/live-iss.js"></script>
+<script type="module" src="./src/jukebox.js"></script>
+<script type="module" src="./src/ambient-music.js"></script>
 </body>
 </html>
