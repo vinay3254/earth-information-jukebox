@@ -1,4 +1,5 @@
 import './style.css';
+import * as Tone from 'tone';
 import { $ } from './ui/dom.js';
 import { createVoiceGuide } from './ui/voice.js';
 import { createGlobeView } from './ui/globeView.js';
@@ -60,12 +61,31 @@ function nudgeVolume(d) {
 const help = $('#help');
 $('#help-open').addEventListener('click', () => help.showModal());
 
+// ---------- entry gate ----------
+// The click also unlocks browser audio, which needs a user gesture.
+const gate = $('#gate');
+let gateOpen = true;
+async function enter(withVoice) {
+  if (!gateOpen) return;
+  gateOpen = false;
+  try { await Tone.start(); } catch { /* audio unlock retried on first play */ }
+  if (withVoice) { voice.set(true); syncVoiceBtn(); }
+  gate.classList.add('leaving');
+  setTimeout(() => { gate.hidden = true; }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 900);
+  $('#main').focus({ preventScroll: true });
+  voice.say('Earth Information Jukebox. Pick a place from the list, or press slash. Press question mark for keys.');
+}
+$('#gate-go').addEventListener('click', () => enter(false));
+$('#gate-voice').addEventListener('click', () => enter(true));
+$('#gate-go').focus();
+
 // ---------- keyboard ----------
 const typing = (t) => t.closest('input:not([type=range]):not([type=checkbox]), select, textarea, [contenteditable]');
 
 addEventListener('keydown', (e) => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   if (help.open) return;
+  if (gateOpen) { if (e.key === 'Escape') enter(false); return; }
   if (typing(e.target)) return;
   const onRange = e.target.matches?.('input[type=range]');
   const k = e.key;

@@ -67,6 +67,33 @@ export function createLabView({ voice, getVolume }) {
     }
   }
 
+  // ---------- live readout ----------
+  const meters = [
+    ['brightness', 'Brightness', (f) => f.meanLuma],
+    ['motion', 'Motion', (f) => Math.min(1, (f.motion || 0) * 8)],
+    ['warm', 'Warm colour', (f) => f.hue?.warm],
+    ['cool', 'Cool colour', (f) => f.hue?.cool],
+    ['spots', 'New bright spots', (f) => Math.min(1, (f.hotspots?.length || 0) / 30)]
+  ];
+  const readout = $('#readout');
+  const meterEls = meters.map(([id, label]) => {
+    const fill = el('span', { class: 'fill' });
+    const num = el('span', { class: 'num' }, ['–']);
+    readout.append(el('div', { class: 'meter' }, [el('dt', {}, [label]), el('dd', { class: 'track' }, [fill]), num]));
+    return { fill, num };
+  });
+  let lastReadout = 0;
+  function updateReadout(f) {
+    const now = performance.now();
+    if (now - lastReadout < 120) return;
+    lastReadout = now;
+    meters.forEach(([, , get], i) => {
+      const v = Math.max(0, Math.min(1, Number(get(f)) || 0));
+      meterEls[i].fill.style.width = `${(v * 100).toFixed(0)}%`;
+      meterEls[i].num.textContent = `${Math.round(v * 100)}`;
+    });
+  }
+
   // ---------- tracks ----------
   function renderTracks() {
     listEl.replaceChildren(
@@ -94,8 +121,9 @@ export function createLabView({ voice, getVolume }) {
     video.poster = t.poster;
     video.src = t.video;
     video.setAttribute('aria-label', `${t.title}. ${t.summary}`);
+    video.style.visibility = 'hidden';
     video.onerror = () => setStatus(`The ${t.title} video is missing. Run scripts/fetch_media.py to download it.`);
-    video.onloadeddata = () => { setStatus(''); fitOverlay(); };
+    video.onloadeddata = () => { video.style.visibility = ''; setStatus(''); fitOverlay(); };
     await state.engine?.load(t.id, video);
     voice.say(`${t.title}. ${t.summary}`);
     if (wasPlaying) play();
@@ -158,7 +186,7 @@ export function createLabView({ voice, getVolume }) {
       const mod = await import('../engine/index.js');
       state.engine = mod.createEngine();
       mod.audio?.setVolume?.(getVolume());
-      state.engine.on('frame', (f) => { state.last = f; draw(); });
+      state.engine.on('frame', (f) => { state.last = f; draw(); updateReadout(f); });
       state.engine.on('caption', (text) => { announce(caption, text); voice.say(text); });
       state.audio = mod.audio;
     } catch (err) {

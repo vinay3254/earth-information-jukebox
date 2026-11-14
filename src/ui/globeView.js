@@ -5,6 +5,16 @@ import { $, el, announce } from './dom.js';
 const lazy = import.meta.glob(['../globe/index.js', '../datasynth/index.js']);
 const load = (p) => (lazy[p] ? lazy[p]() : Promise.reject(new Error(`${p} missing`)));
 
+// Used only to place markers when regions.json is not downloaded yet. No data values.
+const REGION_META = [
+  { id: 'greenland', name: 'Greenland Ice Sheet', lat: 69.2, lon: -51.1, story: 'Ice loss and Arctic warming.' },
+  { id: 'amazon', name: 'Amazon Rainforest', lat: -10.8, lon: -62.8, story: 'Deforestation and drought.' },
+  { id: 'sahel', name: 'Sahel and Lake Chad', lat: 13.0, lon: 14.5, story: 'Dust, rain swings, a shrinking lake.' },
+  { id: 'delhi', name: 'Delhi and the Ganges plain', lat: 28.6, lon: 77.2, story: 'Heat, smog and growing city lights.' },
+  { id: 'barrier_reef', name: 'Great Barrier Reef', lat: -18.3, lon: 147.7, story: 'Ocean heat and coral bleaching.' },
+  { id: 'california', name: 'California Sierra Nevada', lat: 38.5, lon: -120.5, story: 'Wildfire, drought and snowpack.' }
+];
+
 const COOL = [58, 110, 165];
 const MID_DARK = [120, 138, 156];
 const MID_LIGHT = [205, 212, 219];
@@ -153,12 +163,13 @@ export function createGlobeView({ voice, getVolume }) {
   }
 
   // ---------- year ----------
-  function setYear(year, { speak = true } = {}) {
+  function setYear(year, { speak = true, fromSynth = false } = {}) {
+    if (fromSynth && year === state.year) return;
     state.year = year;
     yearIn.value = String(year);
     yearOut.textContent = String(year);
     yearIn.setAttribute('aria-valuetext', `${year}`);
-    state.synth?.setYear?.(year);
+    if (!fromSynth) state.synth?.setYear?.(year);
     updatePlate();
     renderVoices();
     const text = state.synth?.describe?.(year) || `${state.region.name}, ${year}.`;
@@ -242,6 +253,13 @@ export function createGlobeView({ voice, getVolume }) {
       b.setAttribute('aria-pressed', String(b.dataset.id === id));
     }
     const ys = yearsOf(r);
+    state.globe?.setHighlight?.(id);
+    if (!ys.length) {
+      listen.hidden = true;
+      setCaption(`${r.name}. ${r.story} No data downloaded yet.`);
+      try { await state.globe?.flyTo?.(id); } catch { /* optional */ }
+      return;
+    }
     yearIn.min = ys[0];
     yearIn.max = ys[ys.length - 1];
     nameEl.textContent = r.name;
@@ -267,10 +285,10 @@ export function createGlobeView({ voice, getVolume }) {
     try {
       const mod = await load('../datasynth/index.js');
       const synth = mod.createDataSynth();
-      synth.on?.('year', (y) => setYear(y, { speak: false }));
+      synth.on?.('year', (y) => setYear(typeof y === 'object' ? y.year : y, { speak: false, fromSynth: true }));
       synth.on?.('caption', (t) => setCaption(t));
       synth.on?.('compare', (info) => {
-        if (info?.year) setYear(info.year, { speak: false });
+        if (info?.year) setYear(info.year, { speak: false, fromSynth: true });
       });
       synth.on?.('end', () => setPlaying(false));
       synth.setVolume?.(getVolume());
@@ -302,10 +320,10 @@ export function createGlobeView({ voice, getVolume }) {
       const data = await res.json();
       state.regions = data.regions || [];
     } catch { /* handled below */ }
+    const haveData = state.regions.length > 0;
+    if (!haveData) state.regions = REGION_META.map((r) => ({ ...r, years: [] }));
     renderRegions();
-    if (!state.regions.length) {
-      listEl.replaceChildren(el('p', {}, ['Place data is missing. Run scripts/fetch_data.py to download it.']));
-    }
+    if (!haveData) setStatus('Place data is not downloaded yet. The globe works; sound needs scripts/fetch_data.py.');
     renderVoices();
     await Promise.all([loadGlobe(), loadSynth()]);
   }

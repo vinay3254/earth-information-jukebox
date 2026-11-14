@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -14,6 +14,18 @@
   </head>
   <body>
     <a class="skip" href="#main">Skip to controls</a>
+
+    <div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+      <div class="gate-inner">
+        <h1 id="gate-title" class="gate-title">Earth Information Jukebox</h1>
+        <p class="gate-line">Listen to a changing planet. Forty years of NASA measurements and satellite visualizations, turned into sound.</p>
+        <p class="gate-note">Best with headphones. Everything works with a keyboard and a screen reader.</p>
+        <div class="gate-actions">
+          <button type="button" id="gate-go" class="primary big">Start listening</button>
+          <button type="button" id="gate-voice" class="secondary big">Start with voice guide</button>
+        </div>
+      </div>
+    </div>
 
     <header class="bar">
       <p class="name">Earth Information Jukebox</p>
@@ -47,7 +59,7 @@
         </div>
 
         <div class="panel">
-          <h1 id="globe-heading" class="title">Hear a place change</h1>
+          <h2 id="globe-heading" class="title">Hear a place change</h2>
           <p class="lede">Choose a place. Each sound follows one real measurement, year by year, from NASA and NOAA records.</p>
 
           <fieldset class="regions">
@@ -105,7 +117,7 @@
         </div>
 
         <div class="panel">
-          <h1 id="lab-heading" class="title">Hear a NASA visualization</h1>
+          <h2 id="lab-heading" class="title">Hear a NASA visualization</h2>
           <p class="lede">The sound is made live from the pictures on screen, frame by frame.</p>
 
           <fieldset class="tracks">
@@ -119,8 +131,13 @@
           </div>
           <p id="explore-hint" class="hint" hidden>Arrow keys move the listening point. You hear the spot under it.</p>
 
+          <section class="readout" aria-labelledby="readout-heading">
+            <h3 id="readout-heading" class="sub">This frame</h3>
+            <dl id="readout" class="meters"></dl>
+          </section>
+
           <section class="about" aria-labelledby="about-heading">
-            <h2 id="about-heading" class="sub">What you hear</h2>
+            <h3 id="about-heading" class="sub">What you hear</h3>
             <p id="track-summary"></p>
             <p id="track-mapping"></p>
             <p id="track-source" class="source"></p>
