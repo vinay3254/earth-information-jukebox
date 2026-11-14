@@ -970,7 +970,9 @@ export class UI {
     const { first, last } = this.regionYearBounds(this.activeRegion);
     const value = Math.max(first, Math.min(last, Number(year)));
     if (value !== this.activeYear) {
-      if (this.earconsEnabled) playEarcon('tick');
+      // Tick only when the user moves the year; compare mode and the tour step
+      // the year automatically, and a tick there sounded like a metronome.
+      if (this.earconsEnabled && !fromCompare) playEarcon('tick');
       if (this.hapticsEnabled) {
         if ([1985, 2000, 2025, 2026].includes(value)) triggerHaptic('milestone');
         else triggerHaptic('click');

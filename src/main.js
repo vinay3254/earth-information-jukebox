@@ -13,7 +13,7 @@ import { REGION_IMAGERY } from './region-imagery.js';
 import { CloudPass } from './cloud-pass.js';
 import { CameraDirector } from './camera-director.js';
 import { ExplorerControls } from './controls.js';
-import { SpaceDive } from './space-dive.js';
+import { EarthSplash } from './earth-splash.js';
 import { UI } from './ui.js';
 import { SignalAudio } from './signal-audio.js';
 import { AudioVisualizer } from './visualizer.js';
@@ -25,8 +25,15 @@ const WARM_KEY = 'hearth:warmed';
 
 // The inline script in index.html sets this class before first paint. Read it
 // here as well so a storage-blocked fallback still reports the warm state.
+// A browser refresh is never a warm return: the splash plays on every reload.
+function isReload() {
+  const nav = performance.getEntriesByType?.('navigation')[0];
+  return nav ? nav.type === 'reload' : performance.navigation?.type === 1;
+}
+
 function isWarmReturn() {
   if (document.documentElement.classList.contains('is-warm-return')) return true;
+  if (isReload()) return false;
   try {
     return sessionStorage.getItem(WARM_KEY) === '1';
   } catch (error) {
@@ -113,7 +120,7 @@ class App {
       }
     };
     if (!this.isWarmReturn) {
-      this.loaderEffect = new SpaceDive(document.getElementById('loader-scene'));
+      this.loaderEffect = new EarthSplash(document.getElementById('loader-scene'));
       this.loaderEffect.start();
     }
     this.assetLoader = new AssetLoader((ratio) => this.ui.setProgress(ratio * 0.6));
@@ -138,6 +145,9 @@ class App {
     this.ui.setProgress(1);
     this.ui.setLoaderSub(this.assetLoader.warnings.length ? 'Ready \u00b7 some surface detail is unavailable' : 'Observatory ready');
     performance.measure('jukebox:startup', 'jukebox:start');
+    // Let the Earth splash finish its opening sequence before the loader fades.
+    // It resolves immediately when the viewer taps it or WebGL is unavailable.
+    if (this.loaderEffect) await this.loaderEffect.done;
     this.clock.start();
     this.onEnter();
     this.loop();

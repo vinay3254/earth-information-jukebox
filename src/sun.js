@@ -170,12 +170,61 @@ float field() {
   return s * 0.3333333;
 }
 
+// Surface noise is evaluated here instead of read from the baked cube map.
+// The shared 4D \`snoise\` above returns values near zero everywhere (it uses
+// four simplex corners where 4D needs five), so the bake came out flat and
+// the surface had no structure. This is plain 3D value noise.
+float hash3(vec3 p) {
+  p = fract(p * 0.3183099 + vec3(0.71, 0.113, 0.419));
+  p *= 17.0;
+  return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
+}
+
+float valueNoise(vec3 p) {
+  vec3 i = floor(p);
+  vec3 f = fract(p);
+  vec3 u = f * f * (3.0 - 2.0 * f);
+  return mix(
+    mix(mix(hash3(i), hash3(i + vec3(1.0, 0.0, 0.0)), u.x),
+        mix(hash3(i + vec3(0.0, 1.0, 0.0)), hash3(i + vec3(1.0, 1.0, 0.0)), u.x), u.y),
+    mix(mix(hash3(i + vec3(0.0, 0.0, 1.0)), hash3(i + vec3(1.0, 0.0, 1.0)), u.x),
+        mix(hash3(i + vec3(0.0, 1.0, 1.0)), hash3(i + vec3(1.0, 1.0, 1.0)), u.x), u.y),
+    u.z) * 2.0 - 1.0;
+}
+
+float surfaceNoise(vec3 p, float seed) {
+  p += seed;
+  float sum = 0.0;
+  float amp = 0.5;
+  for (int i = 0; i < 5; i++) {
+    sum += valueNoise(p) * amp;
+    p = p * 2.03 + vec3(1.7, 9.2, 3.4);
+    amp *= 0.5;
+  }
+  return sum;
+}
+
+// Dark rust photosphere with granulation, bright active regions and a hot
+// orange limb, in the style of an extreme-ultraviolet solar image.
 void main() {
   vec3 viewDir = normalize((viewMatrix * vec4(vWorld - cameraPosition, 0.0)).xyz);
-  float nDotV = dot(vNormalView, -viewDir);
-  float fresnel = pow(1.0 - nDotV, uFresnelPower) * uFresnelInfluence;
-  float brightness = field() * uBase + uBrightnessOffset + fresnel;
-  vec3 col = clamp(brightnessToColor(brightness), 0.0, 1.0);
+  float nDotV = clamp(dot(vNormalView, -viewDir), 0.0, 1.0);
+
+  float grain = smoothstep(-0.42, 0.48, surfaceNoise(normalize(vLayer0) * 30.0, 3.1));
+  float activeRegion = smoothstep(0.1, 0.38, surfaceNoise(normalize(vLayer1) * 3.0, 7.7));
+
+  vec3 dark = vec3(0.16, 0.042, 0.008);
+  vec3 mid = vec3(0.52, 0.19, 0.04);
+  vec3 hot = vec3(1.0, 0.70, 0.34);
+  vec3 col = mix(dark, mid, smoothstep(0.15, 0.75, grain));
+  col = mix(col, hot, smoothstep(0.62, 1.0, grain) * activeRegion);
+  col += vec3(0.9, 0.42, 0.1) * activeRegion * grain * 0.5;
+
+  // Bright rim and a white-hot edge
+  float rim = 1.0 - nDotV;
+  col += vec3(1.0, 0.5, 0.14) * pow(rim, 3.0) * 1.5;
+  col += vec3(1.0, 0.86, 0.62) * pow(rim, 9.0) * 1.2;
+
   gl_FragColor = vec4(col, 1.0);
 }
 `;
@@ -282,7 +331,12 @@ void main() {
   vec3 centerW = (modelMatrix * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
   vNormal = normalize(pW - centerW);
   vOpacity = uOpacity * (0.5 + aSeed.w);
-  vColor = spectrum(aSeed.w * uHueSpread + uHue);
+  // Keep streamers off the visible face so the disc reads clean; they show
+  // around the limb as a corona instead.
+  float facing = dot(normalize(aOrigin), normalize((inverse(modelMatrix) * vec4(cameraPosition, 1.0)).xyz));
+  vOpacity *= 1.0 - smoothstep(0.05, 0.45, facing);
+  // Mostly orange streamers, with a few pale blue-white ones.
+  vColor = mix(vec3(1.0, 0.48, 0.14), vec3(0.8, 0.88, 1.0), smoothstep(0.82, 1.0, aSeed.w));
   gl_Position = projectionMatrix * viewMatrix * vec4(pW, 1.0);
 }
 `;
@@ -341,8 +395,9 @@ vec3 arcPoint(float phase, float anim) {
   return p * uRadius;
 }
 
+// Warm flare loops: deep orange through to pale gold.
 vec3 hue(float v) {
-  return 0.6 + 0.6 * cos(6.3 * v + vec3(0.0, 23.0, 21.0));
+  return mix(vec3(1.0, 0.42, 0.08), vec3(1.0, 0.82, 0.5), clamp(fract(v * 4.0), 0.0, 1.0));
 }
 
 void main() {
@@ -659,10 +714,10 @@ export function createSun({ radius, renderer, quality = {} }) {
     fragmentShader: GLOW_FRAG,
     uniforms: {
       uInner: { value: radius * 0.98 },
-      uOuter: { value: radius * 1.2 },
+      uOuter: { value: radius * 1.35 },
       uOpacity: { value: 1 },
-      uTint: { value: 0.4 },
-      uBrightness: { value: 1.06 },
+      uTint: { value: 0.3 },
+      uBrightness: { value: 0.85 },
       uFalloff: { value: 0.5 }
     },
     transparent: true,
@@ -680,12 +735,12 @@ export function createSun({ radius, renderer, quality = {} }) {
     uniforms: {
       uHue: { value: 0.5 },
       uHueSpread: { value: 0.16 },
-      uLength: { value: 0.17 },
+      uLength: { value: 0.42 },
       uWidth: { value: 0.04 },
       uTime: { value: 0 },
       uNoiseFrequency: { value: 8 },
       uNoiseAmplitude: { value: 0.4 },
-      uOpacity: { value: 0.045 },
+      uOpacity: { value: 0.06 },
       uRadius: { value: radius }
     },
     transparent: true,
@@ -710,7 +765,7 @@ export function createSun({ radius, renderer, quality = {} }) {
       coronaScale = scale;
       glowMaterial.uniforms.uOpacity.value = scale;
       flareMaterial.uniforms.uOpacity.value = 1.6 * scale;
-      rayMaterial.uniforms.uOpacity.value = 0.045 * scale;
+      rayMaterial.uniforms.uOpacity.value = 0.06 * scale;
     },
     update(elapsed) {
       discMaterial.uniforms.uTime.value = elapsed * 0.04;
