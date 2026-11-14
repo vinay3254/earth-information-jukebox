@@ -30,8 +30,15 @@ try {
 }
 
 export function createDataSynth() {
-  const masterBus = (engineAudio && engineAudio.master) ? engineAudio.master : Tone.getDestination();
+  // Own output stage: volume -> limiter -> speakers. The shared engine bus is
+  // created lazily, so it is not reliable here, and seven voices plus reverb
+  // can sum above full scale without a limiter.
+  const limiter = new Tone.Limiter(-3).toDestination();
+  const outGain = new Tone.Gain(0).connect(limiter);
+  let volume = 0.8;
+  const masterBus = outGain;
   const pipeline = new VoicePipeline(masterBus);
+  const fadeTo = (v, t = 0.15) => outGain.gain.rampTo(v * 0.55, t);
 
   let currentRegion = null;
   let currentYear = null;
@@ -205,6 +212,7 @@ export function createDataSynth() {
       }
 
       isPlaying = true;
+      fadeTo(volume, 0.1);
       pipeline.start();
 
       // Ensure voices are updated to current year
@@ -219,7 +227,13 @@ export function createDataSynth() {
     pause() {
       stopTimers();
       isPlaying = false;
+      fadeTo(0, 0.15); // cut reverb and pad tails too
       pipeline.stop();
+    },
+
+    setVolume(v) {
+      volume = Math.max(0, Math.min(1, v));
+      if (isPlaying) fadeTo(volume, 0.05);
     },
 
     /**

@@ -21,14 +21,14 @@ export function createChimes() {
       envelope: { attack: 0.005, decay: 1.6, sustain: 0, release: 2.4 },
       modulationEnvelope: { attack: 0.005, decay: 0.6, sustain: 0, release: 1 }
     }).connect(reverb);
-    synth.volume.value = -14;
+    synth.volume.value = -2;
     return synth;
   }
 
   return {
     get enabled() { return enabled; },
     set(on) { enabled = on; if (on) ensure(); },
-    setVolume(v) { volume = v; if (synth) synth.volume.value = v <= 0 ? -Infinity : -14 + 20 * Math.log10(v); },
+    setVolume(v) { volume = v; if (synth) synth.volume.value = v <= 0 ? -Infinity : -2 + 20 * Math.log10(v); },
     ring(planet, force = false) {
       if ((!enabled && !force) || volume <= 0) return;
       const s = ensure();
