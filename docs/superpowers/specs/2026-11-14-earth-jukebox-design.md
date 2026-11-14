@@ -175,3 +175,119 @@ Credits section lists NASA SVS sources from `credits.json`.
 
 Exact instruments, scales, thresholds, styling, and caption wording — tune by ear and
 eye, keep it pleasant.
+
+---
+
+# Phase 2 — Globe, Data Synth, Year Compare, Voice Guide
+
+User wants a full experience: 3D globe journey, per-region multi-variable data synth,
+year scrubber with before/after comparison, spoken voice guide — on top of the
+Frame Lab above. All built from scratch; no code, layout, regions or assets copied
+from other Space Apps teams (plagiarism risk).
+
+## App shell
+
+Two views in one page, switched by a top nav and keys `G` (Globe) / `L` (Lab):
+
+- **Globe view** (default landing): 3D Earth, region picker, Data Synth panel.
+- **Lab view**: Phase 1 Frame Lab (video tracks).
+
+## Regions (our pick — global EIC climate hotspots)
+
+| id | Name | lat, lon | Story |
+|----|------|----------|-------|
+| `greenland` | Greenland Ice Sheet (Ilulissat) | 69.2, -51.1 | ice loss, Arctic warming |
+| `amazon` | Amazon Rainforest (Rondônia) | -10.8, -62.8 | deforestation, drought |
+| `sahel` | Sahel (Lake Chad basin) | 13.0, 14.5 | dust, rainfall swings, drying lake |
+| `delhi` | Delhi & Indo-Gangetic Plain | 28.6, 77.2 | heat, air pollution, urban light growth |
+| `barrier_reef` | Great Barrier Reef | -18.3, 147.7 | ocean heat, bleaching |
+| `california` | California (Sierra Nevada) | 38.5, -120.5 | wildfire, drought, snowpack |
+
+## Real data only
+
+No synthetic or invented values. Every number shown or sonified comes from a
+fetched public dataset, with source + URL in `public/data/sources.json`. If a variable
+is unavailable for a region/year, it is `null` and its synth voice goes silent (never
+fabricated).
+
+Sources (all free, no key):
+- **NASA POWER** daily/monthly point API (`https://power.larc.nasa.gov/api/temporal/monthly/point`),
+  1981–latest full year: `T2M` (temp °C), `PRECTOTCORR` (precip mm/day),
+  `ALLSKY_SFC_SW_DWN` (solar), `WS2M` (wind), `RH2M` (humidity), `T2M_MAX`.
+- **NASA GISTEMP** global annual anomaly (`https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv`).
+- **NOAA GML Mauna Loa CO2** annual mean (`https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_annmean_mlo.txt`).
+- **NASA GIBS** WMTS/WMS snapshots for region imagery per year
+  (`https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi`, layer
+  `MODIS_Terra_CorrectedReflectance_TrueColor`, 2001+; one cloud-light summer date per year),
+  saved as `public/data/imagery/<region>/<year>.jpg` (512x512, bbox ~2°×2° around region).
+- Optional if reachable: GIBS `VIIRS_Black_Marble` / NDVI layers for the same bbox
+  (record which years exist).
+
+## Data files — `scripts/fetch_data.py` (owner: data)
+
+Output `public/data/regions.json`:
+
+```ts
+{ regions: [{ id, name, lat, lon, story, years: [{ year, tempC, tempMaxC, precipMm,
+  solar, windMs, humidity, co2ppm, globalAnomalyC, imagery: 'data/imagery/<id>/<year>.jpg' | null }] }],
+  yearRange: [first, last] }
+```
+Annual values from monthly means (precip = annual total mm). Stdlib Python only.
+Idempotent, cached raw responses in `raw/` (gitignored). `public/data/sources.json` lists
+every source with URL, license note, and retrieval date.
+
+## Globe — `src/globe/**` (owner: globe)
+
+- Three.js (installed, `three@0.170.0`). Earth sphere with NASA Blue Marble day texture
+  and Black Marble night texture (download public-domain NASA textures into
+  `public/globe/` via a small script `scripts/fetch_globe_textures.py`, ≤ 4 MB each,
+  credits recorded), atmosphere glow, starfield.
+- Intro: camera starts far in space, eases in to the globe (skippable, Esc;
+  instant when `prefers-reduced-motion`).
+- Region markers at lat/lon; click or keyboard select flies the camera to the region.
+- API:
+```js
+export function createGlobe(container, { regions, onSelect });
+// globe.flyTo(regionId) -> Promise; globe.showAll(); globe.dispose()
+// globe.setHighlight(regionId)
+```
+- Accessible: canvas `aria-hidden`; all selection also available via UI region list.
+
+## Data Synth — `src/datasynth/**` (owner: datasynth)
+
+Multi-voice Tone.js synth, one voice per variable, each with its own on/off toggle:
+
+| Variable | Voice |
+|----------|-------|
+| tempC | lead pitch (scale-snapped, warmer = higher) |
+| precipMm | plucked pentatonic note density |
+| solar | shimmer/high pad brightness |
+| windMs | filtered noise colour |
+| humidity | reverb wet |
+| co2ppm | pad detune tension (0 → +35 cents) |
+| globalAnomalyC | slow sub drone pitch drift |
+
+Use the shared `src/engine/audio.js` master bus if present (`initAudio`, `audio.master`);
+otherwise its own and note it.
+
+```js
+export function createDataSynth();
+// synth.setRegion(region); synth.setYear(year); synth.play(); synth.pause();
+// synth.setVoice(name, enabled); synth.voices -> [{ name, label, enabled, value, unit }]
+// synth.playSweep({ from, to, secondsPerYear = 0.6 })  // auto-advance years
+// synth.compare(yearA, yearB, { secondsEach = 4 })     // A then B, alternating, emits 'compare'
+// synth.on('year'|'caption'|'compare', cb)
+// synth.describe(year) -> plain-language caption with values + units
+```
+
+## UI additions (owner: ui)
+
+- App shell + nav; Globe view layout: globe left/top, Data Synth panel right/bottom.
+- Region list (real buttons), year slider (`input type=range`, arrow keys step a year),
+  Play sweep, Compare (pick year A/B; presets: first↔last, decade steps), voice toggles
+  with live value + unit, region imagery for current year beside globe (when present).
+- Keys: `G`/`L` views, `/` focus region list, `←/→` year, `C` compare, Space play.
+- **Voice guide** `src/ui/voice.js`: `speechSynthesis` toggle (off by default, persisted in
+  localStorage with try/catch) that speaks region arrivals, year changes (debounced),
+  compare results ("Delhi, 1990 to 2023: average temperature up 1.2 °C…"), and Lab
+  captions. Never overlaps itself (cancel previous).
