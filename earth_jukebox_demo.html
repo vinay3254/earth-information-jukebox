@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earth Information Jukebox - Offline Prototype</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --accent: #58a6ff;
+      --accent-glow: rgba(88, 166, 255, 0.2);
+    }
+    body {
+      margin: 0;
+      padding: 2rem;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 800px;
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+    h1 {
+      margin-top: 0;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge {
+      background: #238636;
+      color: white;
+      font-size: 0.8rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      vertical-align: middle;
+    }
+    .tracks {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 1.5rem 0;
+    }
+    .track-btn {
+      background: #21262d;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+    }
+    .track-btn:hover {
+      border-color: var(--accent);
+      background: #30363d;
+    }
+    .track-btn.active {
+      border-color: var(--accent);
+      background: #1f6feb;
+      color: #fff;
+    }
+    .track-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .track-desc {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+    .visualizer-box {
+      width: 100%;
+      height: 200px;
+      background: #000;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 1rem 0;
+      overflow: hidden;
+      position: relative;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 1rem;
+    }
+    .play-btn {
+      background: #238636;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .play-btn.playing {
+      background: #da3633;
+    }
+    .info-pane {
+      background: #0d1117;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🌍 Earth Information Jukebox <span class="badge">Offline Demo</span></h1>
+  <p>Select an Earth dataset to experience real-time data sonification using the Web Audio API.</p>
+
+  <div class="tracks" id="trackList"></div>
+
+  <div class="visualizer-box">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <div class="controls">
+    <button class="play-btn" id="playBtn">▶ Play Sonification</button>
+    <span id="currentStatus" style="font-size: 0.9rem; color: #8b949e;">Ready</span>
+  </div>
+
+  <div class="info-pane" id="infoPane">
+    Select a track above to view its data mapping and sonification logic.
+  </div>
+</div>
+
+<script>
+  const datasets = [
+    {
+      id: "temp",
+      name: "Global Temperature Anomaly",
+      desc: "1880 - Present GISTEMP trend",
+      soundType: "rising_pitch",
+      scale: [220, 246.94, 261.63, 293.66, 329.63, 392.00, 440.00, 493.88, 523.25, 587.33, 659.25, 783.99],
+      info: "Maps century-scale warming anomalies to an ascending pentatonic scale with harmonic low-pass filter opening as temperature increases."
+    },
+    {
+      id: "nightlights",
+      name: "Global Night Lights (2012-2023)",
+      desc: "NASA Black Marble Urban Expansion",
+      soundType: "rhythmic_pulse",
+      scale: [196, 220, 261.63, 293.66, 349.23, 392, 440],
+      info: "Maps urban light density to rhythmic staccato chords. Higher luminance triggers brighter harmonics and faster pulse bursts."
+    },
+    {
+      id: "co2",
+      name: "DYAMOND Atmospheric CO2",
+      desc: "Seasonal atmospheric carbon cycles",
+      soundType: "sine_wave",
+      scale: [130.81, 146.83, 164.81, 196.00, 220.00, 261.63, 293.66, 329.63],
+      info: "Translates oscillating seasonal carbon peaks into oscillating modulation frequencies (LFO) with deep resonant undertones."
+    },
+    {
+      id: "lightning",
+      name: "ISS Lightning Events",
+      desc: "Orbital optical lightning flash detection",
+      soundType: "percussion",
+      scale: [110, 165, 220, 440, 880],
+      info: "Simulates sudden bursts of electrical discharge through sharp transient FM chirps and white-noise bursts."
+    }
+  ];
+
+  let currentTrack = datasets[0];
+  let isPlaying = false;
+  let audioCtx = null;
+  let stepTimer = null;
+  let currentStep = 0;
+
+  const trackListEl = document.getElementById('trackList');
+  const playBtn = document.getElementById('playBtn');
+  const infoPane = document.getElementById('infoPane');
+  const currentStatus = document.getElementById('currentStatus');
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  datasets.forEach((track, idx) => {
+    const btn = document.createElement('button');
+    btn.className = `track-btn ${idx === 0 ? 'active' : ''}`;
+    btn.innerHTML = `<div class="track-title">${track.name}</div><div class="track-desc">${track.desc}</div>`;
+    btn.onclick = () => selectTrack(track, btn);
+    trackListEl.appendChild(btn);
+  });
+
+  function selectTrack(track, btnElement) {
+    currentTrack = track;
+    document.querySelectorAll('.track-btn').forEach(b => b.classList.remove('active'));
+    btnElement.classList.add('active');
+    infoPane.innerHTML = `<strong>Data Mapping Logic:</strong> ${track.info}`;
+    currentStep = 0;
+  }
+
+  selectTrack(datasets[0], trackListEl.children[0]);
+
+  function playTone(freq, duration = 0.25) {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = currentTrack.id === 'lightning' ? 'sawtooth' : 'triangle';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  }
+
+  function drawVisualization() {
+    ctx.fillStyle = "rgba(13, 17, 23, 0.3)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    if (isPlaying) {
+      const bars = currentTrack.scale.length;
+      const barWidth = canvas.width / bars;
+
+      for (let i = 0; i < bars; i++) {
+        const h = (currentTrack.scale[i] / 880) * canvas.height;
+        ctx.fillStyle = (i === currentStep) ? "#58a6ff" : "#21262d";
+        ctx.fillRect(i * barWidth + 2, canvas.height - h, barWidth - 4, h);
+      }
+    }
+    requestAnimationFrame(drawVisualization);
+  }
+  drawVisualization();
+
+  playBtn.onclick = () => {
+    if (isPlaying) {
+      clearInterval(stepTimer);
+      isPlaying = false;
+      playBtn.textContent = "▶ Play Sonification";
+      playBtn.classList.remove('playing');
+      currentStatus.textContent = "Paused";
+    } else {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      isPlaying = true;
+      playBtn.textContent = "⏹ Pause";
+      playBtn.classList.add('playing');
+      currentStatus.textContent = `Playing: ${currentTrack.name}`;
+
+      stepTimer = setInterval(() => {
+        const freq = currentTrack.scale[currentStep % currentTrack.scale.length];
+        playTone(freq, 0.3);
+        currentStep = (currentStep + 1) % currentTrack.scale.length;
+      }, 350);
+    }
+  };
+</script>
+
+</body>
+</html>

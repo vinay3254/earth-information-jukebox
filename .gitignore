@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.venv/
+raw/
+sample_datasets/.~lock*
+*.png
+!public/**/*.png
