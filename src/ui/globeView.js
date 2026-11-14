@@ -15,6 +15,17 @@ const REGION_META = [
   { id: 'california', name: 'California Sierra Nevada', lat: 38.5, lon: -120.5, story: 'Wildfire, drought and snowpack.' }
 ];
 
+// What each variable sounds like, in plain words.
+const SOUND_HINT = {
+  tempC: 'Lead melody. Warmer is higher.',
+  precipMm: 'Plucked notes. More rain, more notes.',
+  solar: 'High shimmer. More sun, brighter.',
+  windMs: 'Rushing air. Windier, louder.',
+  humidity: 'Echo. More humid, more echo.',
+  co2ppm: 'Pad goes out of tune as CO₂ rises.',
+  globalAnomalyC: 'Low drone. Rises as the world warms.'
+};
+
 const COOL = [58, 110, 165];
 const MID_DARK = [120, 138, 156];
 const MID_LIGHT = [205, 212, 219];
@@ -136,7 +147,7 @@ export function createGlobeView({ voice, getVolume }) {
             type: 'checkbox', id, checked: v.enabled,
             onchange: (e) => synth.setVoice(v.name, e.target.checked)
           }),
-          el('label', { for: id }, [v.label, v.sound ? el('small', {}, [v.sound]) : '']),
+          el('label', { for: id }, [v.label, el('small', {}, [v.sound || SOUND_HINT[v.name] || ''])]),
           el('span', { class: has ? 'val' : 'val none' }, [has ? formatVal(v.value, v.unit) : 'no data'])
         ]);
       })
