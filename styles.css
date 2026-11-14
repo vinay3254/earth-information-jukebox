@@ -448,16 +448,18 @@ body.pointing { cursor: pointer; }
   font-weight: 300;
   line-height: 1.25;
   letter-spacing: -0.01em;
-  margin: 0 0 18px;
+  margin: 0 0 16px;
   color: var(--ink);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* ---------------------------------------------------------------- region switcher */
 
 .region-switcher {
   position: relative;
-  margin: 0 0 26px;
+  margin: 0 0 20px;
+  flex-shrink: 0;
 }
 
 .region-switcher .eyebrow { margin-bottom: 8px; }
@@ -708,7 +710,8 @@ body.pointing { cursor: pointer; }
 .panel-foot {
   display: flex;
   gap: 18px;
-  margin: 24px 0 0;
+  margin: 16px 0 0;
+  flex-shrink: 0;
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.16em;
@@ -720,14 +723,18 @@ body.pointing { cursor: pointer; }
 /* ------------------------------------------------------------------ geographic explorer */
 
 .panel-inner {
+  width: 100%;
   height: calc(100vh - var(--pad) * 2 - 54px);
-  max-height: min(78vh, 760px);
+  height: calc(100dvh - var(--pad) * 2 - 54px);
+  max-height: none;
+  flex: 1;
   display: flex;
   flex-direction: column;
   min-height: 0;
+  pointer-events: auto;
 }
 
-.panel-view { display: flex; flex-direction: column; min-height: 0; flex: 1; }
+.panel-view { display: flex; flex-direction: column; min-height: 0; flex: 1; height: 100%; }
 .panel-view[hidden] { display: none; }
 
 .search {
@@ -735,8 +742,9 @@ body.pointing { cursor: pointer; }
   align-items: center;
   gap: 10px;
   padding: 0 12px;
-  margin: 0 0 18px;
+  margin: 0 0 16px;
   height: 40px;
+  flex-shrink: 0;
   border: 1px solid var(--line-soft);
   background: rgba(6, 11, 20, 0.4);
   backdrop-filter: blur(4px);
@@ -810,6 +818,8 @@ body.pointing { cursor: pointer; }
   overflow-x: hidden;
   padding-right: 10px;
   margin-right: -10px;
+  padding-bottom: 8px;
+  overscroll-behavior: contain;
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 9px, #000 calc(100% - 9px), transparent 100%);
@@ -1064,6 +1074,7 @@ body.pointing { cursor: pointer; }
   align-items: baseline;
   padding-bottom: 8px;
   margin-bottom: 6px;
+  flex-shrink: 0;
   border-bottom: 1px solid var(--line-soft);
   color: var(--ink-mid);
   font-family: var(--mono);
@@ -1148,8 +1159,9 @@ body.pointing { cursor: pointer; }
 }
 
 .yearbar {
+  flex-shrink: 0;
   padding-top: 12px;
-  margin-top: 4px;
+  margin-top: 8px;
   border-top: 1px solid var(--line-soft);
 }
 .year-row {
