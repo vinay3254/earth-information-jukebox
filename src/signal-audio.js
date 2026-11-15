@@ -3,6 +3,10 @@
 // paired with harmonic layers driven by real yearly data (NASA POWER per place,
 // NOAA Mauna Loa CO2), 1985-2025.
 //
+// Music: a slow i-VI-III-VII pad progression in each place's key (from its mean
+// temperature), a soft melody whose centre note follows the yearly temperature
+// change, and chord-tone drops and chimes.
+//
 // Mix layout (frequency band / stereo position), so layers do not mask each other:
 //   soil -> sub-bass 50-100 Hz, centre      temperature -> melody A3-E5, centre
 //   cloud -> pad 110-330 Hz (+ haze 0.7-1.5 kHz, left)
@@ -13,7 +17,7 @@
 // crystalline glass-harp pentatonic arpeggiations, soft water droplets,
 // deep subterranean sub-bass, and real CC0 spatial environmental recordings.
 
-import { SIGNALS } from './regions.js';
+import { SIGNALS, REGIONS } from './regions.js';
 
 const PENTATONIC = [0, 3, 5, 7, 10, 12];
 // Melody notes for temperature: A-minor pentatonic from A3 to E5.
@@ -59,10 +63,55 @@ function absoluteNorm(key, value) {
 }
 
 // Each place plays in its own key, set by its long-term mean temperature:
-// colder places sit lower and darker, hotter places higher. Semitone offsets
-// from A, chosen from keys that keep the pentatonic voicing consonant.
-const KEY_OFFSETS = [-5, -3, 0, 2, 5, 7];
+// colder places sit lower and darker, hotter places higher. Six distinct keys
+// (E, F#, G#, A, B, C#) within -5..+4 semitones of A, so no two climate bands
+// share a key and the melody stays below ~830 Hz.
+const KEY_OFFSETS = [-5, -3, -1, 0, 2, 4];
 const PAD_BASE = [110, 164.81, 220, 329.63];
+
+// Slow progression in the place's key, i - VI - III - VII (Am F C G when the
+// key is A). Voicings are semitones above A2 (110 Hz) for the four pad voices.
+const CHORDS = [
+  [0, 7, 12, 19], // Am: A2 E3 A3 E4
+  [-4, 3, 8, 12], // F:  F2 C3 F3 A3
+  [3, 10, 15, 19], // C:  C3 G3 C4 E4
+  [-2, 5, 10, 14] // G:  G2 D3 G3 B3
+];
+const CHORD_SECONDS = 9;
+// Climate profiles. Listeners tell sounds apart by instrument, speed and how
+// busy they are, far more than by key, so each climate type gets its own
+// instrument, tempo, rhythm and background texture. The data still drives
+// pitch, density, brightness and levels inside each profile.
+export const CLIMATES = {
+  desert: { label: 'Desert', bpm: 56, gaps: [2, 2, 3], melody: 'pluck', rainScale: 0.4, padLevel: 0.32, reverbScale: 0.45, texture: 'wind' },
+  rainforest: { label: 'Tropical rainforest', bpm: 112, gaps: [0.5, 0.5, 1, 1], melody: 'marimba', rainScale: 1.8, padLevel: 0.6, reverbScale: 1.3, texture: 'insects' },
+  cold: { label: 'Cold and mountain', bpm: 46, gaps: [2, 3, 4], melody: 'glass', rainScale: 0.5, padLevel: 0.42, reverbScale: 1.5, texture: 'wind' },
+  coast: { label: 'Coast and ocean', bpm: 72, gaps: [1, 1.5, 2], melody: 'flute', rainScale: 1, padLevel: 0.5, reverbScale: 1.1, texture: 'waves' },
+  temperate: { label: 'Temperate and seasonal', bpm: 84, gaps: [1, 1, 1.5, 2], melody: 'keys', rainScale: 1, padLevel: 0.55, reverbScale: 1, texture: null }
+};
+// Coastal and ocean sites (location, not climate data).
+const COASTAL = new Set(['tohoku_fukushima', 'banda_aceh', 'venice_lagoon', 'great_barrier_reef', 'praia_do_cassino', 'copacabana_beach', 'whitehaven_beach', 'coxs_bazar', 'sundarbans']);
+
+// Classified from the place's own 1985-2025 averages, in this order:
+// desert = mean rain < 350 mm; cold = mean temperature < 10 C; coast = on the
+// sea; rainforest = >= 22 C and >= 1750 mm; everything else is temperate.
+export function climateOf(region) {
+  if (!region) return 'temperate';
+  const rows = Object.values(region.years || {});
+  const mean = (key) => {
+    const v = rows.map((row) => Number(row?.[key])).filter(Number.isFinite);
+    return v.length ? v.reduce((a, b) => a + b, 0) / v.length : NaN;
+  };
+  const temp = mean('temperature');
+  const rain = mean('rain');
+  if (rain < 350) return 'desert';
+  if (temp < 10) return 'cold';
+  if (COASTAL.has(region.id)) return 'coast';
+  if (temp >= 22 && rain >= 1750) return 'rainforest';
+  return 'temperate';
+}
+const pick = (list) => list[Math.floor(Math.random() * list.length)];
+const pitchClass = (semitones) => ((semitones % 12) + 12) % 12;
 
 // Random arrivals at rate lambda per second (a Poisson process): the gap is
 // exponential, -ln(1 - U) / lambda. A small floor keeps two events from
@@ -90,6 +139,10 @@ function makeImpulse(ctx, seconds = 3.2, decay = 2.4) {
 }
 
 // Full 28-destination dedicated spatial environmental soundscape mapping
+export function soundscapeOrigin(file) {
+  return /\.wav$/i.test(file || '') ? 'synthesized soundscape' : 'field recording';
+}
+
 export const REGION_ENVIRONMENT_AUDIO = Object.freeze({
   // --- Major Incidents & Tsunamis ---
   tohoku_fukushima: { file: 'fukushima-tsunami.wav', name: 'Pacific Tsunami Surge, Concrete Seawall & Warning Bell', volume: 0.7 },
@@ -148,6 +201,11 @@ export class SignalAudio {
     this.nextLights = 0;
     this.nextHit = 0;
     this.lightsStep = 0;
+    this.chordIndex = 0;
+    this.nextChord = 0;
+    this.nextMelody = 0;
+    this.melodyTarget = null;
+    this.melodyStep = null;
     this.userGain = null;
     this.analyser = null;
     this.muted = false;
@@ -190,7 +248,13 @@ export class SignalAudio {
     if (!this.userGain || this.ctx?.state === 'closed') return;
     const gain = this.userGain.gain;
     gain.cancelScheduledValues(this.now);
-    gain.setValueAtTime(this.muted ? 0 : this.volume, this.now);
+    // The music dips to 35% while the voice guide speaks, so words stay clear.
+    gain.setTargetAtTime(this.muted ? 0 : this.volume * (this.voiceDuck ? 0.35 : 1), this.now, 0.12);
+  }
+
+  setVoiceDuck(on) {
+    this.voiceDuck = Boolean(on);
+    this.applyUserGain();
   }
 
   setMuted(muted) {
@@ -251,7 +315,12 @@ export class SignalAudio {
 
     const master = ctx.createGain();
     master.gain.value = 0.0001;
-    master.connect(compressor);
+    // Music passes through a duck stage so the trend sweep can sit on top.
+    const musicDuck = ctx.createGain();
+    master.connect(musicDuck);
+    musicDuck.connect(compressor);
+    this.musicDuck = musicDuck;
+    this.compressor = compressor;
 
     const userGain = ctx.createGain();
     userGain.gain.value = this.muted ? 0 : this.volume;
@@ -280,6 +349,65 @@ export class SignalAudio {
     this.reverb = convolver;
     this.reverbWet = reverbWet;
     this.reverbSend = reverbSend;
+
+    // Melody notes (temperature) get their own bus so the layer toggle mutes them.
+    this.melodyBus = ctx.createGain();
+    this.melodyBus.gain.value = 0;
+    this.melodyBus.connect(master);
+    this.melodyBus.connect(reverbSend);
+
+    // Climate textures (levels set per profile in apply()).
+    const texNoise = (type, freq, q) => {
+      const src = ctx.createBufferSource();
+      src.buffer = this.noiseBuffer || makeNoiseBuffer(ctx);
+      src.loop = true;
+      const f = ctx.createBiquadFilter();
+      f.type = type;
+      f.frequency.value = freq;
+      f.Q.value = q;
+      const g = ctx.createGain();
+      g.gain.value = 0;
+      src.connect(f);
+      f.connect(g);
+      src.start();
+      return g;
+    };
+    // Wind floor: soft high-mid noise, slightly right.
+    this.windFloor = texNoise('bandpass', 1800, 0.6);
+    const windFloorPan = ctx.createStereoPanner();
+    windFloorPan.pan.value = 0.3;
+    this.windFloor.connect(windFloorPan);
+    windFloorPan.connect(master);
+    // Insects: a 6 kHz band trembling at 17 Hz.
+    this.insectGain = texNoise('bandpass', 6200, 4);
+    const insectTrem = ctx.createGain();
+    insectTrem.gain.value = 0.5;
+    const insectLfo = ctx.createOscillator();
+    insectLfo.frequency.value = 17;
+    const insectDepth = ctx.createGain();
+    insectDepth.gain.value = 0.5;
+    insectLfo.connect(insectDepth);
+    insectDepth.connect(insectTrem.gain);
+    insectLfo.start();
+    this.insectGain.connect(insectTrem);
+    insectTrem.connect(master);
+    // Waves: low noise that swells and recedes about every 9 s, left.
+    this.waveGain = texNoise('lowpass', 520, 0.5);
+    const waveSwell = ctx.createGain();
+    waveSwell.gain.value = 0.5;
+    const waveLfo = ctx.createOscillator();
+    waveLfo.frequency.value = 0.11;
+    const waveDepth = ctx.createGain();
+    waveDepth.gain.value = 0.5;
+    waveLfo.connect(waveDepth);
+    waveDepth.connect(waveSwell.gain);
+    waveLfo.start();
+    const wavePan = ctx.createStereoPanner();
+    wavePan.pan.value = -0.35;
+    this.waveGain.connect(waveSwell);
+    waveSwell.connect(wavePan);
+    wavePan.connect(master);
+    wavePan.connect(reverbSend);
 
     // Dedicated bus for spatial environmental ambient recordings
     const envBus = ctx.createGain();
@@ -462,7 +590,11 @@ export class SignalAudio {
       volume: 0.6
     };
 
-    this.activeSoundscapeName = meta.name;
+    // Say honestly what the place sound is: the .ogg files are recordings
+    // from Wikimedia Commons, the .wav files are generated by
+    // tools/generate-spatial-soundscapes.mjs.
+    this.activeSoundscapeOrigin = soundscapeOrigin(meta.file);
+    this.activeSoundscapeName = `${meta.name} (${this.activeSoundscapeOrigin})`;
     this.emitState();
 
     if (this.currentEnvFile === meta.file && this.currentEnvSource) {
@@ -544,6 +676,20 @@ export class SignalAudio {
   }
 
   setDestination(region) {
+    // A new place starts clean: its textures, key and pad snap in at once
+    // instead of the previous place's sound fading over it, and the chord and
+    // melody restart from the home chord.
+    if ((region?.id || null) !== (this.region?.id || null)) {
+      this.snapNext = true;
+      this.chordIndex = 0;
+      this.melodyStep = null;
+      this.melodyHistory = [];
+      this.lastRecords = null;
+      if (this.ready) {
+        this.nextChord = this.now + CHORD_SECONDS;
+        this.nextMelody = this.now + 0.3;
+      }
+    }
     this.region = region || null;
     if (!region) {
       this.playRequested = false;
@@ -558,7 +704,107 @@ export class SignalAudio {
   setYear(year) {
     this.year = Number(year);
     this.readValues();
-    if (this.ready) this.apply(this.now);
+    this.records = this.recordsFor(this.year);
+    if (this.ready) {
+      this.apply(this.now);
+      this.markRecords();
+    }
+  }
+
+  // Which records this year sets at this place: hottest, driest or wettest
+  // across 1985-2025.
+  recordsFor(year) {
+    const rows = Object.values(this.region?.years || {});
+    const row = this.region?.years?.[year];
+    if (!row) return {};
+    const isMax = (key) => row[key] != null && rows.every((r) => r[key] == null || r[key] <= row[key]);
+    const isMin = (key) => row[key] != null && rows.every((r) => r[key] == null || r[key] >= row[key]);
+    return { hottest: isMax('temperature'), driest: isMin('rain'), wettest: isMax('rain') };
+  }
+
+  // Extremes you cannot miss: a rising shimmer for the record-hottest year, a
+  // soft falling figure for the record-driest (whose rain also goes almost
+  // silent in apply()). Played once when such a year is reached.
+  markRecords() {
+    const r = this.records || {};
+    const key = `${this.region?.id}:${this.year}`;
+    if (this.lastRecords === key || !(r.hottest || r.driest) || this.ctx?.state !== 'running') return;
+    this.lastRecords = key;
+    const ctx = this.ctx;
+    const t = ctx.currentTime + 0.15;
+    const k = this.keyRatio || 1;
+    const note = (freq, at, len, level, type = 'sine') => {
+      const osc = ctx.createOscillator();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, at);
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, at);
+      g.gain.linearRampToValueAtTime(level, at + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, at + len);
+      osc.connect(g);
+      g.connect(this.compressor);
+      g.connect(this.reverbSend);
+      osc.start(at);
+      osc.stop(at + len + 0.05);
+    };
+    if (r.hottest) {
+      // Rising shimmer: root, fifth, octave, tenth, quickly upward.
+      [0, 7, 12, 16].forEach((semi, i) => note(440 * k * Math.pow(2, semi / 12), t + i * 0.09, 1.2, 0.07, 'triangle'));
+    }
+    if (r.driest) {
+      // Falling two-note figure, low and hollow.
+      note(330 * k, t + (r.hottest ? 0.6 : 0), 0.9, 0.08);
+      note(220 * k, t + (r.hottest ? 1.0 : 0.4), 1.4, 0.08);
+    }
+  }
+
+  // Compare by ear: the same four-note phrase for each year, placed left for
+  // year A and right for year B, so only the data differs between them.
+  playComparePhrase(pan = 0) {
+    if (!this.ready || !this.region || this.ctx.state !== 'running') return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime + 0.1;
+    const center = this.melodyTarget ?? 4;
+    const steps = [center - 2, center, center + 1, center].map((i) => Math.max(0, Math.min(LEAD_SCALE.length - 1, i)));
+    const rain = this.norms?.rain ?? 0.5;
+    const panner = ctx.createStereoPanner();
+    panner.pan.value = pan;
+    panner.connect(this.compressor);
+    panner.connect(this.reverbSend);
+    steps.forEach((step, i) => {
+      const at = t0 + i * 0.32;
+      const osc = ctx.createOscillator();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(220 * this.melodyKeyRatio() * Math.pow(2, LEAD_SCALE[step] / 12), at);
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, at);
+      g.gain.linearRampToValueAtTime(0.09, at + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, at + 0.5);
+      osc.connect(g);
+      g.connect(panner);
+      osc.start(at);
+      osc.stop(at + 0.55);
+    });
+    // Rain density for that year as quick ticks under the phrase.
+    const drops = Math.round(1 + rain * 7);
+    for (let i = 0; i < drops; i++) {
+      const at = t0 + 0.05 + (i / drops) * 1.2;
+      const osc = ctx.createOscillator();
+      osc.frequency.setValueAtTime(this.chordToneHz(880), at);
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, at);
+      g.gain.linearRampToValueAtTime(0.03, at + 0.005);
+      g.gain.exponentialRampToValueAtTime(0.0001, at + 0.12);
+      osc.connect(g);
+      g.connect(panner);
+      osc.start(at);
+      osc.stop(at + 0.15);
+    }
+  }
+
+  setComparing(on) {
+    this.comparing = Boolean(on);
+    if (this.ready) this.melodyBus.gain.setTargetAtTime(this.comparing ? 0.25 : 1, this.now, 0.2);
   }
 
   setEnabled(key, on) {
@@ -606,19 +852,29 @@ export class SignalAudio {
     return cache[key];
   }
 
-  // Semitone offset for the current place, from its 1985-2025 mean temperature.
+  // Semitone offset for the current place: places are ranked by their
+  // 1985-2025 mean temperature and split into six equal groups, coldest group
+  // lowest key, so every key is used by a similar number of places.
   placeTranspose() {
-    const stats = this.region ? this.stats(this.region, 'temperature') : null;
-    if (!stats) return 0;
-    const all = Object.values(this.region.years || {}).map((row) => Number(row?.temperature)).filter(Number.isFinite);
-    const mean = all.reduce((a, b) => a + b, 0) / all.length;
-    const k = absoluteNorm('temperature', mean);
-    return KEY_OFFSETS[Math.min(KEY_OFFSETS.length - 1, Math.floor(k * KEY_OFFSETS.length))];
+    if (!this.region) return 0;
+    if (!this.keyByRegion) {
+      const meanTemp = (region) => {
+        const values = Object.values(region.years || {}).map((row) => Number(row?.temperature)).filter(Number.isFinite);
+        return values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0;
+      };
+      const ranked = [...REGIONS].sort((x, y) => meanTemp(x) - meanTemp(y));
+      this.keyByRegion = new Map(ranked.map((region, i) => [
+        region.id,
+        KEY_OFFSETS[Math.min(KEY_OFFSETS.length - 1, Math.floor((i / ranked.length) * KEY_OFFSETS.length))]
+      ]));
+    }
+    return this.keyByRegion.get(this.region.id) ?? 0;
   }
 
   readValues() {
     const norms = {};
     this.keyRatio = Math.pow(2, this.placeTranspose() / 12);
+    this.climate = climateOf(this.region);
     this.changes = {};
     for (const signal of SIGNALS) {
       const row = this.region && this.isAvailable(signal.key) ? this.region.years[this.year] : null;
@@ -646,11 +902,15 @@ export class SignalAudio {
     if (!this.ready) return;
     const n = this.norms;
     const on = (key) => this.enabled.has(key) && n[key] !== null && n[key] !== undefined;
-    const glide = 0.45;
+    // ~1 s glides: a year change evolves rather than switching. A new place
+    // snaps in at once so nothing of the previous place hangs over it.
+    const snap = this.snapNext;
+    this.snapNext = false;
+    const glide = snap ? 0.02 : 0.33;
     const key = this.keyRatio || 1;
 
     // The place's key moves the whole harmony (pad voices keep their chord).
-    PAD_BASE.forEach((freq, i) => this.padVoices[i]?.frequency.setTargetAtTime(freq * key, now, 0.8));
+    this.setPadChord(now, snap ? 0.02 : 0.8);
 
     // Temperature -> melody note, snapped to A-minor pentatonic (A3-E5) so it
     // always agrees with the pad.
@@ -660,15 +920,19 @@ export class SignalAudio {
       // follows the year-to-year change, so warming years climb the scale.
       const change = this.changes?.temperature ?? temp;
       const step = LEAD_SCALE[Math.round(change * (LEAD_SCALE.length - 1))];
-      this.lead.frequency.setTargetAtTime(220 * key * Math.pow(2, step / 12), now, glide);
+      this.lead.frequency.setTargetAtTime(220 * this.melodyKeyRatio() * Math.pow(2, step / 12), now, glide);
     }
-    this.leadGain.gain.setTargetAtTime(temp === null ? 0 : db(-23), now, glide);
+    // The held tone becomes a quiet guide drone; the melody notes carry the tune.
+    this.leadGain.gain.setTargetAtTime(temp === null ? 0 : db(-36), now, glide);
+    this.melodyTarget = temp === null ? null : Math.round((this.changes?.temperature ?? temp) * (LEAD_SCALE.length - 1));
+    this.melodyBus.gain.setTargetAtTime(temp === null ? 0 : this.comparing ? 0.25 : 1, now, 0.2);
 
     // Cloud cover -> pad brightness (clear sky = bright, log-scaled cutoff
     // 350-2400 Hz) and a soft haze band (700-1500 Hz) panned left.
     const cloud = on('cloud') ? n.cloud : null;
     this.padFilter.frequency.setTargetAtTime(logMap(cloud === null ? 0.5 : 1 - cloud, 350, 2400), now, glide);
-    this.padGain.gain.setTargetAtTime(cloud === null ? 0 : 0.55, now, glide);
+    const profile = this.profile();
+    this.padGain.gain.setTargetAtTime(cloud === null ? 0 : profile.padLevel, now, glide);
     this.seaFilter.frequency.setTargetAtTime(logMap(cloud ?? 0, 700, 1500), now, glide);
     this.seaGain.gain.setTargetAtTime(cloud === null ? 0 : dbRange(cloud, -44, -26), now, glide);
 
@@ -684,7 +948,24 @@ export class SignalAudio {
 
     // Humidity -> reverb depth (damp air, wetter space).
     const humidity = on('humidity') ? n.humidity : null;
-    this.reverbWet.gain.setTargetAtTime(humidity === null ? 0.05 : 0.06 + humidity * 0.5, now, 0.5);
+    this.reverbWet.gain.setTargetAtTime(Math.min(0.75, (humidity === null ? 0.05 : 0.06 + humidity * 0.5) * profile.reverbScale), now, 0.5);
+
+    // Climate texture: a steady wind floor (desert, cold), an insect shimmer
+    // (rainforest) or a slow surf swell (coast). Only while a place is active.
+    const tex = this.region ? profile.texture : null;
+    // On a place change the value is SET, not glided: any later glide then
+    // starts from the new place's level, so nothing of the old place lingers.
+    const move = (param, value, tau) => {
+      if (snap) {
+        param.cancelScheduledValues(now);
+        param.setValueAtTime(value, now);
+      } else {
+        param.setTargetAtTime(value, now, tau);
+      }
+    };
+    move(this.windFloor.gain, tex === 'wind' ? db(this.climate === 'cold' ? -32 : -36) : 0, 1);
+    move(this.insectGain.gain, tex === 'insects' ? db(-40) : 0, 1);
+    move(this.waveGain.gain, tex === 'waves' ? db(-30) : 0, 1);
 
     // CO2 (global) -> detune of pad and melody, 0-22 cents.
     const carbon = on('carbon') ? n.carbon : null;
@@ -694,13 +975,170 @@ export class SignalAudio {
 
     // Event layers, as random (Poisson) arrivals per second:
     // rain drops up to ~2.3/s, sunlight chimes up to ~1/s.
-    this.rates.rain = on('rain') ? 0.1 + n.rain * 2.2 : 0;
+    // Record-driest year: the rain almost stops. Record-wettest: it pours.
+    const recordRain = this.records?.driest ? 0.12 : this.records?.wettest ? 1.6 : 1;
+    this.rates.rain = on('rain') ? (0.1 + n.rain * 2.2) * profile.rainScale * recordRain : 0;
     this.rates.lights = on('sunlight') ? 0.08 + n.sunlight * 0.9 : 0;
     this.rates.disasters = 0;
 
     this.rainBus.gain.setTargetAtTime(on('rain') ? 0.55 : 0, now, 0.2);
     this.lightsBus.gain.setTargetAtTime(on('sunlight') ? 0.45 : 0, now, 0.2);
     this.hitBus.gain.setTargetAtTime(0, now, 0.2);
+  }
+
+  melodyKeyRatio() {
+    return this.keyRatio || 1;
+  }
+
+  currentChord() {
+    return CHORDS[this.chordIndex % CHORDS.length];
+  }
+
+  setPadChord(now, glide) {
+    const key = this.keyRatio || 1;
+    this.currentChord().forEach((semis, i) => {
+      const param = this.padVoices[i]?.frequency;
+      if (!param) return;
+      const value = 110 * key * Math.pow(2, semis / 12);
+      if (glide <= 0.02) {
+        param.cancelScheduledValues(now);
+        param.setValueAtTime(value, now);
+      } else {
+        param.setTargetAtTime(value, now, glide);
+      }
+    });
+  }
+
+  // A chord tone of the current chord, in the octave above `base` Hz.
+  chordToneHz(base) {
+    const semis = pitchClass(pick(this.currentChord()));
+    return base * (this.keyRatio || 1) * Math.pow(2, semis / 12);
+  }
+
+  // Next melody step: a small move around the temperature target, preferring
+  // notes that belong to the chord being held.
+  nextMelodyStep() {
+    const target = this.melodyTarget ?? 4;
+    const from = this.melodyStep ?? target;
+    const chordPCs = new Set(this.currentChord().map(pitchClass));
+    const recent = this.melodyHistory || [];
+    const candidates = [];
+    for (let i = Math.max(0, target - 3); i <= Math.min(LEAD_SCALE.length - 1, target + 3); i++) {
+      let weight = 1 / (1 + Math.abs(i - from)) + 1.2 / (1 + Math.abs(i - target));
+      if (chordPCs.has(pitchClass(LEAD_SCALE[i]))) weight *= 2.2;
+      // Never the same note three times running.
+      if (recent.length >= 2 && recent[0] === i && recent[1] === i) weight = 0;
+      candidates.push([i, weight]);
+    }
+    let roll = Math.random() * candidates.reduce((a, [, w]) => a + w, 0);
+    for (const [i, w] of candidates) {
+      roll -= w;
+      if (roll <= 0) return i;
+    }
+    return target;
+  }
+
+  // Soft plucked-flute note: sine body with a quiet octave, slow attack, long tail.
+  profile() {
+    return CLIMATES[this.climate] || CLIMATES.temperate;
+  }
+
+  // One melody note in the climate's instrument:
+  //   pluck (desert)  - bright attack, quick fade, like an oud
+  //   marimba (rainforest) - wooden strike with a 4x partial, short
+  //   glass (cold)    - bell with inharmonic partials, long ring
+  //   flute (coast)   - soft attack with vibrato
+  //   keys (temperate) - warm electric-piano tone
+  spawnMelody(time) {
+    const ctx = this.ctx;
+    const step = this.nextMelodyStep();
+    this.melodyStep = step;
+    this.melodyHistory = [step, ...(this.melodyHistory || [])].slice(0, 2);
+    const freq = 220 * this.melodyKeyRatio() * Math.pow(2, LEAD_SCALE[step] / 12);
+    const accent = Math.random() < 0.25 ? 1.25 : 1;
+    const kind = this.profile().melody;
+    const voice = {
+      pluck: { partials: [[1, 'triangle', 1], [2, 'sine', 0.35], [3, 'sine', 0.15]], attack: 0.004, decay: 0.7, level: -22, cutoff: 3000 },
+      marimba: { partials: [[1, 'sine', 1], [4, 'sine', 0.22], [10, 'sine', 0.05]], attack: 0.003, decay: 0.5, level: -22, cutoff: 5000 },
+      glass: { partials: [[1, 'sine', 1], [2.76, 'sine', 0.3], [5.4, 'sine', 0.12]], attack: 0.01, decay: 3.2, level: -25, cutoff: 6000 },
+      flute: { partials: [[1, 'sine', 1], [2, 'sine', 0.12]], attack: 0.12, decay: 1.6, level: -24, cutoff: 2400, vibrato: true },
+      keys: { partials: [[1, 'sine', 1], [2, 'triangle', 0.18]], attack: 0.06, decay: 1.9, level: -24, cutoff: 2200 }
+    }[kind];
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.0001, time);
+    gain.gain.linearRampToValueAtTime(db(voice.level) * accent, time + voice.attack);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + voice.decay);
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(voice.cutoff, time);
+    filter.connect(gain);
+    let vibrato = null;
+    if (voice.vibrato) {
+      vibrato = ctx.createOscillator();
+      vibrato.frequency.value = 5;
+      const depth = ctx.createGain();
+      depth.gain.value = 7; // cents
+      vibrato.connect(depth);
+      vibrato.start(time);
+      vibrato.stop(time + voice.decay + 0.05);
+      vibrato.depth = depth;
+    }
+    for (const [ratio, type, level] of voice.partials) {
+      const osc = ctx.createOscillator();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq * ratio, time);
+      osc.detune.setValueAtTime(this.lead.detune.value, time);
+      if (vibrato) vibrato.depth.connect(osc.detune);
+      const g = ctx.createGain();
+      g.gain.value = level;
+      osc.connect(g);
+      g.connect(filter);
+      osc.start(time);
+      osc.stop(time + voice.decay + 0.05);
+    }
+    gain.connect(this.melodyBus);
+  }
+
+  // Trend sweep: the place's 41 yearly temperatures as one quick run of notes,
+  // 1985 on the left to 2025 on the right, pitch from the place's own coldest
+  // (low) to warmest (high) year, so a warming place is heard as a climb.
+  // The record-warm year gets a brighter note. The music dips underneath.
+  playTrendSweep(seconds = 2.6) {
+    if (!this.ready || !this.region || this.ctx.state !== 'running') return 0;
+    const years = Object.keys(this.region.years).map(Number).sort((a, b) => a - b);
+    const temps = years.map((y) => Number(this.region.years[y]?.temperature));
+    const valid = temps.filter(Number.isFinite);
+    if (valid.length < 2) return 0;
+    const lo = Math.min(...valid);
+    const hi = Math.max(...valid);
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime + 0.25;
+    const step = seconds / years.length;
+    this.musicDuck.gain.cancelScheduledValues(ctx.currentTime);
+    this.musicDuck.gain.setTargetAtTime(0.22, ctx.currentTime, 0.08);
+    this.musicDuck.gain.setTargetAtTime(1, t0 + seconds + 0.3, 0.4);
+    temps.forEach((temp, i) => {
+      if (!Number.isFinite(temp)) return;
+      const n = hi - lo > 1e-9 ? (temp - lo) / (hi - lo) : 0.5;
+      const time = t0 + i * step;
+      const record = temp === hi;
+      const osc = ctx.createOscillator();
+      osc.type = record ? 'triangle' : 'sine';
+      osc.frequency.setValueAtTime(330 * Math.pow(2, 1.5 * n), time); // 330-933 Hz
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, time);
+      gain.gain.linearRampToValueAtTime(record ? 0.16 : 0.09, time + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + Math.max(0.09, step * 1.6) + (record ? 0.25 : 0));
+      const pan = ctx.createStereoPanner();
+      pan.pan.setValueAtTime(-0.8 + 1.6 * (i / (years.length - 1)), time);
+      osc.connect(gain);
+      gain.connect(pan);
+      pan.connect(this.compressor);
+      osc.start(time);
+      osc.stop(time + step * 1.6 + 0.4);
+    });
+    this.sweptRegion = this.region.id;
+    return seconds + 0.6;
   }
 
   async togglePlay() {
@@ -723,6 +1161,12 @@ export class SignalAudio {
   }
 
   fadeIn(seconds = 1.6) {
+    if (this.region && this.sweptRegion !== this.region.id) {
+      const region = this.region.id;
+      window.setTimeout(() => {
+        if (this.region?.id === region && this.ctx?.state === 'running') this.playTrendSweep();
+      }, 900);
+    }
     if (this.ready && this.ctx.state !== 'closed' && this.region) {
       const now = this.now;
       this.master.gain.cancelScheduledValues(now);
@@ -781,6 +1225,26 @@ export class SignalAudio {
     if (!this.ready) return;
     const now = this.now;
 
+    // Chord progression
+    if (this.nextChord < now - 1) this.nextChord = now + CHORD_SECONDS;
+    if (now >= this.nextChord) {
+      this.chordIndex = (this.chordIndex + 1) % CHORDS.length;
+      this.setPadChord(now, 1.5);
+      this.nextChord += CHORD_SECONDS;
+    }
+
+    // Melody notes
+    if (this.melodyTarget !== null) {
+      if (this.nextMelody < now - 0.4) this.nextMelody = now + 0.1;
+      let guard = 0;
+      while (this.nextMelody < now + 0.12 && guard < 3) {
+        this.spawnMelody(this.nextMelody);
+        const profile = this.profile();
+        this.nextMelody += (60 / profile.bpm) * pick(profile.gaps);
+        guard += 1;
+      }
+    }
+
     // Rain: Gentle water droplet plucks
     if (this.rates.rain > 0) {
       if (this.nextRain < now - 0.4) this.nextRain = now + 0.02;
@@ -827,10 +1291,8 @@ export class SignalAudio {
     const osc = ctx.createOscillator();
     const filter = ctx.createBiquadFilter();
     const gain = ctx.createGain();
-    const degree = PENTATONIC[Math.floor(Math.random() * PENTATONIC.length)];
-
-    // Drops sit above the melody (440-880 Hz) so they never mask it.
-    const baseFreq = 440 * (this.keyRatio || 1) * Math.pow(2, degree / 12);
+    // Drops use a tone of the current chord, above the melody (440-880 Hz).
+    const baseFreq = this.chordToneHz(this.climate === 'cold' ? 1320 : 440);
     osc.type = 'sine';
     osc.frequency.setValueAtTime(baseFreq * 1.25, time);
     osc.frequency.exponentialRampToValueAtTime(baseFreq, time + 0.045);
@@ -859,13 +1321,11 @@ export class SignalAudio {
     const osc = ctx.createOscillator();
     const filter = ctx.createBiquadFilter();
     const gain = ctx.createGain();
-    // A random note rather than stepping up the scale, so it never ticks.
-    const degree = PENTATONIC[Math.floor(Math.random() * PENTATONIC.length)];
 
     // Sunlight chimes: A-minor pentatonic around A5, the top band of the mix,
     // rung like a soft glass bell at a random stereo position.
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(880 * (this.keyRatio || 1) * Math.pow(2, degree / 12), time);
+    osc.frequency.setValueAtTime(this.chordToneHz(880), time);
 
     filter.type = 'lowpass';
     filter.frequency.setValueAtTime(3200, time);

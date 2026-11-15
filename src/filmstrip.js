@@ -78,14 +78,13 @@ export function frameLabel(index, preset = FILMSTRIP) {
   return `${MONTHS[month - 1]} ${year}`;
 }
 
-// Feature windows. A value at or beyond an edge is 0 or 1; these are tuned
-// against the real sheet so a monsoon frame and a clear January frame sit at
-// opposite ends of every bar.
+// Fallback feature windows, used only when a sheet is too uniform to learn its
+// own (see learnRanges). A value at or beyond an edge is 0 or 1.
 export const FEATURE_RANGES = Object.freeze({
   lum: [55, 210],
   cloud: [0, 1],
-  green: [-2, 30],
-  edge: [2, 42],
+  green: [-0.1, 0.3],
+  edge: [8, 120],
   water: [0, 0.4],
   contrast: [2, 60]
 });
@@ -103,78 +102,113 @@ function loadImage(src) {
   });
 }
 
-// Per cell, sampled on a 2px grid: enough signal for four stable numbers, four
-// times cheaper than touching all 8.5M pixels of the sheet.
+// Per cell, sampled on a 2 px grid.
+//   brightness  Rec.709 luma L = 0.2126 R + 0.7152 G + 0.0722 B
+//   greenness   VARI = (G - R) / (G + R - B), the visible-band vegetation
+//               index; steadier under changing light than G - R
+//   cloud/haze  bright AND grey: L > 165 and saturation (max-min)/max < 0.2,
+//               so thin haze counts, not only pure white cloud
+//   water       clearly blue: B > G + 8 and B > R + 14
+//   detail      Sobel gradient magnitude sqrt(Gx^2 + Gy^2) on luma
+//   contrast    standard deviation of luma
 function measureCell(data, cell, step) {
-  const last = cell - 1;
-  let sumR = 0;
-  let sumG = 0;
-  let sumB = 0;
+  const lum = new Float32Array(cell * cell);
+  for (let i = 0, o = 0; i < lum.length; i += 1, o += 4) {
+    lum[i] = 0.2126 * data[o] + 0.7152 * data[o + 1] + 0.0722 * data[o + 2];
+  }
+
   let sumL = 0;
   let sumL2 = 0;
+  let sumVari = 0;
+  let nVari = 0;
   let cloud = 0;
   let water = 0;
   let edge = 0;
+  let nEdge = 0;
   let n = 0;
 
   for (let y = 0; y < cell; y += step) {
-    const row = y * cell;
-    const rowDown = Math.min(y + step, last) * cell;
     for (let x = 0; x < cell; x += step) {
-      const o = (row + x) * 4;
+      const i = y * cell + x;
+      const o = i * 4;
       const r = data[o];
       const g = data[o + 1];
       const b = data[o + 2];
-      const l = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-
-      sumR += r;
-      sumG += g;
-      sumB += b;
+      const l = lum[i];
       sumL += l;
       sumL2 += l * l;
 
-      // MODIS clouds are bright and desaturated; few land surfaces here are.
-      if (r > 205 && g > 205 && b > 205) cloud += 1;
-      // Sea and river sediment both read blue against vegetation.
+      const denom = g + r - b;
+      if (denom > 12) {
+        sumVari += (g - r) / denom;
+        nVari += 1;
+      }
+
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      const saturation = max > 0 ? (max - min) / max : 0;
+      if (l > 165 && saturation < 0.2) cloud += 1;
       if (b > g + 8 && b > r + 14) water += 1;
 
-      const xr = Math.min(x + step, last);
-      const oR = (row + xr) * 4;
-      const oD = (rowDown + x) * 4;
-      const lR = 0.2126 * data[oR] + 0.7152 * data[oR + 1] + 0.0722 * data[oR + 2];
-      const lD = 0.2126 * data[oD] + 0.7152 * data[oD + 1] + 0.0722 * data[oD + 2];
-      edge += Math.abs(l - lR) + Math.abs(l - lD);
-
+      if (x > 0 && y > 0 && x < cell - 1 && y < cell - 1) {
+        const a = lum[i - cell - 1], bb = lum[i - cell], c = lum[i - cell + 1];
+        const d = lum[i - 1], f = lum[i + 1];
+        const gg = lum[i + cell - 1], h = lum[i + cell], k = lum[i + cell + 1];
+        const gx = (c + 2 * f + k) - (a + 2 * d + gg);
+        const gy = (gg + 2 * h + k) - (a + 2 * bb + c);
+        edge += Math.sqrt(gx * gx + gy * gy);
+        nEdge += 1;
+      }
       n += 1;
     }
   }
 
   const meanLum = sumL / n;
   const variance = Math.max(0, sumL2 / n - meanLum * meanLum);
-
   return {
     meanLum,
     cloudPct: cloud / n,
-    greenness: (sumG - sumR) / n,
-    edgeMean: edge / n,
+    greenness: nVari ? sumVari / nVari : 0,
+    edgeMean: nEdge ? edge / nEdge : 0,
     waterPct: water / n,
     contrast: Math.sqrt(variance)
   };
 }
 
-export function toFeatures(raw) {
+const RAW_KEYS = { lum: 'meanLum', cloud: 'cloudPct', green: 'greenness', edge: 'edgeMean', water: 'waterPct', contrast: 'contrast' };
+
+const isBlank = (raw) => raw.contrast < 0.5 && (raw.meanLum > 250 || raw.meanLum < 5);
+
+// Windows learned from this sheet: the 5th to 95th percentile of each feature
+// over its real (non-blank) frames, so every filmstrip uses its full range
+// instead of numbers tuned to one sheet. Falls back to FEATURE_RANGES when a
+// feature barely varies.
+export function learnRanges(raws) {
+  const real = raws.filter((raw) => !isBlank(raw));
+  const ranges = {};
+  for (const [key, rawKey] of Object.entries(RAW_KEYS)) {
+    const values = real.map((raw) => raw[rawKey]).sort((a, b) => a - b);
+    const at = (q) => values[Math.min(values.length - 1, Math.max(0, Math.round(q * (values.length - 1))))];
+    const lo = values.length ? at(0.05) : NaN;
+    const hi = values.length ? at(0.95) : NaN;
+    const fallback = FEATURE_RANGES[key];
+    ranges[key] = Number.isFinite(lo) && hi - lo > (fallback[1] - fallback[0]) * 0.05 ? [lo, hi] : fallback;
+  }
+  return ranges;
+}
+
+export function toFeatures(raw, ranges = FEATURE_RANGES) {
   // GIBS serves a uniform black tile when a day has no observation. Treat it as
   // missing data, not as a very dark scene, so the synth never invents a sound
   // for a frame that contains no measurement.
-  const blank = raw.contrast < 0.5 && (raw.meanLum > 250 || raw.meanLum < 5);
   return {
-    lum: norm(raw.meanLum, FEATURE_RANGES.lum),
-    cloud: norm(raw.cloudPct, FEATURE_RANGES.cloud),
-    green: norm(raw.greenness, FEATURE_RANGES.green),
-    edge: norm(raw.edgeMean, FEATURE_RANGES.edge),
-    water: norm(raw.waterPct, FEATURE_RANGES.water),
-    contrast: norm(raw.contrast, FEATURE_RANGES.contrast),
-    blank,
+    lum: norm(raw.meanLum, ranges.lum),
+    cloud: norm(raw.cloudPct, ranges.cloud),
+    green: norm(raw.greenness, ranges.green),
+    edge: norm(raw.edgeMean, ranges.edge),
+    water: norm(raw.waterPct, ranges.water),
+    contrast: norm(raw.contrast, ranges.contrast),
+    blank: isBlank(raw),
     raw
   };
 }
@@ -192,15 +226,17 @@ export async function loadFilmstrip(presetKey = 'coxs_bazar') {
   sheetCtx.drawImage(image, 0, 0, sheet.width, sheet.height);
 
   const step = 2;
-  const perFrame = [];
+  const raws = [];
   const started = performance.now();
 
   for (let i = 0; i < frames; i += 1) {
     const col = i % cols;
     const row = Math.floor(i / cols);
     const data = sheetCtx.getImageData(col * cell, row * cell, cell, cell).data;
-    perFrame.push(toFeatures(measureCell(data, cell, step)));
+    raws.push(measureCell(data, cell, step));
   }
+  const ranges = learnRanges(raws);
+  const perFrame = raws.map((raw) => toFeatures(raw, ranges));
 
   const elapsed = Math.round(performance.now() - started);
 
@@ -209,6 +245,7 @@ export async function loadFilmstrip(presetKey = 'coxs_bazar') {
     sheet,
     preset,
     frames: perFrame,
+    ranges,
     analysisMs: elapsed,
     draw(ctx, index, size) {
       const col = index % cols;

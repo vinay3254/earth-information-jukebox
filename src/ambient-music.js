@@ -15,7 +15,7 @@
 // It owns its own AudioContext and does not touch the sonification engine.
 
 const FULL_LEVEL = 0.16;
-const DUCKED_LEVEL = 0.03; // faint while a place is open
+const DUCKED_LEVEL = 0.015; // faint while a place is open
 const CHORD_SECONDS = 14;
 const GLIDE = 2.4;
 
@@ -187,11 +187,19 @@ class AmbientMusic {
   scheduleChords() {
     this.chordTimer = window.setInterval(() => {
       this.chordIndex = (this.chordIndex + 1) % CHORDS.length;
-      const now = this.ctx.currentTime;
-      CHORDS[this.chordIndex].forEach((freq, i) => {
-        for (const osc of this.voices[i].oscs) osc.frequency.setTargetAtTime(freq, now, GLIDE);
-      });
+      this.retune(GLIDE);
     }, CHORD_SECONDS * 1000);
+  }
+
+  // While a place is open, play in that place's key so the faint music never
+  // clashes with the sonification.
+  retune(glide) {
+    if (!this.ctx) return;
+    const key = this.ducked ? window.__hearth?.audio?.keyRatio || 1 : 1;
+    const now = this.ctx.currentTime;
+    CHORDS[this.chordIndex].forEach((freq, i) => {
+      for (const osc of this.voices[i].oscs) osc.frequency.setTargetAtTime(freq * key, now, glide);
+    });
   }
 
   syncDuck() {
@@ -199,11 +207,13 @@ class AmbientMusic {
     if (ducked === this.ducked) return;
     this.ducked = ducked;
     this.applyLevel(ducked ? 1.6 : 2.8);
+    window.setTimeout(() => this.retune(1.5), 400);
   }
 
   followAppVolume(initial = false) {
     const state = window.__hearth?.audio?.state;
-    const scale = state ? (state.muted ? 0 : Number(state.volume ?? 1)) : 1;
+    const duck = window.__hearth?.audio?.voiceDuck ? 0.35 : 1;
+    const scale = (state ? (state.muted ? 0 : Number(state.volume ?? 1)) : 1) * duck;
     if (!initial && Math.abs(scale - this.userScale) < 0.005) return;
     this.userScale = scale;
     this.applyLevel(initial ? 6 : 0.3);

@@ -3,6 +3,8 @@ import { REGIONS, COUNTRIES, SIGNALS, YEAR_RANGE, COMPARISON_PAIRS } from './reg
 import { REGION_IMAGERY } from './region-imagery.js';
 import { REGION_ENVIRONMENT_AUDIO } from './signal-audio.js';
 import { playEarcon, triggerHaptic } from './earcons.js';
+import { ExpressiveVoice, isNaturalVoice } from './voice.js';
+import { CLIMATES, climateOf } from './signal-audio.js';
 import { AudioExporter } from './audio-export.js';
 
 const countryById = Object.fromEntries(COUNTRIES.map((country) => [country.id, country]));
@@ -154,6 +156,10 @@ export class UI {
     this.compareYearB = 2025;
     this.speechEnabled = false;
     this.speech = window.speechSynthesis || null;
+    // Expressive delivery: best voice, a tone per sentence, music ducked while speaking.
+    this.voice = new ExpressiveVoice(this.speech);
+    this.voice.onStart = () => window.__hearth?.audio?.setVoiceDuck?.(true);
+    this.voice.onEnd = () => window.__hearth?.audio?.setVoiceDuck?.(false);
     this.speechUtterance = null;
     this.speechTimer = null;
     if (!this.speech) {
@@ -205,6 +211,7 @@ export class UI {
     this.renderPlaces();
     this.bind();
     this.bindViewport();
+    this.initVoiceGuideDefault();
     this.setView(this.sheetView);
     this.setSheetState(this.el.panel.dataset.sheet || 'peek', { animate: false });
     this.setAudioState(this.audioState);
@@ -727,40 +734,178 @@ export class UI {
   }
 
   cancelSpeech() {
-    if (this.speech) this.speech.cancel();
+    this.voice?.cancel();
     this.speechUtterance = null;
   }
 
-  speak(text) {
+  // `mood` (calm, warm, concern, hopeful, emphasis) forces one delivery;
+  // otherwise each sentence gets a tone from its own words.
+  speak(text, mood = null) {
     if (!this.speech || !text) return;
-    this.speech.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
-    utterance.rate = this.speechRate || 1.0;
-    utterance.pitch = 1;
-    if (this.selectedVoice) {
-      utterance.voice = this.selectedVoice;
-    }
-    this.speechUtterance = utterance;
-    this.speech.speak(utterance);
+    this.voice.say(text, { rate: this.speechRate || 1.0, voice: this.selectedVoice, mood });
   }
 
+  // A short spoken story of the selected year, from the real data, compared
+  // with the first year (or year A while comparing). Units are spoken in full.
+  summaryText() {
+    const region = this.activeRegion;
+    const year = Number(this.activeYear);
+    const row = region?.years?.[year];
+    if (!row) return '';
+    const baseYear = this.compareTimer ? this.compareYearA : this.firstAvailableYear(region);
+    const base = region.years[baseYear] || {};
+    const all = Object.values(region.years);
+    const isMax = (key) => row[key] != null && all.every((r) => r[key] == null || r[key] <= row[key]);
+    const isMin = (key) => row[key] != null && all.every((r) => r[key] == null || r[key] >= row[key]);
+    const out = [`${region.name}, ${year}.`];
+
+    if (row.temperature != null) {
+      const diff = base.temperature != null ? row.temperature - base.temperature : 0;
+      let line = `It averaged ${row.temperature.toFixed(1)} degrees Celsius`;
+      if (year !== baseYear && Math.abs(diff) >= 0.1) line += `, ${Math.abs(diff).toFixed(1)} degrees ${diff > 0 ? 'warmer' : 'cooler'} than ${baseYear}`;
+      out.push(`${line}${isMax('temperature') ? ', the hottest year in the record here' : ''}.`);
+    }
+    if (row.rain != null) {
+      let line = `Rain totalled ${Math.round(row.rain).toLocaleString('en-US')} millimetres`;
+      if (year !== baseYear && base.rain) {
+        const pct = Math.round(((row.rain - base.rain) / base.rain) * 100);
+        if (Math.abs(pct) >= 5) line += `, ${Math.abs(pct)} percent ${pct > 0 ? 'more' : 'less'} than ${baseYear}`;
+      }
+      if (isMin('rain')) line += '. That makes it the driest year in the record';
+      else if (isMax('rain')) line += '. That makes it the wettest year in the record';
+      out.push(`${line}.`);
+    }
+    if (row.soil != null && isMin('soil')) out.push('The soil was the driest it has been in forty years.');
+    if (row.carbon != null && year !== baseYear && base.carbon != null) {
+      out.push(`Global carbon dioxide stood at ${Math.round(row.carbon)} parts per million, up from ${Math.round(base.carbon)}.`);
+    }
+    return out.join(' ');
+  }
+
+  // Spoken anchors: short facts that tell a listener where and when they are,
+  // while the music carries the change.
+  //   place: "Amazon Rainforest Heart. Tropical rainforest. About 2.2 degrees
+  //           warmer than in the 1980s."
+  //   year:  "2015: 28.6 degrees, 1,168 millimetres of rain, the driest year
+  //           in the record."
+  placeAnchorText() {
+    const region = this.activeRegion;
+    if (!region) return '';
+    const label = CLIMATES[climateOf(region)]?.label || '';
+    const years = Object.keys(region.years).map(Number).sort((a, b) => a - b);
+    const avg = (list) => {
+      const v = list.map((y) => Number(region.years[y]?.temperature)).filter(Number.isFinite);
+      return v.length ? v.reduce((a, b) => a + b, 0) / v.length : NaN;
+    };
+    // First five years against the last five: robust to one odd year.
+    const change = avg(years.slice(-5)) - avg(years.slice(0, 5));
+    let trend = '';
+    if (Number.isFinite(change)) {
+      trend = Math.abs(change) < 0.2
+        ? 'Temperatures have held steady since the 1980s.'
+        : `About ${Math.abs(change).toFixed(1)} degrees ${change > 0 ? 'warmer' : 'cooler'} than in the 1980s.`;
+    }
+    return `${region.name}. ${label}. ${trend}`.trim();
+  }
+
+  // "hottest and driest year in the record" for a year that sets records here.
+  recordPhrase(year) {
+    const region = this.activeRegion;
+    const row = region?.years?.[year];
+    if (!row) return '';
+    const all = Object.values(region.years);
+    const isMax = (key) => row[key] != null && all.every((r) => r[key] == null || r[key] <= row[key]);
+    const isMin = (key) => row[key] != null && all.every((r) => r[key] == null || r[key] >= row[key]);
+    const records = [];
+    if (isMax('temperature')) records.push('hottest');
+    if (isMin('rain')) records.push('driest');
+    else if (isMax('rain')) records.push('wettest');
+    return records.length ? `The ${records.join(' and ')} year in the record` : '';
+  }
+
+  yearAnchorText() {
+    const region = this.activeRegion;
+    const year = Number(this.activeYear);
+    const row = region?.years?.[year];
+    if (!row) return '';
+    const all = Object.values(region.years);
+    const isMax = (key) => row[key] != null && all.every((r) => r[key] == null || r[key] <= row[key]);
+    const isMin = (key) => row[key] != null && all.every((r) => r[key] == null || r[key] >= row[key]);
+    const parts = [];
+    if (row.temperature != null) parts.push(`${row.temperature.toFixed(1)} degrees`);
+    if (row.rain != null) parts.push(`${Math.round(row.rain).toLocaleString('en-US')} millimetres of rain`);
+    // Records merge into one phrase: "the hottest and driest year in the record".
+    const records = [];
+    if (isMax('temperature')) records.push('hottest');
+    if (isMin('rain')) records.push('driest');
+    else if (isMax('rain')) records.push('wettest');
+    if (records.length) parts.push(`the ${records.join(' and ')} year in the record`);
+    return `${year}: ${parts.join(', ')}.`;
+  }
+
+  // On choosing a place: where you are and its long-term trend.
   speakSummary() {
     if (!this.speechEnabled || !this.activeRegion) return;
-    const region = this.activeRegion;
-    const parts = [`${region.name}. Year ${this.activeYear}.`];
-    const changes = this.topChanges(2);
-    if (changes.length) parts.push(`Largest changes: ${changes.join('; ')}.`);
-    this.speak(parts.join(' '));
+    this.speak(this.placeAnchorText());
   }
 
+  // On changing year: that year's facts.
   scheduleSpeech() {
     if (!this.speechEnabled) return;
     window.clearTimeout(this.speechTimer);
-    this.speechTimer = window.setTimeout(() => this.speakSummary(), 350);
+    this.speechTimer = window.setTimeout(() => {
+      if (this.speechEnabled && this.activeRegion) this.speak(this.yearAnchorText());
+    }, 350);
   }
 
-  setSpeechEnabled(on) {
+  // Replays the 41-year temperature run (key R or the jukebox trend button).
+  playTrend() {
+    const audio = window.__hearth?.audio;
+    if (!audio || !this.activeRegion) return;
+    if (this.speechEnabled) {
+      this.speak('Temperature trend, 1985 to 2025.');
+      window.setTimeout(() => audio.playTrendSweep(), 2000);
+    } else {
+      audio.playTrendSweep();
+    }
+    this.announceSR('Playing the temperature trend, 1985 to 2025');
+  }
+
+  // The voice guide turns itself on the first time someone uses the keyboard
+  // to get around (Tab, arrows, Enter, Space, number keys), unless they have
+  // already chosen on or off. Someone who cannot see the screen then hears
+  // where they are without first having to know about the V key. The choice
+  // is remembered; V switches it off.
+  initVoiceGuideDefault() {
+    let saved = null;
+    try {
+      saved = localStorage.getItem('hearth:voiceGuide');
+    } catch (error) {
+      saved = null;
+    }
+    if (saved === '1') this.setSpeechEnabled(true, { quiet: true });
+    if (saved !== null || !this.speech) return;
+    const NAV = /^(Tab|Enter| |ArrowUp|ArrowDown|ArrowLeft|ArrowRight|[1-7])$/;
+    const onKey = (event) => {
+      if (event.ctrlKey || event.metaKey || event.altKey || !NAV.test(event.key)) return;
+      window.removeEventListener('keydown', onKey, true);
+      if (this.speechEnabled || this.voiceGuideChosen) return;
+      this.setSpeechEnabled(true, { quiet: true });
+      this.speak('Voice guide on. I will describe each place and year. Press V to turn me off, or R to hear the temperature trend.', 'warm');
+      this.announceSR('Voice guide enabled. Press V to turn it off.');
+    };
+    window.addEventListener('keydown', onKey, true);
+  }
+
+  setSpeechEnabled(on, { quiet = false, remember = false } = {}) {
+    if (remember) {
+      this.voiceGuideChosen = true;
+      try {
+        localStorage.setItem('hearth:voiceGuide', on ? '1' : '0');
+      } catch (error) {
+        // Storage unavailable: the choice lasts for this visit only.
+      }
+    }
     this.speechEnabled = Boolean(on) && Boolean(this.speech);
     this.el.speakToggle.setAttribute('aria-pressed', String(this.speechEnabled));
     this.el.speakToggle.textContent = this.speechEnabled ? 'Voice guide on' : 'Voice guide';
@@ -769,7 +914,7 @@ export class UI {
       this.cancelSpeech();
       return;
     }
-    this.speakSummary();
+    if (!quiet && this.activeRegion) this.speak(`${this.placeAnchorText()} ${this.summaryText()}`);
   }
 
   initVoices() {
@@ -777,12 +922,22 @@ export class UI {
     const populate = () => {
       const voices = this.speech.getVoices() || [];
       if (!this.el.speechVoiceSelect) return;
-      this.el.speechVoiceSelect.innerHTML = '<option value="">Default Voice</option>';
-      for (const voice of voices) {
-        if (!voice.lang.startsWith('en')) continue;
+      const best = this.voice.bestVoice();
+      // No natural (neural) voice here: say how to get one.
+      const hint = document.getElementById('voice-quality-hint');
+      if (hint) hint.hidden = !voices.length || voices.some((voice) => isNaturalVoice(voice));
+      this.el.speechVoiceSelect.innerHTML = '';
+      const auto = document.createElement('option');
+      auto.value = '';
+      auto.textContent = best ? `Best available (${best.name.replace(/^Microsoft\s+/, '')})` : 'Default Voice';
+      this.el.speechVoiceSelect.appendChild(auto);
+      // Natural (neural) voices first, marked with a star.
+      const english = voices.filter((voice) => voice.lang.startsWith('en'))
+        .sort((a, b) => Number(isNaturalVoice(b)) - Number(isNaturalVoice(a)) || a.name.localeCompare(b.name));
+      for (const voice of english) {
         const opt = document.createElement('option');
         opt.value = voice.voiceURI;
-        opt.textContent = `${voice.name} (${voice.lang})`;
+        opt.textContent = `${isNaturalVoice(voice) ? '\u2605 ' : ''}${voice.name} (${voice.lang})`;
         if (voice.voiceURI === this.speechVoiceUri) {
           opt.selected = true;
           this.selectedVoice = voice;
@@ -808,7 +963,7 @@ export class UI {
     localStorage.setItem('hearth:speechVoice', this.speechVoiceUri);
     const voices = this.speech ? this.speech.getVoices() : [];
     this.selectedVoice = voices.find((v) => v.voiceURI === uri) || null;
-    this.speak('Voice profile updated.');
+    this.speak('Hello. This is how I will guide you around the planet.', 'warm');
   }
 
   toggleHighContrast(force) {
@@ -915,7 +1070,6 @@ export class UI {
     let text;
     if (signal.key === 'rain') text = Math.round(value).toLocaleString('en-US');
     else text = Number(value).toFixed(signal.decimals);
-    if (signal.key === 'groundwater' && value > 0) text = `+${text}`;
     return signal.unit ? `${text} ${signal.unit}` : text;
   }
 
@@ -982,7 +1136,9 @@ export class UI {
     this.el.yearInput.value = String(value);
     this.el.yearLabel.textContent = String(value);
     this.renderSignals();
-    this.announceSR(`Year ${value}`);
+    // Screen readers hear the year, plus any record it sets at this place.
+    const recordNote = this.recordPhrase(value);
+    this.announceSR(recordNote ? `Year ${value}. ${recordNote}.` : `Year ${value}`);
     if (this.handlers.onYearChange) this.handlers.onYearChange(value);
     if (!fromCompare) this.scheduleSpeech();
   }
@@ -993,9 +1149,15 @@ export class UI {
     this.el.compareBtn.classList.add('active');
     this.el.compareBtn.textContent = 'Stop compare';
     this.setYear(this.compareYearA, true);
+    // Compare by ear: each switch plays the same phrase, year A on the left
+    // and year B on the right, so the data is the only thing that changes.
+    const audio = window.__hearth?.audio;
+    audio?.setComparing?.(true);
+    audio?.playComparePhrase?.(-0.5);
     this.compareTimer = window.setInterval(() => {
       this.compareIndex = this.compareIndex === 0 ? 1 : 0;
       this.setYear(this.compareIndex === 0 ? this.compareYearA : this.compareYearB, true);
+      audio?.playComparePhrase?.(this.compareIndex === 0 ? -0.5 : 0.5);
     }, 2600);
     this.renderSignals();
   }
@@ -1004,6 +1166,7 @@ export class UI {
     if (this.compareTimer) {
       window.clearInterval(this.compareTimer);
       this.compareTimer = null;
+      window.__hearth?.audio?.setComparing?.(false);
     }
     this.el.compareBtn.classList.remove('active');
     this.syncCompareLabels();
@@ -1131,7 +1294,7 @@ export class UI {
       }
       this.scheduleSpeech();
     });
-    this.el.speakToggle.addEventListener('click', () => this.setSpeechEnabled(!this.speechEnabled));
+    this.el.speakToggle.addEventListener('click', () => this.setSpeechEnabled(!this.speechEnabled, { remember: true }));
 
     if (this.el.tourBtn) {
       this.el.tourBtn.addEventListener('click', () => {
@@ -1282,10 +1445,17 @@ export class UI {
       return;
     }
 
+    // R: Replay the temperature trend sweep
+    if ((event.key === 'r' || event.key === 'R') && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      event.preventDefault();
+      this.playTrend();
+      return;
+    }
+
     // V: Voice Guide Summary
     if ((event.key === 'v' || event.key === 'V') && !event.ctrlKey && !event.metaKey && !event.altKey) {
       event.preventDefault();
-      this.setSpeechEnabled(!this.speechEnabled);
+      this.setSpeechEnabled(!this.speechEnabled, { remember: true });
       this.announceSR(this.speechEnabled ? 'Voice guide enabled' : 'Voice guide disabled');
       return;
     }

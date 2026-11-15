@@ -47,6 +47,7 @@ class Jukebox {
     this.frame = () => this.tick();
 
     this.el.play.addEventListener('click', () => this.togglePlay());
+    document.getElementById('jb-trend')?.addEventListener('click', () => this.app?.ui?.playTrend());
     this.el.prev.addEventListener('click', () => this.step(-1));
     this.el.next.addEventListener('click', () => this.step(1));
     this.el.year.addEventListener('input', () => {

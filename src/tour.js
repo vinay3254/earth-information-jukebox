@@ -1,41 +1,42 @@
 // HEARTH — 2-Minute Guided Audio Story Tour Orchestrator
 // Takes users on an automated narrative flight across 5 key planetary biomes.
 
+// Narratives quote the real NASA POWER annual values in src/regions.js.
 export const TOUR_STOPS = [
   {
     regionId: 'amazon_rainforest',
     year: 1985,
-    compareYear: 2025,
+    compareYear: 2015,
     title: 'Amazon Rainforest, Brazil',
-    narrative: 'Welcome to the HEARTH Planetary Sonification Observatory. We begin over the Amazon Basin, the lungs of Earth. Listen to how dense canopy reverb and lush moisture rings evolve across four decades.'
+    narrative: 'Welcome to the HEARTH Planetary Sonification Observatory. We begin over the Amazon. In 1985 it received about 2,500 millimetres of rain. In the 2015 El Nino drought that fell to about 1,170, soil moisture dropped from 0.84 to 0.58, and the year ran three degrees warmer. Listen for the raindrops thinning and the melody rising.'
   },
   {
     regionId: 'california_wildfires',
     year: 2020,
     compareYear: 2025,
     title: 'California Wildfire Front, USA',
-    narrative: 'Flying north to the California Sierra Nevada. Here, extreme thermal infrared anomalies and low soil moisture trigger crackling wildfire textures and ascending temperature pitch.'
+    narrative: 'Flying north to the Sierra Nevada wildfire front. 2020, a record fire year, was dry: about 350 millimetres of rain, low soil moisture and clearer skies. The sub-bass thins as the soil dries, and the pad brightens as the cloud cover falls.'
   },
   {
     regionId: 'wayanad_landslide',
-    year: 2024,
-    compareYear: 2025,
+    year: 2016,
+    compareYear: 2024,
     title: 'Wayanad Western Ghats, India',
-    narrative: 'Now crossing to Wayanad in the Western Ghats of India. Intense precipitation bursts of over 500 millimeters saturated steep slopes, culminating in historic landslides sonified by deep low-frequency sub-bass.'
+    narrative: 'Now to Wayanad in the Western Ghats of India. 2016 was its driest year here, about 1,030 millimetres. By 2024, the year of the landslides, annual rain had risen to about 1,790 and the soil was near its wettest. Listen for denser rain and a fuller sub-bass.'
   },
   {
     regionId: 'copacabana_beach',
     year: 1985,
-    compareYear: 2025,
+    compareYear: 2014,
     title: 'Copacabana Beach, Rio de Janeiro',
-    narrative: 'Approaching the iconic sands of Copacabana in Rio de Janeiro. Multi-satellite altimetry captures rising ocean sea levels, translated into dynamic ocean surf wash filters.'
+    narrative: 'Approaching Copacabana in Rio de Janeiro. In 2014, during the southeast Brazil water crisis, rain fell to about 710 millimetres, half of the 1985 total. Hear the raindrops grow sparse against the ocean surf.'
   },
   {
     regionId: 'taj_mahal',
     year: 1985,
     compareYear: 2025,
     title: 'Taj Mahal & Yamuna Basin, India',
-    narrative: 'Concluding at the majestic Taj Mahal in Agra, India. Listen to the interplay of Yamuna river basin hydrology and air quality particle density framing this world wonder.'
+    narrative: 'Concluding at the Taj Mahal in Agra. Here 2025 was the wettest year in the record, about 1,070 millimetres, and humidity rose from 44 to 55 percent, so the reverb grows deeper. Meanwhile global carbon dioxide climbed from 346 to 427 parts per million, a slow detune under every place you have heard.'
   }
 ];
 

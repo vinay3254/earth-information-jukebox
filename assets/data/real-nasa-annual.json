@@ -1,5 +1,5 @@
 {
- "retrieved": "2026-11-14T21:30:15.014Z",
+ "retrieved": "2026-11-15T02:21:07.264Z",
  "years": [
   1985,
   2025
@@ -87,7 +87,7 @@
      "WS2M": 5.62,
      "ALLSKY_SFC_SW_DWN": 3.9269,
      "CLOUD_AMT": 72.34,
-     "GWETROOT": null
+     "GWETROOT": 0.73
     },
     "1986": {
      "T2M": 12.33,
@@ -96,7 +96,7 @@
      "WS2M": 5.69,
      "ALLSKY_SFC_SW_DWN": 3.8902,
      "CLOUD_AMT": 73.18,
-     "GWETROOT": null
+     "GWETROOT": 0.68
     },
     "1987": {
      "T2M": 13.09,
@@ -105,7 +105,7 @@
      "WS2M": 5.92,
      "ALLSKY_SFC_SW_DWN": 3.7954,
      "CLOUD_AMT": 73.76,
-     "GWETROOT": null
+     "GWETROOT": 0.65
     },
     "1988": {
      "T2M": 13.32,
@@ -114,7 +114,7 @@
      "WS2M": 6.2,
      "ALLSKY_SFC_SW_DWN": 3.6286,
      "CLOUD_AMT": 77.4,
-     "GWETROOT": null
+     "GWETROOT": 0.75
     },
     "1989": {
      "T2M": 13.76,
@@ -123,7 +123,7 @@
      "WS2M": 5.86,
      "ALLSKY_SFC_SW_DWN": 3.8251,
      "CLOUD_AMT": 73.41,
-     "GWETROOT": null
+     "GWETROOT": 0.75
     },
     "1990": {
      "T2M": 14.62,
@@ -132,7 +132,7 @@
      "WS2M": 5.87,
      "ALLSKY_SFC_SW_DWN": 3.8285,
      "CLOUD_AMT": 70.33,
-     "GWETROOT": null
+     "GWETROOT": 0.69
     },
     "1991": {
      "T2M": 13.82,
@@ -141,7 +141,7 @@
      "WS2M": 5.81,
      "ALLSKY_SFC_SW_DWN": 3.6828,
      "CLOUD_AMT": 71.12,
-     "GWETROOT": null
+     "GWETROOT": 0.78
     },
     "1992": {
      "T2M": 12.92,
@@ -150,7 +150,7 @@
      "WS2M": 5.77,
      "ALLSKY_SFC_SW_DWN": 3.7361,
      "CLOUD_AMT": 72.53,
-     "GWETROOT": null
+     "GWETROOT": 0.77
     },
     "1993": {
      "T2M": 12.98,
@@ -159,7 +159,7 @@
      "WS2M": 6.1,
      "ALLSKY_SFC_SW_DWN": 3.6415,
      "CLOUD_AMT": 75.5,
-     "GWETROOT": null
+     "GWETROOT": 0.78
     },
     "1994": {
      "T2M": 14.17,
@@ -168,7 +168,7 @@
      "WS2M": 5.8,
      "ALLSKY_SFC_SW_DWN": 3.9677,
      "CLOUD_AMT": 71,
-     "GWETROOT": null
+     "GWETROOT": 0.74
     },
     "1995": {
      "T2M": 13.76,
@@ -177,7 +177,7 @@
      "WS2M": 6.15,
      "ALLSKY_SFC_SW_DWN": 3.7819,
      "CLOUD_AMT": 70.33,
-     "GWETROOT": null
+     "GWETROOT": 0.77
     },
     "1996": {
      "T2M": 12.7,
@@ -186,7 +186,7 @@
      "WS2M": 5.88,
      "ALLSKY_SFC_SW_DWN": 3.8165,
      "CLOUD_AMT": 68.6,
-     "GWETROOT": null
+     "GWETROOT": 0.66
     },
     "1997": {
      "T2M": 13.6,
@@ -195,7 +195,7 @@
      "WS2M": 5.84,
      "ALLSKY_SFC_SW_DWN": 3.7747,
      "CLOUD_AMT": 69.21,
-     "GWETROOT": null
+     "GWETROOT": 0.7
     },
     "1998": {
      "T2M": 13.71,
@@ -204,7 +204,7 @@
      "WS2M": 5.85,
      "ALLSKY_SFC_SW_DWN": 3.5993,
      "CLOUD_AMT": 77.6,
-     "GWETROOT": null
+     "GWETROOT": 0.85
     },
     "1999": {
      "T2M": 14.8,
@@ -213,7 +213,7 @@
      "WS2M": 6.15,
      "ALLSKY_SFC_SW_DWN": 3.882,
      "CLOUD_AMT": 68.33,
-     "GWETROOT": null
+     "GWETROOT": 0.79
     },
     "2000": {
      "T2M": 13.85,
@@ -222,7 +222,7 @@
      "WS2M": 5.96,
      "ALLSKY_SFC_SW_DWN": 3.8299,
      "CLOUD_AMT": 70.07,
-     "GWETROOT": null
+     "GWETROOT": 0.78
     },
     "2001": {
      "T2M": 13.94,
@@ -231,7 +231,7 @@
      "WS2M": 6.11,
      "ALLSKY_SFC_SW_DWN": 3.8916,
      "CLOUD_AMT": 78.07,
-     "GWETROOT": null
+     "GWETROOT": 0.73
     },
     "2002": {
      "T2M": 13.42,
@@ -240,7 +240,7 @@
      "WS2M": 5.73,
      "ALLSKY_SFC_SW_DWN": 3.7949,
      "CLOUD_AMT": 76.35,
-     "GWETROOT": null
+     "GWETROOT": 0.71
     },
     "2003": {
      "T2M": 12.34,
@@ -249,7 +249,7 @@
      "WS2M": 5.71,
      "ALLSKY_SFC_SW_DWN": 3.5546,
      "CLOUD_AMT": 82.47,
-     "GWETROOT": null
+     "GWETROOT": 0.83
     },
     "2004": {
      "T2M": 12.77,
@@ -258,7 +258,7 @@
      "WS2M": 5.78,
      "ALLSKY_SFC_SW_DWN": 3.8537,
      "CLOUD_AMT": 78.82,
-     "GWETROOT": null
+     "GWETROOT": 0.78
     },
     "2005": {
      "T2M": 12.82,
@@ -267,7 +267,7 @@
      "WS2M": 6.02,
      "ALLSKY_SFC_SW_DWN": 3.7954,
      "CLOUD_AMT": 79.03,
-     "GWETROOT": null
+     "GWETROOT": 0.77
     },
     "2006": {
      "T2M": 13.15,
@@ -276,7 +276,7 @@
      "WS2M": 5.82,
      "ALLSKY_SFC_SW_DWN": 3.6907,
      "CLOUD_AMT": 80.96,
-     "GWETROOT": null
+     "GWETROOT": 0.83
     },
     "2007": {
      "T2M": 14.01,
@@ -285,7 +285,7 @@
      "WS2M": 5.93,
      "ALLSKY_SFC_SW_DWN": 3.8239,
      "CLOUD_AMT": 76.8,
-     "GWETROOT": null
+     "GWETROOT": 0.82
     },
     "2008": {
      "T2M": 13.6,
@@ -294,7 +294,7 @@
      "WS2M": 5.84,
      "ALLSKY_SFC_SW_DWN": 3.6854,
      "CLOUD_AMT": 79.09,
-     "GWETROOT": null
+     "GWETROOT": 0.8
     },
     "2009": {
      "T2M": 13.66,
@@ -303,7 +303,7 @@
      "WS2M": 5.94,
      "ALLSKY_SFC_SW_DWN": 3.6756,
      "CLOUD_AMT": 77.96,
-     "GWETROOT": null
+     "GWETROOT": 0.78
     },
     "2010": {
      "T2M": 13.84,
@@ -312,7 +312,7 @@
      "WS2M": 5.8,
      "ALLSKY_SFC_SW_DWN": 3.7298,
      "CLOUD_AMT": 76.37,
-     "GWETROOT": null
+     "GWETROOT": 0.85
     },
     "2011": {
      "T2M": 13.47,
@@ -321,7 +321,7 @@
      "WS2M": 5.9,
      "ALLSKY_SFC_SW_DWN": 3.7927,
      "CLOUD_AMT": 74.4,
-     "GWETROOT": null
+     "GWETROOT": 0.79
     },
     "2012": {
      "T2M": 13.57,
@@ -330,7 +330,7 @@
      "WS2M": 6.13,
      "ALLSKY_SFC_SW_DWN": 3.8623,
      "CLOUD_AMT": 75.83,
-     "GWETROOT": null
+     "GWETROOT": 0.77
     },
     "2013": {
      "T2M": 13.24,
@@ -339,7 +339,7 @@
      "WS2M": 6.08,
      "ALLSKY_SFC_SW_DWN": 3.7368,
      "CLOUD_AMT": 79.33,
-     "GWETROOT": null
+     "GWETROOT": 0.68
     },
     "2014": {
      "T2M": 13.15,
@@ -348,7 +348,7 @@
      "WS2M": 5.83,
      "ALLSKY_SFC_SW_DWN": 3.9622,
      "CLOUD_AMT": 76.27,
-     "GWETROOT": null
+     "GWETROOT": 0.71
     },
     "2015": {
      "T2M": 14.08,
@@ -357,7 +357,7 @@
      "WS2M": 6,
      "ALLSKY_SFC_SW_DWN": 3.8659,
      "CLOUD_AMT": 72.75,
-     "GWETROOT": null
+     "GWETROOT": 0.77
     },
     "2016": {
      "T2M": 14.45,
@@ -366,7 +366,7 @@
      "WS2M": 6.06,
      "ALLSKY_SFC_SW_DWN": 3.9098,
      "CLOUD_AMT": 74.63,
-     "GWETROOT": null
+     "GWETROOT": 0.79
     },
     "2017": {
      "T2M": 13.3,
@@ -375,7 +375,7 @@
      "WS2M": 5.88,
      "ALLSKY_SFC_SW_DWN": 3.8537,
      "CLOUD_AMT": 76.95,
-     "GWETROOT": null
+     "GWETROOT": 0.79
     },
     "2018": {
      "T2M": 14.94,
@@ -384,7 +384,7 @@
      "WS2M": 6.05,
      "ALLSKY_SFC_SW_DWN": 3.7262,
      "CLOUD_AMT": 74.67,
-     "GWETROOT": null
+     "GWETROOT": 0.77
     },
     "2019": {
      "T2M": 13.67,
@@ -393,7 +393,7 @@
      "WS2M": 5.66,
      "ALLSKY_SFC_SW_DWN": 3.9737,
      "CLOUD_AMT": 78.53,
-     "GWETROOT": null
+     "GWETROOT": 0.76
     },
     "2020": {
      "T2M": 13.82,
@@ -402,7 +402,7 @@
      "WS2M": 5.54,
      "ALLSKY_SFC_SW_DWN": 3.7805,
      "CLOUD_AMT": 81.6,
-     "GWETROOT": null
+     "GWETROOT": 0.86
     },
     "2021": {
      "T2M": 14.33,
@@ -411,7 +411,7 @@
      "WS2M": 5.95,
      "ALLSKY_SFC_SW_DWN": 4.0169,
      "CLOUD_AMT": 79.15,
-     "GWETROOT": null
+     "GWETROOT": 0.81
     },
     "2022": {
      "T2M": 13.46,
@@ -420,7 +420,7 @@
      "WS2M": 5.56,
      "ALLSKY_SFC_SW_DWN": 3.9437,
      "CLOUD_AMT": 75.89,
-     "GWETROOT": null
+     "GWETROOT": 0.8
     },
     "2023": {
      "T2M": 16.63,
@@ -429,7 +429,7 @@
      "WS2M": 6.07,
      "ALLSKY_SFC_SW_DWN": 4.0428,
      "CLOUD_AMT": 72.43,
-     "GWETROOT": null
+     "GWETROOT": 0.8
     },
     "2024": {
      "T2M": 16.66,
@@ -438,7 +438,7 @@
      "WS2M": 6.35,
      "ALLSKY_SFC_SW_DWN": 3.743,
      "CLOUD_AMT": 79.11,
-     "GWETROOT": null
+     "GWETROOT": 0.8
     },
     "2025": {
      "T2M": 14.75,
@@ -447,8 +447,15 @@
      "WS2M": 5.79,
      "ALLSKY_SFC_SW_DWN": 3.9804,
      "CLOUD_AMT": 69.77,
-     "GWETROOT": null
+     "GWETROOT": 0.8
     }
+   },
+   "notes": [
+    "Soil moisture from the nearest land cell, Minamisoma coast, Fukushima."
+   ],
+   "soilPoint": {
+    "lat": 37.64,
+    "lon": 140.96
    }
   },
   "banda_aceh": {
@@ -833,7 +840,8 @@
      "CLOUD_AMT": 86.64,
      "GWETROOT": 0.9
     }
-   }
+   },
+   "notes": []
   },
   "chernobyl": {
    "lat": 51.28,
@@ -1217,7 +1225,8 @@
      "CLOUD_AMT": 69.15,
      "GWETROOT": 0.41
     }
-   }
+   },
+   "notes": []
   },
   "venice_lagoon": {
    "lat": 45.44,
@@ -1601,7 +1610,8 @@
      "CLOUD_AMT": 53.42,
      "GWETROOT": 0.78
     }
-   }
+   },
+   "notes": []
   },
   "california_wildfires": {
    "lat": 42,
@@ -1985,7 +1995,8 @@
      "CLOUD_AMT": 47.71,
      "GWETROOT": 0.51
     }
-   }
+   },
+   "notes": []
   },
   "australia_black_summer": {
    "lat": -33.87,
@@ -2369,11 +2380,12 @@
      "CLOUD_AMT": 55.9,
      "GWETROOT": 0.45
     }
-   }
+   },
+   "notes": []
   },
   "amazon_basin": {
-   "lat": -3.12,
-   "lon": -60.02,
+   "lat": -7.06,
+   "lon": -55.42,
    "units": {
     "T2M": "C",
     "PRECTOTCORR": "mm/day",
@@ -2385,375 +2397,378 @@
    },
    "annual": {
     "1985": {
-     "T2M": 25.7,
-     "PRECTOTCORR": 6.9,
-     "RH2M": 87.23,
-     "WS2M": 0.65,
-     "ALLSKY_SFC_SW_DWN": 4.3085,
-     "CLOUD_AMT": 84.41,
+     "T2M": 24.21,
+     "PRECTOTCORR": 8.17,
+     "RH2M": 88.68,
+     "WS2M": 0.1,
+     "ALLSKY_SFC_SW_DWN": 4.5067,
+     "CLOUD_AMT": 77.69,
      "GWETROOT": 0.84
     },
     "1986": {
-     "T2M": 25.72,
-     "PRECTOTCORR": 6.89,
-     "RH2M": 87.81,
-     "WS2M": 0.67,
-     "ALLSKY_SFC_SW_DWN": 4.307,
-     "CLOUD_AMT": 84.58,
-     "GWETROOT": 0.86
+     "T2M": 24.51,
+     "PRECTOTCORR": 5.1,
+     "RH2M": 87.28,
+     "WS2M": 0.1,
+     "ALLSKY_SFC_SW_DWN": 4.6339,
+     "CLOUD_AMT": 78.65,
+     "GWETROOT": 0.82
     },
     "1987": {
-     "T2M": 26.82,
-     "PRECTOTCORR": 5.95,
-     "RH2M": 84.39,
-     "WS2M": 0.64,
-     "ALLSKY_SFC_SW_DWN": 4.4254,
-     "CLOUD_AMT": 78.31,
-     "GWETROOT": 0.79
+     "T2M": 25.23,
+     "PRECTOTCORR": 5.54,
+     "RH2M": 87.2,
+     "WS2M": 0.13,
+     "ALLSKY_SFC_SW_DWN": 4.7657,
+     "CLOUD_AMT": 72.73,
+     "GWETROOT": 0.78
     },
     "1988": {
-     "T2M": 26.18,
-     "PRECTOTCORR": 7.68,
-     "RH2M": 87.34,
-     "WS2M": 0.66,
-     "ALLSKY_SFC_SW_DWN": 4.4741,
-     "CLOUD_AMT": 79.34,
-     "GWETROOT": 0.85
+     "T2M": 24.79,
+     "PRECTOTCORR": 6.76,
+     "RH2M": 87.39,
+     "WS2M": 0.14,
+     "ALLSKY_SFC_SW_DWN": 4.7534,
+     "CLOUD_AMT": 69.44,
+     "GWETROOT": 0.83
     },
     "1989": {
-     "T2M": 25.94,
-     "PRECTOTCORR": 7.42,
-     "RH2M": 86.89,
-     "WS2M": 0.65,
-     "ALLSKY_SFC_SW_DWN": 4.3728,
-     "CLOUD_AMT": 80.36,
-     "GWETROOT": 0.87
+     "T2M": 24.3,
+     "PRECTOTCORR": 6.97,
+     "RH2M": 90.44,
+     "WS2M": 0.13,
+     "ALLSKY_SFC_SW_DWN": 4.5658,
+     "CLOUD_AMT": 76.79,
+     "GWETROOT": 0.86
     },
     "1990": {
-     "T2M": 26.58,
-     "PRECTOTCORR": 6.17,
-     "RH2M": 84.41,
-     "WS2M": 0.67,
-     "ALLSKY_SFC_SW_DWN": 4.5485,
-     "CLOUD_AMT": 77.45,
+     "T2M": 24.93,
+     "PRECTOTCORR": 6.39,
+     "RH2M": 87.9,
+     "WS2M": 0.12,
+     "ALLSKY_SFC_SW_DWN": 4.8302,
+     "CLOUD_AMT": 72.31,
      "GWETROOT": 0.82
     },
     "1991": {
-     "T2M": 26.67,
-     "PRECTOTCORR": 5.87,
-     "RH2M": 84.26,
-     "WS2M": 0.67,
-     "ALLSKY_SFC_SW_DWN": 4.5571,
-     "CLOUD_AMT": 75.56,
-     "GWETROOT": 0.77
-    },
-    "1992": {
-     "T2M": 27.17,
-     "PRECTOTCORR": 4.91,
-     "RH2M": 81.72,
-     "WS2M": 0.67,
-     "ALLSKY_SFC_SW_DWN": 4.4834,
-     "CLOUD_AMT": 76.22,
-     "GWETROOT": 0.66
-    },
-    "1993": {
-     "T2M": 26.21,
-     "PRECTOTCORR": 6.04,
-     "RH2M": 86.61,
-     "WS2M": 0.67,
-     "ALLSKY_SFC_SW_DWN": 4.4808,
-     "CLOUD_AMT": 73.33,
-     "GWETROOT": 0.77
-    },
-    "1994": {
-     "T2M": 26.13,
-     "PRECTOTCORR": 7.05,
-     "RH2M": 86.55,
-     "WS2M": 0.65,
-     "ALLSKY_SFC_SW_DWN": 4.5612,
-     "CLOUD_AMT": 73.06,
-     "GWETROOT": 0.84
-    },
-    "1995": {
-     "T2M": 26.62,
-     "PRECTOTCORR": 6.49,
-     "RH2M": 85.31,
-     "WS2M": 0.66,
-     "ALLSKY_SFC_SW_DWN": 4.5504,
-     "CLOUD_AMT": 75.13,
-     "GWETROOT": 0.78
-    },
-    "1996": {
-     "T2M": 26.17,
-     "PRECTOTCORR": 8.2,
-     "RH2M": 85.81,
-     "WS2M": 0.65,
-     "ALLSKY_SFC_SW_DWN": 4.5367,
-     "CLOUD_AMT": 73.4,
-     "GWETROOT": 0.85
-    },
-    "1997": {
-     "T2M": 27.46,
-     "PRECTOTCORR": 6.05,
-     "RH2M": 80.65,
-     "WS2M": 0.66,
-     "ALLSKY_SFC_SW_DWN": 4.7083,
-     "CLOUD_AMT": 70.26,
-     "GWETROOT": 0.75
-    },
-    "1998": {
-     "T2M": 27.11,
-     "PRECTOTCORR": 5.98,
-     "RH2M": 85.79,
-     "WS2M": 0.65,
-     "ALLSKY_SFC_SW_DWN": 4.6783,
-     "CLOUD_AMT": 70.76,
-     "GWETROOT": 0.75
-    },
-    "1999": {
-     "T2M": 26.1,
-     "PRECTOTCORR": 7.29,
-     "RH2M": 86.2,
-     "WS2M": 0.63,
-     "ALLSKY_SFC_SW_DWN": 4.6054,
-     "CLOUD_AMT": 72.71,
-     "GWETROOT": 0.83
-    },
-    "2000": {
-     "T2M": 26.04,
-     "PRECTOTCORR": 6.76,
-     "RH2M": 85.91,
-     "WS2M": 0.63,
-     "ALLSKY_SFC_SW_DWN": 4.4534,
-     "CLOUD_AMT": 74.39,
+     "T2M": 25.02,
+     "PRECTOTCORR": 6.21,
+     "RH2M": 85.6,
+     "WS2M": 0.11,
+     "ALLSKY_SFC_SW_DWN": 4.7851,
+     "CLOUD_AMT": 69.84,
      "GWETROOT": 0.82
     },
+    "1992": {
+     "T2M": 25.5,
+     "PRECTOTCORR": 6.09,
+     "RH2M": 83.61,
+     "WS2M": 0.09,
+     "ALLSKY_SFC_SW_DWN": 4.7174,
+     "CLOUD_AMT": 70.63,
+     "GWETROOT": 0.77
+    },
+    "1993": {
+     "T2M": 24.81,
+     "PRECTOTCORR": 7.18,
+     "RH2M": 88.2,
+     "WS2M": 0.12,
+     "ALLSKY_SFC_SW_DWN": 4.7191,
+     "CLOUD_AMT": 65.51,
+     "GWETROOT": 0.83
+    },
+    "1994": {
+     "T2M": 24.69,
+     "PRECTOTCORR": 6.15,
+     "RH2M": 87.97,
+     "WS2M": 0.12,
+     "ALLSKY_SFC_SW_DWN": 4.8031,
+     "CLOUD_AMT": 66.19,
+     "GWETROOT": 0.82
+    },
+    "1995": {
+     "T2M": 25.37,
+     "PRECTOTCORR": 7.14,
+     "RH2M": 84.6,
+     "WS2M": 0.12,
+     "ALLSKY_SFC_SW_DWN": 4.7549,
+     "CLOUD_AMT": 66.51,
+     "GWETROOT": 0.82
+    },
+    "1996": {
+     "T2M": 24.83,
+     "PRECTOTCORR": 6.05,
+     "RH2M": 87.07,
+     "WS2M": 0.13,
+     "ALLSKY_SFC_SW_DWN": 4.9795,
+     "CLOUD_AMT": 67,
+     "GWETROOT": 0.81
+    },
+    "1997": {
+     "T2M": 26.17,
+     "PRECTOTCORR": 4.54,
+     "RH2M": 78.45,
+     "WS2M": 0.08,
+     "ALLSKY_SFC_SW_DWN": 4.9877,
+     "CLOUD_AMT": 62.21,
+     "GWETROOT": 0.76
+    },
+    "1998": {
+     "T2M": 26.59,
+     "PRECTOTCORR": 4.81,
+     "RH2M": 80.11,
+     "WS2M": 0.11,
+     "ALLSKY_SFC_SW_DWN": 5.095,
+     "CLOUD_AMT": 61.41,
+     "GWETROOT": 0.71
+    },
+    "1999": {
+     "T2M": 25.26,
+     "PRECTOTCORR": 5.62,
+     "RH2M": 83.44,
+     "WS2M": 0.15,
+     "ALLSKY_SFC_SW_DWN": 5.0558,
+     "CLOUD_AMT": 64.83,
+     "GWETROOT": 0.79
+    },
+    "2000": {
+     "T2M": 24.67,
+     "PRECTOTCORR": 6.31,
+     "RH2M": 87.64,
+     "WS2M": 0.13,
+     "ALLSKY_SFC_SW_DWN": 4.8494,
+     "CLOUD_AMT": 66.94,
+     "GWETROOT": 0.8
+    },
     "2001": {
-     "T2M": 26.52,
-     "PRECTOTCORR": 6.04,
-     "RH2M": 84.52,
-     "WS2M": 0.66,
-     "ALLSKY_SFC_SW_DWN": 4.5955,
-     "CLOUD_AMT": 79.35,
-     "GWETROOT": 0.78
+     "T2M": 25.05,
+     "PRECTOTCORR": 5.74,
+     "RH2M": 85.56,
+     "WS2M": 0.14,
+     "ALLSKY_SFC_SW_DWN": 4.8905,
+     "CLOUD_AMT": 75.43,
+     "GWETROOT": 0.81
     },
     "2002": {
-     "T2M": 26.8,
-     "PRECTOTCORR": 6.04,
-     "RH2M": 84.06,
-     "WS2M": 0.65,
-     "ALLSKY_SFC_SW_DWN": 4.645,
-     "CLOUD_AMT": 82.83,
+     "T2M": 25.43,
+     "PRECTOTCORR": 5.19,
+     "RH2M": 84.91,
+     "WS2M": 0.13,
+     "ALLSKY_SFC_SW_DWN": 5.0227,
+     "CLOUD_AMT": 75.43,
      "GWETROOT": 0.77
     },
     "2003": {
-     "T2M": 26.76,
-     "PRECTOTCORR": 4.96,
-     "RH2M": 85.4,
-     "WS2M": 0.68,
-     "ALLSKY_SFC_SW_DWN": 4.7311,
-     "CLOUD_AMT": 75.64,
-     "GWETROOT": 0.68
-    },
-    "2004": {
-     "T2M": 26.8,
-     "PRECTOTCORR": 4.9,
-     "RH2M": 84.15,
-     "WS2M": 0.64,
-     "ALLSKY_SFC_SW_DWN": 4.5845,
-     "CLOUD_AMT": 84.9,
-     "GWETROOT": 0.68
-    },
-    "2005": {
-     "T2M": 27.65,
-     "PRECTOTCORR": 4.88,
-     "RH2M": 80.72,
-     "WS2M": 0.66,
-     "ALLSKY_SFC_SW_DWN": 4.5103,
-     "CLOUD_AMT": 83.7,
-     "GWETROOT": 0.68
-    },
-    "2006": {
-     "T2M": 27.12,
-     "PRECTOTCORR": 5.73,
-     "RH2M": 81.84,
-     "WS2M": 0.65,
-     "ALLSKY_SFC_SW_DWN": 4.6056,
-     "CLOUD_AMT": 83.02,
-     "GWETROOT": 0.74
-    },
-    "2007": {
-     "T2M": 27.12,
-     "PRECTOTCORR": 5.14,
-     "RH2M": 82.44,
-     "WS2M": 0.64,
-     "ALLSKY_SFC_SW_DWN": 4.5343,
-     "CLOUD_AMT": 85.03,
-     "GWETROOT": 0.71
-    },
-    "2008": {
-     "T2M": 26.22,
-     "PRECTOTCORR": 6.99,
-     "RH2M": 87.09,
-     "WS2M": 0.63,
-     "ALLSKY_SFC_SW_DWN": 4.5228,
-     "CLOUD_AMT": 80.85,
-     "GWETROOT": 0.83
-    },
-    "2009": {
-     "T2M": 27.33,
-     "PRECTOTCORR": 5.21,
-     "RH2M": 81.52,
-     "WS2M": 0.65,
-     "ALLSKY_SFC_SW_DWN": 4.7208,
-     "CLOUD_AMT": 76,
+     "T2M": 25.26,
+     "PRECTOTCORR": 5.84,
+     "RH2M": 86.31,
+     "WS2M": 0.1,
+     "ALLSKY_SFC_SW_DWN": 4.8941,
+     "CLOUD_AMT": 73.29,
      "GWETROOT": 0.78
     },
+    "2004": {
+     "T2M": 25.03,
+     "PRECTOTCORR": 6.31,
+     "RH2M": 87.88,
+     "WS2M": 0.12,
+     "ALLSKY_SFC_SW_DWN": 4.8442,
+     "CLOUD_AMT": 76.66,
+     "GWETROOT": 0.8
+    },
+    "2005": {
+     "T2M": 25.64,
+     "PRECTOTCORR": 5.26,
+     "RH2M": 83.6,
+     "WS2M": 0.11,
+     "ALLSKY_SFC_SW_DWN": 4.8619,
+     "CLOUD_AMT": 76.06,
+     "GWETROOT": 0.78
+    },
+    "2006": {
+     "T2M": 25.84,
+     "PRECTOTCORR": 3.63,
+     "RH2M": 81.76,
+     "WS2M": 0.1,
+     "ALLSKY_SFC_SW_DWN": 4.8182,
+     "CLOUD_AMT": 76.47,
+     "GWETROOT": 0.73
+    },
+    "2007": {
+     "T2M": 27.02,
+     "PRECTOTCORR": 2.97,
+     "RH2M": 72.84,
+     "WS2M": 0.08,
+     "ALLSKY_SFC_SW_DWN": 4.9517,
+     "CLOUD_AMT": 72.33,
+     "GWETROOT": 0.64
+    },
+    "2008": {
+     "T2M": 25.47,
+     "PRECTOTCORR": 4.83,
+     "RH2M": 82.76,
+     "WS2M": 0.12,
+     "ALLSKY_SFC_SW_DWN": 4.9524,
+     "CLOUD_AMT": 70.77,
+     "GWETROOT": 0.73
+    },
+    "2009": {
+     "T2M": 25.1,
+     "PRECTOTCORR": 5.77,
+     "RH2M": 88.04,
+     "WS2M": 0.1,
+     "ALLSKY_SFC_SW_DWN": 4.9366,
+     "CLOUD_AMT": 70.74,
+     "GWETROOT": 0.82
+    },
     "2010": {
-     "T2M": 27.16,
-     "PRECTOTCORR": 5.45,
-     "RH2M": 84.27,
-     "WS2M": 0.63,
-     "ALLSKY_SFC_SW_DWN": 4.6714,
-     "CLOUD_AMT": 74.27,
+     "T2M": 25.8,
+     "PRECTOTCORR": 5.01,
+     "RH2M": 84.16,
+     "WS2M": 0.12,
+     "ALLSKY_SFC_SW_DWN": 5.0311,
+     "CLOUD_AMT": 67.26,
      "GWETROOT": 0.75
     },
     "2011": {
-     "T2M": 26.63,
-     "PRECTOTCORR": 6.4,
-     "RH2M": 84.97,
-     "WS2M": 0.64,
-     "ALLSKY_SFC_SW_DWN": 4.739,
-     "CLOUD_AMT": 72.28,
-     "GWETROOT": 0.78
-    },
-    "2012": {
-     "T2M": 26.77,
-     "PRECTOTCORR": 4.69,
-     "RH2M": 83.98,
-     "WS2M": 0.66,
-     "ALLSKY_SFC_SW_DWN": 4.6982,
-     "CLOUD_AMT": 73.57,
-     "GWETROOT": 0.74
-    },
-    "2013": {
-     "T2M": 26.61,
-     "PRECTOTCORR": 4.85,
-     "RH2M": 85.73,
-     "WS2M": 0.65,
-     "ALLSKY_SFC_SW_DWN": 4.7676,
-     "CLOUD_AMT": 73.6,
-     "GWETROOT": 0.73
-    },
-    "2014": {
-     "T2M": 26.97,
-     "PRECTOTCORR": 5.09,
-     "RH2M": 84.01,
-     "WS2M": 0.68,
-     "ALLSKY_SFC_SW_DWN": 4.6572,
-     "CLOUD_AMT": 70.69,
-     "GWETROOT": 0.72
-    },
-    "2015": {
-     "T2M": 28.65,
-     "PRECTOTCORR": 3.2,
-     "RH2M": 73.85,
-     "WS2M": 0.71,
-     "ALLSKY_SFC_SW_DWN": 4.7434,
-     "CLOUD_AMT": 67.99,
-     "GWETROOT": 0.58
-    },
-    "2016": {
-     "T2M": 28.14,
-     "PRECTOTCORR": 4.6,
-     "RH2M": 79.03,
-     "WS2M": 0.67,
-     "ALLSKY_SFC_SW_DWN": 4.7143,
-     "CLOUD_AMT": 74.66,
-     "GWETROOT": 0.63
-    },
-    "2017": {
-     "T2M": 27.19,
-     "PRECTOTCORR": 5.38,
-     "RH2M": 83.41,
-     "WS2M": 0.67,
-     "ALLSKY_SFC_SW_DWN": 4.6034,
-     "CLOUD_AMT": 80.31,
-     "GWETROOT": 0.74
-    },
-    "2018": {
-     "T2M": 26.81,
-     "PRECTOTCORR": 5.02,
-     "RH2M": 85.04,
-     "WS2M": 0.67,
-     "ALLSKY_SFC_SW_DWN": 4.7266,
-     "CLOUD_AMT": 79.31,
-     "GWETROOT": 0.73
-    },
-    "2019": {
-     "T2M": 26.79,
-     "PRECTOTCORR": 6.6,
-     "RH2M": 87.57,
-     "WS2M": 0.65,
-     "ALLSKY_SFC_SW_DWN": 4.7194,
-     "CLOUD_AMT": 75.84,
-     "GWETROOT": 0.82
-    },
-    "2020": {
-     "T2M": 26.99,
-     "PRECTOTCORR": 6.08,
-     "RH2M": 86.18,
-     "WS2M": 0.64,
-     "ALLSKY_SFC_SW_DWN": 4.7527,
-     "CLOUD_AMT": 73.65,
-     "GWETROOT": 0.8
-    },
-    "2021": {
-     "T2M": 26.54,
-     "PRECTOTCORR": 7.07,
-     "RH2M": 87.27,
-     "WS2M": 0.63,
-     "ALLSKY_SFC_SW_DWN": 4.5929,
-     "CLOUD_AMT": 80.39,
-     "GWETROOT": 0.89
-    },
-    "2022": {
-     "T2M": 26.65,
-     "PRECTOTCORR": 6.02,
-     "RH2M": 85.33,
-     "WS2M": 0.64,
-     "ALLSKY_SFC_SW_DWN": 4.6387,
-     "CLOUD_AMT": 73.59,
+     "T2M": 25.31,
+     "PRECTOTCORR": 6.3,
+     "RH2M": 85.77,
+     "WS2M": 0.1,
+     "ALLSKY_SFC_SW_DWN": 5.0014,
+     "CLOUD_AMT": 66.51,
      "GWETROOT": 0.81
     },
-    "2023": {
-     "T2M": 28.22,
-     "PRECTOTCORR": 4.36,
-     "RH2M": 78.2,
-     "WS2M": 0.66,
-     "ALLSKY_SFC_SW_DWN": 4.6526,
-     "CLOUD_AMT": 72.16,
-     "GWETROOT": 0.67
+    "2012": {
+     "T2M": 25.21,
+     "PRECTOTCORR": 5.59,
+     "RH2M": 85.04,
+     "WS2M": 0.13,
+     "ALLSKY_SFC_SW_DWN": 4.9925,
+     "CLOUD_AMT": 68.35,
+     "GWETROOT": 0.81
     },
-    "2024": {
-     "T2M": 28.82,
-     "PRECTOTCORR": 4.2,
-     "RH2M": 77,
-     "WS2M": 0.68,
-     "ALLSKY_SFC_SW_DWN": 4.7522,
-     "CLOUD_AMT": 69,
+    "2013": {
+     "T2M": 25.53,
+     "PRECTOTCORR": 5.15,
+     "RH2M": 85.19,
+     "WS2M": 0.11,
+     "ALLSKY_SFC_SW_DWN": 5.0023,
+     "CLOUD_AMT": 71.27,
+     "GWETROOT": 0.77
+    },
+    "2014": {
+     "T2M": 27.37,
+     "PRECTOTCORR": 2.61,
+     "RH2M": 70.7,
+     "WS2M": 0.06,
+     "ALLSKY_SFC_SW_DWN": 5.0357,
+     "CLOUD_AMT": 69.49,
+     "GWETROOT": 0.68
+    },
+    "2015": {
+     "T2M": 28.16,
+     "PRECTOTCORR": 2.61,
+     "RH2M": 66.31,
+     "WS2M": 0.06,
+     "ALLSKY_SFC_SW_DWN": 5.1494,
+     "CLOUD_AMT": 65.9,
      "GWETROOT": 0.66
     },
+    "2016": {
+     "T2M": 29.02,
+     "PRECTOTCORR": 1.91,
+     "RH2M": 61.24,
+     "WS2M": 0.05,
+     "ALLSKY_SFC_SW_DWN": 5.1192,
+     "CLOUD_AMT": 67.87,
+     "GWETROOT": 0.62
+    },
+    "2017": {
+     "T2M": 26.3,
+     "PRECTOTCORR": 4.65,
+     "RH2M": 79.15,
+     "WS2M": 0.1,
+     "ALLSKY_SFC_SW_DWN": 5.0611,
+     "CLOUD_AMT": 68.25,
+     "GWETROOT": 0.72
+    },
+    "2018": {
+     "T2M": 27.21,
+     "PRECTOTCORR": 3.14,
+     "RH2M": 71.62,
+     "WS2M": 0.06,
+     "ALLSKY_SFC_SW_DWN": 5.0611,
+     "CLOUD_AMT": 74.4,
+     "GWETROOT": 0.67
+    },
+    "2019": {
+     "T2M": 26.04,
+     "PRECTOTCORR": 5.7,
+     "RH2M": 82.95,
+     "WS2M": 0.11,
+     "ALLSKY_SFC_SW_DWN": 5.1269,
+     "CLOUD_AMT": 74.21,
+     "GWETROOT": 0.77
+    },
+    "2020": {
+     "T2M": 25.95,
+     "PRECTOTCORR": 5.05,
+     "RH2M": 84.02,
+     "WS2M": 0.12,
+     "ALLSKY_SFC_SW_DWN": 5.0657,
+     "CLOUD_AMT": 68.21,
+     "GWETROOT": 0.76
+    },
+    "2021": {
+     "T2M": 26.07,
+     "PRECTOTCORR": 5.22,
+     "RH2M": 81.45,
+     "WS2M": 0.06,
+     "ALLSKY_SFC_SW_DWN": 4.9997,
+     "CLOUD_AMT": 75.84,
+     "GWETROOT": 0.74
+    },
+    "2022": {
+     "T2M": 25.25,
+     "PRECTOTCORR": 6.98,
+     "RH2M": 86.03,
+     "WS2M": 0.12,
+     "ALLSKY_SFC_SW_DWN": 4.9678,
+     "CLOUD_AMT": 66.88,
+     "GWETROOT": 0.83
+    },
+    "2023": {
+     "T2M": 26.54,
+     "PRECTOTCORR": 4.8,
+     "RH2M": 80.48,
+     "WS2M": 0.12,
+     "ALLSKY_SFC_SW_DWN": 5.1324,
+     "CLOUD_AMT": 63.32,
+     "GWETROOT": 0.8
+    },
+    "2024": {
+     "T2M": 26.99,
+     "PRECTOTCORR": 5.37,
+     "RH2M": 77.69,
+     "WS2M": 0.12,
+     "ALLSKY_SFC_SW_DWN": 5.005,
+     "CLOUD_AMT": 62.47,
+     "GWETROOT": 0.76
+    },
     "2025": {
-     "T2M": 27.94,
-     "PRECTOTCORR": 4.59,
-     "RH2M": 78.38,
-     "WS2M": 0.66,
-     "ALLSKY_SFC_SW_DWN": 4.6502,
-     "CLOUD_AMT": 74.04,
-     "GWETROOT": 0.6
+     "T2M": 26.77,
+     "PRECTOTCORR": 4.19,
+     "RH2M": 78.04,
+     "WS2M": 0.12,
+     "ALLSKY_SFC_SW_DWN": 5.0059,
+     "CLOUD_AMT": 68.27,
+     "GWETROOT": 0.71
     }
-   }
+   },
+   "notes": [
+    "Moved from -3.12,-60.02 (same grid cell as amazon_rainforest) to Novo Progresso, Para, arc of deforestation; renamed from \"Amazon Basin & Pantanal\"."
+   ]
   },
   "pyramids_giza": {
    "lat": 29.98,
@@ -3137,7 +3152,8 @@
      "CLOUD_AMT": 18.28,
      "GWETROOT": 0.38
     }
-   }
+   },
+   "notes": []
   },
   "taj_mahal": {
    "lat": 27.18,
@@ -3521,7 +3537,8 @@
      "CLOUD_AMT": 45.89,
      "GWETROOT": 0.52
     }
-   }
+   },
+   "notes": []
   },
   "great_barrier_reef": {
    "lat": -18.29,
@@ -3543,7 +3560,7 @@
      "WS2M": 5.71,
      "ALLSKY_SFC_SW_DWN": 5.7499,
      "CLOUD_AMT": 48.74,
-     "GWETROOT": null
+     "GWETROOT": 0.57
     },
     "1986": {
      "T2M": 25.29,
@@ -3552,7 +3569,7 @@
      "WS2M": 5.46,
      "ALLSKY_SFC_SW_DWN": 5.8356,
      "CLOUD_AMT": 45.66,
-     "GWETROOT": null
+     "GWETROOT": 0.56
     },
     "1987": {
      "T2M": 25.24,
@@ -3561,7 +3578,7 @@
      "WS2M": 5.45,
      "ALLSKY_SFC_SW_DWN": 5.7948,
      "CLOUD_AMT": 47.31,
-     "GWETROOT": null
+     "GWETROOT": 0.56
     },
     "1988": {
      "T2M": 25.43,
@@ -3570,7 +3587,7 @@
      "WS2M": 5.78,
      "ALLSKY_SFC_SW_DWN": 5.5452,
      "CLOUD_AMT": 52.24,
-     "GWETROOT": null
+     "GWETROOT": 0.58
     },
     "1989": {
      "T2M": 24.87,
@@ -3579,7 +3596,7 @@
      "WS2M": 5.55,
      "ALLSKY_SFC_SW_DWN": 5.5464,
      "CLOUD_AMT": 50.83,
-     "GWETROOT": null
+     "GWETROOT": 0.67
     },
     "1990": {
      "T2M": 24.98,
@@ -3588,7 +3605,7 @@
      "WS2M": 5.7,
      "ALLSKY_SFC_SW_DWN": 5.6707,
      "CLOUD_AMT": 44.62,
-     "GWETROOT": null
+     "GWETROOT": 0.65
     },
     "1991": {
      "T2M": 24.95,
@@ -3597,7 +3614,7 @@
      "WS2M": 5.45,
      "ALLSKY_SFC_SW_DWN": 5.6479,
      "CLOUD_AMT": 45.26,
-     "GWETROOT": null
+     "GWETROOT": 0.62
     },
     "1992": {
      "T2M": 25.25,
@@ -3606,7 +3623,7 @@
      "WS2M": 5.33,
      "ALLSKY_SFC_SW_DWN": 5.8133,
      "CLOUD_AMT": 42.78,
-     "GWETROOT": null
+     "GWETROOT": 0.54
     },
     "1993": {
      "T2M": 24.93,
@@ -3615,7 +3632,7 @@
      "WS2M": 5.7,
      "ALLSKY_SFC_SW_DWN": 5.9083,
      "CLOUD_AMT": 41.73,
-     "GWETROOT": null
+     "GWETROOT": 0.54
     },
     "1994": {
      "T2M": 24.86,
@@ -3624,7 +3641,7 @@
      "WS2M": 5.96,
      "ALLSKY_SFC_SW_DWN": 5.8498,
      "CLOUD_AMT": 47.03,
-     "GWETROOT": null
+     "GWETROOT": 0.57
     },
     "1995": {
      "T2M": 25.39,
@@ -3633,7 +3650,7 @@
      "WS2M": 5.63,
      "ALLSKY_SFC_SW_DWN": 5.803,
      "CLOUD_AMT": 44.78,
-     "GWETROOT": null
+     "GWETROOT": 0.57
     },
     "1996": {
      "T2M": 25.49,
@@ -3642,7 +3659,7 @@
      "WS2M": 5.55,
      "ALLSKY_SFC_SW_DWN": 5.8082,
      "CLOUD_AMT": 43.75,
-     "GWETROOT": null
+     "GWETROOT": 0.56
     },
     "1997": {
      "T2M": 24.73,
@@ -3651,7 +3668,7 @@
      "WS2M": 5.83,
      "ALLSKY_SFC_SW_DWN": 5.6587,
      "CLOUD_AMT": 46.16,
-     "GWETROOT": null
+     "GWETROOT": 0.6
     },
     "1998": {
      "T2M": 26.06,
@@ -3660,7 +3677,7 @@
      "WS2M": 5.62,
      "ALLSKY_SFC_SW_DWN": 5.5258,
      "CLOUD_AMT": 51.01,
-     "GWETROOT": null
+     "GWETROOT": 0.67
     },
     "1999": {
      "T2M": 25.11,
@@ -3669,7 +3686,7 @@
      "WS2M": 6.05,
      "ALLSKY_SFC_SW_DWN": 5.407,
      "CLOUD_AMT": 53.23,
-     "GWETROOT": null
+     "GWETROOT": 0.65
     },
     "2000": {
      "T2M": 24.86,
@@ -3678,7 +3695,7 @@
      "WS2M": 6.02,
      "ALLSKY_SFC_SW_DWN": 5.4862,
      "CLOUD_AMT": 51.72,
-     "GWETROOT": null
+     "GWETROOT": 0.68
     },
     "2001": {
      "T2M": 25.64,
@@ -3687,7 +3704,7 @@
      "WS2M": 5.54,
      "ALLSKY_SFC_SW_DWN": 5.9818,
      "CLOUD_AMT": 47.99,
-     "GWETROOT": null
+     "GWETROOT": 0.56
     },
     "2002": {
      "T2M": 25.58,
@@ -3696,7 +3713,7 @@
      "WS2M": 5.57,
      "ALLSKY_SFC_SW_DWN": 6.0698,
      "CLOUD_AMT": 45.89,
-     "GWETROOT": null
+     "GWETROOT": 0.53
     },
     "2003": {
      "T2M": 25.7,
@@ -3705,7 +3722,7 @@
      "WS2M": 5.8,
      "ALLSKY_SFC_SW_DWN": 5.8898,
      "CLOUD_AMT": 58.45,
-     "GWETROOT": null
+     "GWETROOT": 0.54
     },
     "2004": {
      "T2M": 25.61,
@@ -3714,7 +3731,7 @@
      "WS2M": 5.74,
      "ALLSKY_SFC_SW_DWN": 5.7602,
      "CLOUD_AMT": 58.88,
-     "GWETROOT": null
+     "GWETROOT": 0.63
     },
     "2005": {
      "T2M": 25.81,
@@ -3723,7 +3740,7 @@
      "WS2M": 5.8,
      "ALLSKY_SFC_SW_DWN": 5.789,
      "CLOUD_AMT": 54.41,
-     "GWETROOT": null
+     "GWETROOT": 0.56
     },
     "2006": {
      "T2M": 25.14,
@@ -3732,7 +3749,7 @@
      "WS2M": 6.17,
      "ALLSKY_SFC_SW_DWN": 5.5889,
      "CLOUD_AMT": 52.75,
-     "GWETROOT": null
+     "GWETROOT": 0.66
     },
     "2007": {
      "T2M": 25.09,
@@ -3741,7 +3758,7 @@
      "WS2M": 5.82,
      "ALLSKY_SFC_SW_DWN": 5.5879,
      "CLOUD_AMT": 51.8,
-     "GWETROOT": null
+     "GWETROOT": 0.59
     },
     "2008": {
      "T2M": 25.2,
@@ -3750,7 +3767,7 @@
      "WS2M": 5.78,
      "ALLSKY_SFC_SW_DWN": 5.5675,
      "CLOUD_AMT": 54.35,
-     "GWETROOT": null
+     "GWETROOT": 0.6
     },
     "2009": {
      "T2M": 25.63,
@@ -3759,7 +3776,7 @@
      "WS2M": 5.49,
      "ALLSKY_SFC_SW_DWN": 5.6686,
      "CLOUD_AMT": 49.79,
-     "GWETROOT": null
+     "GWETROOT": 0.64
     },
     "2010": {
      "T2M": 26.02,
@@ -3768,7 +3785,7 @@
      "WS2M": 5.89,
      "ALLSKY_SFC_SW_DWN": 5.0772,
      "CLOUD_AMT": 63.68,
-     "GWETROOT": null
+     "GWETROOT": 0.66
     },
     "2011": {
      "T2M": 25.06,
@@ -3777,7 +3794,7 @@
      "WS2M": 5.75,
      "ALLSKY_SFC_SW_DWN": 5.5346,
      "CLOUD_AMT": 52.03,
-     "GWETROOT": null
+     "GWETROOT": 0.7
     },
     "2012": {
      "T2M": 25.04,
@@ -3786,7 +3803,7 @@
      "WS2M": 5.5,
      "ALLSKY_SFC_SW_DWN": 5.6628,
      "CLOUD_AMT": 48.22,
-     "GWETROOT": null
+     "GWETROOT": 0.64
     },
     "2013": {
      "T2M": 25.42,
@@ -3795,7 +3812,7 @@
      "WS2M": 5.43,
      "ALLSKY_SFC_SW_DWN": 5.8106,
      "CLOUD_AMT": 47.14,
-     "GWETROOT": null
+     "GWETROOT": 0.56
     },
     "2014": {
      "T2M": 25.15,
@@ -3804,7 +3821,7 @@
      "WS2M": 5.71,
      "ALLSKY_SFC_SW_DWN": 5.839,
      "CLOUD_AMT": 45.57,
-     "GWETROOT": null
+     "GWETROOT": 0.57
     },
     "2015": {
      "T2M": 25.5,
@@ -3813,7 +3830,7 @@
      "WS2M": 5.56,
      "ALLSKY_SFC_SW_DWN": 5.915,
      "CLOUD_AMT": 48.7,
-     "GWETROOT": null
+     "GWETROOT": 0.5
     },
     "2016": {
      "T2M": 26.01,
@@ -3822,7 +3839,7 @@
      "WS2M": 5.31,
      "ALLSKY_SFC_SW_DWN": 5.8229,
      "CLOUD_AMT": 51.69,
-     "GWETROOT": null
+     "GWETROOT": 0.53
     },
     "2017": {
      "T2M": 25.72,
@@ -3831,7 +3848,7 @@
      "WS2M": 5.42,
      "ALLSKY_SFC_SW_DWN": 5.8087,
      "CLOUD_AMT": 52.95,
-     "GWETROOT": null
+     "GWETROOT": 0.5
     },
     "2018": {
      "T2M": 25.42,
@@ -3840,7 +3857,7 @@
      "WS2M": 5.74,
      "ALLSKY_SFC_SW_DWN": 5.7355,
      "CLOUD_AMT": 52.23,
-     "GWETROOT": null
+     "GWETROOT": 0.53
     },
     "2019": {
      "T2M": 25.17,
@@ -3849,7 +3866,7 @@
      "WS2M": 5.83,
      "ALLSKY_SFC_SW_DWN": 5.7658,
      "CLOUD_AMT": 53.54,
-     "GWETROOT": null
+     "GWETROOT": 0.54
     },
     "2020": {
      "T2M": 25.62,
@@ -3858,7 +3875,7 @@
      "WS2M": 5.64,
      "ALLSKY_SFC_SW_DWN": 5.8104,
      "CLOUD_AMT": 52.43,
-     "GWETROOT": null
+     "GWETROOT": 0.51
     },
     "2021": {
      "T2M": 25.69,
@@ -3867,7 +3884,7 @@
      "WS2M": 5.51,
      "ALLSKY_SFC_SW_DWN": 5.4458,
      "CLOUD_AMT": 60.13,
-     "GWETROOT": null
+     "GWETROOT": 0.55
     },
     "2022": {
      "T2M": 25.96,
@@ -3876,7 +3893,7 @@
      "WS2M": 5.62,
      "ALLSKY_SFC_SW_DWN": 5.6851,
      "CLOUD_AMT": 54.4,
-     "GWETROOT": null
+     "GWETROOT": 0.55
     },
     "2023": {
      "T2M": 25.85,
@@ -3885,7 +3902,7 @@
      "WS2M": 5.8,
      "ALLSKY_SFC_SW_DWN": 5.6914,
      "CLOUD_AMT": 55.98,
-     "GWETROOT": null
+     "GWETROOT": 0.52
     },
     "2024": {
      "T2M": 26.04,
@@ -3894,7 +3911,7 @@
      "WS2M": 5.66,
      "ALLSKY_SFC_SW_DWN": 5.5157,
      "CLOUD_AMT": 57.36,
-     "GWETROOT": null
+     "GWETROOT": 0.53
     },
     "2025": {
      "T2M": 26.12,
@@ -3903,8 +3920,15 @@
      "WS2M": 5.53,
      "ALLSKY_SFC_SW_DWN": 5.4912,
      "CLOUD_AMT": 58.68,
-     "GWETROOT": null
+     "GWETROOT": 0.58
     }
+   },
+   "notes": [
+    "Soil moisture from the Herbert River catchment (Ingham), which drains onto the reef."
+   ],
+   "soilPoint": {
+    "lat": -18.65,
+    "lon": 146.16
    }
   },
   "mount_everest": {
@@ -4289,7 +4313,8 @@
      "CLOUD_AMT": 65.56,
      "GWETROOT": 0.84
     }
-   }
+   },
+   "notes": []
   },
   "grand_canyon": {
    "lat": 36.11,
@@ -4673,7 +4698,8 @@
      "CLOUD_AMT": 38.14,
      "GWETROOT": 0.39
     }
-   }
+   },
+   "notes": []
   },
   "machu_picchu": {
    "lat": -13.16,
@@ -5057,7 +5083,8 @@
      "CLOUD_AMT": 66.85,
      "GWETROOT": 0.5
     }
-   }
+   },
+   "notes": []
   },
   "victoria_falls": {
    "lat": -17.92,
@@ -5441,7 +5468,8 @@
      "CLOUD_AMT": 41.11,
      "GWETROOT": 0.32
     }
-   }
+   },
+   "notes": []
   },
   "praia_do_cassino": {
    "lat": -32.17,
@@ -5825,7 +5853,8 @@
      "CLOUD_AMT": 49.47,
      "GWETROOT": 0.55
     }
-   }
+   },
+   "notes": []
   },
   "copacabana_beach": {
    "lat": -22.97,
@@ -6209,7 +6238,8 @@
      "CLOUD_AMT": 60.86,
      "GWETROOT": 0.68
     }
-   }
+   },
+   "notes": []
   },
   "whitehaven_beach": {
    "lat": -20.28,
@@ -6593,7 +6623,8 @@
      "CLOUD_AMT": 49.13,
      "GWETROOT": 0.57
     }
-   }
+   },
+   "notes": []
   },
   "coxs_bazar": {
    "lat": 21.43,
@@ -6977,7 +7008,8 @@
      "CLOUD_AMT": 55.75,
      "GWETROOT": 0.76
     }
-   }
+   },
+   "notes": []
   },
   "amazon_rainforest": {
    "lat": -3.1,
@@ -7361,7 +7393,8 @@
      "CLOUD_AMT": 74.04,
      "GWETROOT": 0.6
     }
-   }
+   },
+   "notes": []
   },
   "congo_rainforest": {
    "lat": -0.5,
@@ -7745,7 +7778,8 @@
      "CLOUD_AMT": 72.1,
      "GWETROOT": 0.59
     }
-   }
+   },
+   "notes": []
   },
   "daintree_rainforest": {
    "lat": -16.17,
@@ -8129,7 +8163,8 @@
      "CLOUD_AMT": 56.72,
      "GWETROOT": 0.61
     }
-   }
+   },
+   "notes": []
   },
   "borneo_rainforest": {
    "lat": 0.96,
@@ -8513,7 +8548,8 @@
      "CLOUD_AMT": 90.65,
      "GWETROOT": 0.95
     }
-   }
+   },
+   "notes": []
   },
   "wayanad_landslide": {
    "lat": 11.52,
@@ -8897,7 +8933,8 @@
      "CLOUD_AMT": 68.18,
      "GWETROOT": 0.7
     }
-   }
+   },
+   "notes": []
   },
   "oso_landslide": {
    "lat": 48.28,
@@ -9281,7 +9318,8 @@
      "CLOUD_AMT": 62.85,
      "GWETROOT": 0.76
     }
-   }
+   },
+   "notes": []
   },
   "kedarnath_landslide": {
    "lat": 30.73,
@@ -9665,7 +9703,8 @@
      "CLOUD_AMT": 64.14,
      "GWETROOT": 0.61
     }
-   }
+   },
+   "notes": []
   },
   "zhouqu_landslide": {
    "lat": 33.78,
@@ -10049,7 +10088,8 @@
      "CLOUD_AMT": 71.76,
      "GWETROOT": 0.58
     }
-   }
+   },
+   "notes": []
   },
   "sundarbans": {
    "lat": 21.95,
@@ -10433,7 +10473,8 @@
      "CLOUD_AMT": 49.03,
      "GWETROOT": 0.81
     }
-   }
+   },
+   "notes": []
   },
   "death_valley": {
    "lat": 36.53,
@@ -10817,7 +10858,8 @@
      "CLOUD_AMT": 30.7,
      "GWETROOT": 0.37
     }
-   }
+   },
+   "notes": []
   }
  }
 }

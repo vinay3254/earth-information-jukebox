@@ -44,10 +44,10 @@ export const REGION_IMAGERY = Object.freeze({
     credit: 'NASA GSFC MODIS Rapid Response'
   },
   amazon_basin: {
-    file: 'amazon-rainforest-satellite.jpg',
-    label: 'NASA Earth Observatory · Amazon River Delta & Primary Rainforest',
-    note: 'Deforestation arc and tropical river system.',
-    credit: 'NASA Earth Observatory / MODIS'
+    file: 'amazon-deforestation-arc.jpg',
+    label: 'NASA GIBS · MODIS Terra true colour, 11 Aug 2019',
+    note: 'Smoke plumes over cleared land along the BR-163 highway near Novo Progresso, Para, the day after the 2019 "Day of Fire".',
+    credit: 'NASA Worldview / GIBS, MODIS Terra Corrected Reflectance'
   },
 
   // --- Wonders of the World ---

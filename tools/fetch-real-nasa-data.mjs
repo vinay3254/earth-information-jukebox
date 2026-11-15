@@ -49,6 +49,27 @@ export const SIGNALS = [
   { key: 'carbon', label: 'CO₂ (global)', field: 'CO2', source: 'NOAA GML Mauna Loa annual mean CO2 (global)', unit: 'ppm', decimals: 1, range: [340, 430], audio: 'Detune 0–22 cents' }
 ];
 
+// Location fixes, recorded in the provenance file:
+// - amazon_basin shared a 0.5 deg grid cell with amazon_rainforest (2 km apart),
+//   so both had identical data. It is the wildfire / deforestation entry, so it
+//   moves to Novo Progresso, Para, in the arc of deforestation (2019 "Day of Fire").
+const COORD_FIX = {
+  amazon_basin: {
+    lat: -7.06,
+    lon: -55.42,
+    name: 'Amazon Deforestation Arc',
+    fullName: 'Amazon Deforestation Arc, Novo Progresso (Para, Brazil)',
+    short: 'Deforestation & 2019 Day of Fire',
+    note: 'Moved from -3.12,-60.02 (same grid cell as amazon_rainforest) to Novo Progresso, Para, arc of deforestation; renamed from "Amazon Basin & Pantanal".'
+  }
+};
+// - Root-zone soil wetness is undefined over the sea. Destinations whose point
+//   is an ocean cell take soil moisture from the nearest coastal land cell.
+const SOIL_POINT = {
+  tohoku_fukushima: { lat: 37.64, lon: 140.96, note: 'Soil moisture from the nearest land cell, Minamisoma coast, Fukushima.' },
+  great_barrier_reef: { lat: -18.65, lon: 146.16, note: 'Soil moisture from the Herbert River catchment (Ingham), which drains onto the reef.' }
+};
+
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function fetchWithRetry(url, tries = 4) {
@@ -100,12 +121,26 @@ async function main() {
   };
 
   const regions = [];
-  for (const region of REGIONS) {
+  for (const original of REGIONS) {
+    const fix = COORD_FIX[original.id];
+    const region = fix
+      ? { ...original, lat: fix.lat, lon: fix.lon, ...(fix.name ? { name: fix.name, fullName: fix.fullName, short: fix.short } : {}) }
+      : original;
     process.stdout.write(`POWER ${region.id} (${region.lat}, ${region.lon}) ... `);
     const json = await (await fetchWithRetry(POWER_URL(region.lat, region.lon))).json();
     const p = json.properties.parameter;
     const units = Object.fromEntries(POWER_PARAMS.map((k) => [k, json.parameters?.[k]?.units]));
-    raw.destinations[region.id] = { lat: region.lat, lon: region.lon, units, annual: {} };
+    raw.destinations[region.id] = { lat: region.lat, lon: region.lon, units, annual: {}, notes: [] };
+    if (fix) raw.destinations[region.id].notes.push(fix.note);
+
+    const soilPoint = SOIL_POINT[region.id];
+    if (soilPoint) {
+      await sleep(400);
+      const soilJson = await (await fetchWithRetry(POWER_URL(soilPoint.lat, soilPoint.lon))).json();
+      p.GWETROOT = soilJson.properties.parameter.GWETROOT;
+      raw.destinations[region.id].soilPoint = { lat: soilPoint.lat, lon: soilPoint.lon };
+      raw.destinations[region.id].notes.push(soilPoint.note);
+    }
 
     const years = {};
     for (const year of YEARS) {
@@ -124,7 +159,8 @@ async function main() {
       raw.destinations[region.id].annual[year] = Object.fromEntries(POWER_PARAMS.map((k) => [k, annual(p[k], year)]));
     }
     const unavailable = SIGNALS.map((s) => s.key).filter((key) => YEARS.every((y) => years[y][key] === null));
-    regions.push({ ...region, unavailable, years });
+    const dataNotes = raw.destinations[region.id].notes;
+    regions.push({ ...region, unavailable, ...(dataNotes.length ? { dataNotes } : {}), years });
     console.log(`ok${unavailable.length ? ` (no data: ${unavailable.join(', ')})` : ''}`);
     await sleep(400); // be polite to the API
   }
