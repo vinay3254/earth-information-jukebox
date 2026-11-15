@@ -12,6 +12,7 @@
 //   cloud -> pad 110-330 Hz (+ haze 0.7-1.5 kHz, left)
 //   rain -> drops 440-880 Hz, random pan    sunlight -> chimes 880-1760 Hz, random pan
 //   wind -> noise 2.5-5 kHz, right          humidity -> reverb depth, CO2 -> detune
+//   water storage (GRACE) -> bass loudness   air haze (aerosols) -> melody/bells muffled
 //
 // Zero buzzing synth presets: pure harmonic sine/triangle ambient pads,
 // crystalline glass-harp pentatonic arpeggiations, soft water droplets,
@@ -49,7 +50,9 @@ const ABSOLUTE = {
   wind: { range: [0, 7] },
   sunlight: { range: [3, 7] },
   cloud: { range: [20, 90] },
-  soil: { range: [0.2, 1] }
+  soil: { range: [0.2, 1] },
+  water: { range: [-60, 40] },
+  air: { range: [0.05, 1.0] }
 };
 // n = CHARACTER_WEIGHT * character + (1 - CHARACTER_WEIGHT) * change
 const CHARACTER_WEIGHT = 0.6;
@@ -353,8 +356,14 @@ export class SignalAudio {
     // Melody notes (temperature) get their own bus so the layer toggle mutes them.
     this.melodyBus = ctx.createGain();
     this.melodyBus.gain.value = 0;
-    this.melodyBus.connect(master);
-    this.melodyBus.connect(reverbSend);
+    // Air haze (aerosol optical depth) rolls off the melody's and bells' highs.
+    this.hazeFilter = ctx.createBiquadFilter();
+    this.hazeFilter.type = 'lowpass';
+    this.hazeFilter.frequency.value = 9000;
+    this.hazeFilter.Q.value = 0.5;
+    this.hazeFilter.connect(master);
+    this.hazeFilter.connect(reverbSend);
+    this.melodyBus.connect(this.hazeFilter);
 
     // Climate textures (levels set per profile in apply()).
     const texNoise = (type, freq, q) => {
@@ -553,8 +562,7 @@ export class SignalAudio {
 
     this.lightsBus = ctx.createGain();
     this.lightsBus.gain.value = 0;
-    this.lightsBus.connect(master);
-    this.lightsBus.connect(reverbSend);
+    this.lightsBus.connect(this.hazeFilter);
 
     this.hitBus = ctx.createGain();
     this.hitBus.gain.value = 0;
@@ -582,6 +590,11 @@ export class SignalAudio {
     return audioBuffer;
   }
 
+  // One place recording at a time. Every call takes a request number; a
+  // recording that finishes loading after a newer request (another place, or
+  // leaving) is dropped instead of starting late on top of the current one.
+  // A second call for the file already loading does not load it again, and
+  // every older source still sounding is faded out before a new one starts.
   async playEnvironmentForRegion(region) {
     if (!region || !this.ready || this.ctx.state === 'closed') return;
     const meta = REGION_ENVIRONMENT_AUDIO[region.id] || {
@@ -597,66 +610,68 @@ export class SignalAudio {
     this.activeSoundscapeName = `${meta.name} (${this.activeSoundscapeOrigin})`;
     this.emitState();
 
-    if (this.currentEnvFile === meta.file && this.currentEnvSource) {
-      // Already running the correct soundscape
-      return;
-    }
+    if (this.currentEnvFile === meta.file && this.currentEnvSource) return; // already playing
+    if (this.pendingEnvFile === meta.file) return; // already loading
 
-    const now = this.now;
-
-    // Crossfade out previous track
-    if (this.currentEnvGain && this.currentEnvSource) {
-      const oldGain = this.currentEnvGain;
-      const oldSource = this.currentEnvSource;
-      oldGain.gain.cancelScheduledValues(now);
-      oldGain.gain.setValueAtTime(oldGain.gain.value, now);
-      oldGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.8);
-      setTimeout(() => {
-        try { oldSource.stop(); } catch {}
-      }, 900);
-      this.currentEnvSource = null;
-      this.currentEnvGain = null;
-    }
+    const request = (this.envRequest = (this.envRequest || 0) + 1);
+    this.pendingEnvFile = meta.file;
+    this.fadeOutEnvSources(0.8);
 
     try {
       const buffer = await this.fetchAndDecodeAudio(meta.file);
-      if (!this.ready || this.ctx.state === 'closed') return;
+      if (request !== this.envRequest) return; // superseded while loading
+      this.pendingEnvFile = null;
+      if (!this.ready || this.ctx.state === 'closed' || this.region?.id !== region.id) return;
 
+      this.fadeOutEnvSources(0.8); // safety net: nothing older keeps sounding
+      const now = this.now;
       const source = this.ctx.createBufferSource();
       source.buffer = buffer;
       source.loop = true;
-
       const gain = this.ctx.createGain();
       gain.gain.setValueAtTime(0.0001, now);
       gain.gain.exponentialRampToValueAtTime(meta.volume, now + 1.2);
-
       source.connect(gain);
       gain.connect(this.envBus);
       source.start(now);
 
+      if (!this.envSources) this.envSources = new Set();
+      const entry = { source, gain };
+      this.envSources.add(entry);
+      source.onended = () => this.envSources.delete(entry);
       this.currentEnvSource = source;
       this.currentEnvGain = gain;
       this.currentEnvFile = meta.file;
     } catch (err) {
+      if (request === this.envRequest) this.pendingEnvFile = null;
       console.warn('Could not start spatial environment soundscape:', err);
     }
   }
 
-  stopEnvironment() {
-    if (this.currentEnvGain && this.currentEnvSource) {
-      const now = this.now;
-      const oldGain = this.currentEnvGain;
-      const oldSource = this.currentEnvSource;
-      oldGain.gain.cancelScheduledValues(now);
-      oldGain.gain.setValueAtTime(oldGain.gain.value, now);
-      oldGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
-      setTimeout(() => {
-        try { oldSource.stop(); } catch {}
-      }, 700);
-      this.currentEnvSource = null;
-      this.currentEnvGain = null;
-      this.currentEnvFile = null;
+  // Fade out and stop every place recording that is still sounding.
+  fadeOutEnvSources(seconds) {
+    if (!this.envSources || !this.ctx) return;
+    const now = this.now;
+    for (const entry of [...this.envSources]) {
+      try {
+        entry.gain.gain.cancelScheduledValues(now);
+        entry.gain.gain.setValueAtTime(Math.max(0.0001, entry.gain.gain.value), now);
+        entry.gain.gain.exponentialRampToValueAtTime(0.0001, now + seconds);
+        entry.source.stop(now + seconds + 0.05);
+      } catch (error) {
+        // Already stopped.
+      }
+      this.envSources.delete(entry);
     }
+    this.currentEnvSource = null;
+    this.currentEnvGain = null;
+    this.currentEnvFile = null;
+  }
+
+  stopEnvironment() {
+    this.envRequest = (this.envRequest || 0) + 1; // cancels any recording still loading
+    this.pendingEnvFile = null;
+    this.fadeOutEnvSources(0.6);
   }
 
   async start() {
@@ -936,10 +951,20 @@ export class SignalAudio {
     this.seaFilter.frequency.setTargetAtTime(logMap(cloud ?? 0, 700, 1500), now, glide);
     this.seaGain.gain.setTargetAtTime(cloud === null ? 0 : dbRange(cloud, -44, -26), now, glide);
 
-    // Soil moisture -> sub-bass 50-100 Hz, -30 to -18 dB.
+    // Water below ground drives the bass: soil moisture sets its pitch
+    // (50-100 Hz) and GRACE water storage its loudness (-32 to -16 dB). With
+    // only one of them (GRACE starts in 2002) that one sets both.
     const soil = on('soil') ? n.soil : null;
-    this.sub.frequency.setTargetAtTime(logMap(soil ?? 0, 50, 100), now, glide);
-    this.subGain.gain.setTargetAtTime(soil === null ? 0 : dbRange(soil, -30, -18), now, glide);
+    const water = on('water') ? n.water : null;
+    const bassPitch = soil ?? water;
+    const bassLevel = water ?? soil;
+    this.sub.frequency.setTargetAtTime(logMap(bassPitch ?? 0, 50, 100), now, glide);
+    this.subGain.gain.setTargetAtTime(bassLevel === null ? 0 : dbRange(bassLevel, -32, -16), now, glide);
+
+    // Air haze (aerosol optical depth) -> the melody and bells lose their
+    // highs: clean air 9 kHz, heavy haze 1.4 kHz. No data (before 2001): open.
+    const air = on('air') ? n.air : null;
+    this.hazeFilter.frequency.setTargetAtTime(air === null ? 9000 : logMap(1 - air, 1400, 9000), now, glide);
 
     // Wind -> high wind noise 2.5-5 kHz panned right, -46 to -26 dB.
     const wind = on('wind') ? n.wind : null;

@@ -189,7 +189,7 @@ export class UI {
       this.el.hapticToggle.checked = this.hapticsEnabled;
     }
     if (this.el.speechRateSelect) {
-      this.el.speechRateSelect.value = String(this.speechRate);
+      this.syncRateSelect();
     }
 
     this.initVoices();
@@ -823,24 +823,199 @@ export class UI {
     return records.length ? `The ${records.join(' and ')} year in the record` : '';
   }
 
+  // Spoken summary of the selected place in the selected year, built fresh
+  // from that place's data on every year change. It compares the year with
+  // the year before, the first year of the record, the average of the years
+  // before it and the place's long-term normal, ranks it among all years,
+  // gives the ten-year temperature trend, mentions humidity, wind, sunlight
+  // and cloud only when they were unusual, and ends with what to listen for.
   yearAnchorText() {
     const region = this.activeRegion;
     const year = Number(this.activeYear);
-    const row = region?.years?.[year];
-    if (!row) return '';
-    const all = Object.values(region.years);
-    const isMax = (key) => row[key] != null && all.every((r) => r[key] == null || r[key] <= row[key]);
-    const isMin = (key) => row[key] != null && all.every((r) => r[key] == null || r[key] >= row[key]);
-    const parts = [];
-    if (row.temperature != null) parts.push(`${row.temperature.toFixed(1)} degrees`);
-    if (row.rain != null) parts.push(`${Math.round(row.rain).toLocaleString('en-US')} millimetres of rain`);
-    // Records merge into one phrase: "the hottest and driest year in the record".
-    const records = [];
-    if (isMax('temperature')) records.push('hottest');
-    if (isMin('rain')) records.push('driest');
-    else if (isMax('rain')) records.push('wettest');
-    if (records.length) parts.push(`the ${records.join(' and ')} year in the record`);
-    return `${year}: ${parts.join(', ')}.`;
+    if (!region?.years?.[year]) return '';
+    const years = Object.keys(region.years).map(Number).sort((a, b) => a - b);
+    const value = (y, key) => {
+      const v = region.years[y]?.[key];
+      return v === null || v === undefined || !Number.isFinite(Number(v)) ? null : Number(v);
+    };
+    const withData = (key) => years.filter((y) => value(y, key) !== null);
+    const firstWith = (key) => withData(key)[0];
+    const before = (key) => withData(key).filter((y) => y < year);
+    const mean = (list, key) => list.reduce((a, y) => a + value(y, key), 0) / list.length;
+    const sd = (list, key) => {
+      const m = mean(list, key);
+      return Math.sqrt(list.reduce((a, y) => a + (value(y, key) - m) ** 2, 0) / Math.max(1, list.length - 1));
+    };
+    // Position of this year among all years with data: 1 = highest.
+    const rank = (key) => {
+      const list = withData(key);
+      return { place: 1 + list.filter((y) => value(y, key) > value(year, key)).length, of: list.length };
+    };
+    const ordinal = (n) => {
+      const words = ['', '', 'second', 'third', 'fourth', 'fifth'];
+      if (words[n]) return words[n];
+      const tail = n % 100 >= 11 && n % 100 <= 13 ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] || 'th');
+      return `${n}${tail}`;
+    };
+    const fmt1 = (n) => Math.abs(n).toFixed(1);
+    const pct = (now, ref) => Math.round(((now - ref) / Math.abs(ref)) * 100);
+    const isTop = (list, key, v, dir) => list.every((y) => (dir > 0 ? value(y, key) <= v : value(y, key) >= v));
+    const unusual = {};
+    const out = [`${region.name} in ${year}.`];
+
+    // ---- Temperature
+    const t = value(year, 'temperature');
+    if (t !== null) {
+      const comps = [];
+      const prev = value(year - 1, 'temperature');
+      const first = firstWith('temperature');
+      if (prev !== null) comps.push(Math.abs(t - prev) >= 0.05 ? `${fmt1(t - prev)} ${t > prev ? 'warmer' : 'cooler'} than ${year - 1}` : `about the same as ${year - 1}`);
+      if (first !== undefined && first < year - 1) {
+        const d = t - value(first, 'temperature');
+        comps.push(Math.abs(d) >= 0.05 ? `${fmt1(d)} ${d > 0 ? 'warmer' : 'cooler'} than ${first}` : `about the same as ${first}`);
+      }
+      out.push(`It averaged ${t.toFixed(1)} degrees Celsius${comps.length ? `: ${comps.join(', and ')}` : ''}.`);
+
+      const all = withData('temperature');
+      const normal = mean(all, 'temperature');
+      const { place, of } = rank('temperature');
+      const gap = t - normal;
+      const rankWords = place === 1 ? `the warmest of all ${of} years` : place === of ? `the coolest of all ${of} years` : `the ${ordinal(place)} warmest of ${of} years`;
+      out.push(`That makes it ${rankWords}, ${Math.abs(gap) < 0.05 ? 'right at' : `${fmt1(gap)} degrees ${gap > 0 ? 'above' : 'below'}`} this place's long-term average of ${normal.toFixed(1)}.`);
+      unusual.temperature = gap / (sd(all, 'temperature') || 1);
+
+      const sofar = [...before('temperature'), year];
+      if (place !== 1 && sofar.length > 2 && isTop(sofar, 'temperature', t, 1)) out.push('It was the warmest year so far.');
+
+      // Ten-year trend ending in this year: least-squares slope, per decade.
+      const window = withData('temperature').filter((y) => y > year - 10 && y <= year);
+      if (window.length >= 6) {
+        const mx = window.reduce((a, y) => a + y, 0) / window.length;
+        const my = mean(window, 'temperature');
+        const num = window.reduce((a, y) => a + (y - mx) * (value(y, 'temperature') - my), 0);
+        const den = window.reduce((a, y) => a + (y - mx) ** 2, 0);
+        const perDecade = (num / den) * 10;
+        out.push(Math.abs(perDecade) < 0.1
+          ? `Over the ten years up to ${year}, temperatures held steady.`
+          : `Over the ten years up to ${year}, temperatures ${perDecade > 0 ? 'rose' : 'fell'} by about ${fmt1(perDecade)} degrees per decade.`);
+      }
+    }
+
+    // ---- Rain
+    const r = value(year, 'rain');
+    if (r !== null) {
+      const comps = [];
+      const prev = value(year - 1, 'rain');
+      if (prev) {
+        const p = pct(r, prev);
+        comps.push(Math.abs(p) >= 3 ? `${Math.abs(p)} percent ${p > 0 ? 'more' : 'less'} than ${year - 1}` : `about the same as ${year - 1}`);
+      }
+      const earlier = before('rain');
+      if (earlier.length >= 3) {
+        const p = pct(r, mean(earlier, 'rain'));
+        comps.push(Math.abs(p) >= 3 ? `${Math.abs(p)} percent ${p > 0 ? 'above' : 'below'} the average of the years before` : 'close to the average of the years before');
+      }
+      out.push(`Rain totalled ${Math.round(r).toLocaleString('en-US')} millimetres${comps.length ? `: ${comps.join(', and ')}` : ''}.`);
+      const all = withData('rain');
+      const { place, of } = rank('rain');
+      if (place === of) out.push(`The driest of all ${of} years.`);
+      else if (place === 1) out.push(`The wettest of all ${of} years.`);
+      else if (place <= 5) out.push(`The ${ordinal(place)} wettest of ${of} years.`);
+      else if (of - place + 1 <= 5) out.push(`The ${ordinal(of - place + 1)} driest of ${of} years.`);
+      else {
+        const sofar = [...earlier, year];
+        if (sofar.length > 2 && isTop(sofar, 'rain', r, -1)) out.push('The driest year so far.');
+        else if (sofar.length > 2 && isTop(sofar, 'rain', r, 1)) out.push('The wettest year so far.');
+      }
+      unusual.rain = (r - mean(all, 'rain')) / (sd(all, 'rain') || 1);
+    }
+
+    // ---- Soil moisture, as percent wetness
+    const soil = value(year, 'soil');
+    if (soil !== null) {
+      const all = withData('soil');
+      const normal = mean(all, 'soil');
+      const prev = value(year - 1, 'soil');
+      const bits = [];
+      if (prev !== null && Math.abs(soil - prev) >= 0.02) bits.push(`${soil > prev ? 'wetter' : 'drier'} than in ${year - 1}`);
+      if (Math.abs(soil - normal) >= 0.02) bits.push(`${soil > normal ? 'above' : 'below'} its usual ${Math.round(normal * 100)}`);
+      out.push(`The soil was ${Math.round(soil * 100)} percent wet${bits.length ? `, ${bits.join(' and ')}.` : ', about normal for this place.'}`);
+      unusual.soil = (soil - normal) / (sd(all, 'soil') || 1);
+    }
+
+    // ---- Humidity, wind, sunlight, cloud: only when unusual for this place
+    const weather = [
+      { key: 'humidity', show: (v) => String(Math.round(v)), say: (v, n, hi) => `Humidity was ${Math.round(v)} percent, ${hi ? 'higher' : 'lower'} than the usual ${Math.round(n)}` },
+      { key: 'wind', show: (v) => v.toFixed(1), say: (v, n, hi) => `Winds averaged ${v.toFixed(1)} metres per second, ${hi ? 'windier' : 'calmer'} than the usual ${n.toFixed(1)}` },
+      { key: 'sunlight', show: (v) => v.toFixed(1), say: (v, n, hi) => `Sunlight reached ${v.toFixed(1)} kilowatt hours per square metre a day, ${hi ? 'sunnier' : 'duller'} than the usual ${n.toFixed(1)}` },
+      { key: 'cloud', show: (v) => String(Math.round(v)), say: (v, n, hi) => `Cloud covered ${Math.round(v)} percent of the sky, ${hi ? 'more' : 'less'} than the usual ${Math.round(n)}` }
+    ];
+    const notable = [];
+    for (const w of weather) {
+      const v = value(year, w.key);
+      if (v === null) continue;
+      const all = withData(w.key);
+      const n = mean(all, w.key);
+      const z = (v - n) / (sd(all, w.key) || 1);
+      unusual[w.key] = z;
+      // Unusual for this place, and different once both numbers are rounded
+      // (never "0.7, windier than the usual 0.7").
+      if (Math.abs(z) >= 1 && w.show(v) !== w.show(n)) notable.push(w.say(v, n, z > 0));
+    }
+    if (notable.length) out.push(`${notable.join('. ')}.`);
+    else if (weather.some((w) => value(year, w.key) !== null)) out.push('Humidity, wind, sunlight and cloud were all close to normal for this place.');
+
+    // ---- Water storage (GRACE, from 2002)
+    const water = value(year, 'water');
+    if (water !== null) {
+      const first = firstWith('water');
+      let line = `Stored water, from the GRACE satellites, stood ${fmt1(water)} centimetres ${water >= 0 ? 'above' : 'below'} its 2004 to 2009 average`;
+      if (first !== undefined && first < year) {
+        const d = water - value(first, 'water');
+        if (Math.abs(d) >= 1) line += `, ${fmt1(d)} centimetres ${d > 0 ? 'more' : 'less'} than in ${first}`;
+      }
+      out.push(`${line}.`);
+      unusual.water = water / 10;
+    } else if (year < 2002) {
+      out.push('Stored water is not measured before 2002.');
+    }
+
+    // ---- Air haze (aerosols, from 2001)
+    const air = value(year, 'air');
+    const airFirst = firstWith('air');
+    if (air !== null && airFirst !== undefined && airFirst < year) {
+      const p = pct(air, value(airFirst, 'air'));
+      out.push(Math.abs(p) >= 10
+        ? `The air was ${Math.abs(p)} percent ${p > 0 ? 'hazier' : 'clearer'} than in ${airFirst}, from dust, smoke and pollution.`
+        : `Air haze was close to its ${airFirst} level.`);
+      unusual.air = p / 25;
+    }
+
+    // ---- Global CO2
+    const co2 = value(year, 'carbon');
+    const co2First = firstWith('carbon');
+    if (co2 !== null && co2First !== undefined && co2First < year) {
+      out.push(`Global carbon dioxide was ${Math.round(co2)} parts per million, up ${Math.round(co2 - value(co2First, 'carbon'))} since ${co2First}.`);
+    }
+    if (year === years[0]) out.push('This is the first year of the record, so later years are compared with it.');
+
+    // ---- What to listen for: the most unusual things this year, in sound terms
+    const cues = [];
+    if ((unusual.temperature ?? 0) >= 1) cues.push('the melody sits high');
+    if ((unusual.temperature ?? 0) <= -1) cues.push('the melody sits low');
+    if ((unusual.rain ?? 0) <= -1) cues.push('the raindrops thin out');
+    if ((unusual.rain ?? 0) >= 1) cues.push('the rain falls heavily');
+    // The bass follows the sound mapping: stored water sets its loudness
+    // (soil does when there is no GRACE data), soil moisture sets its pitch.
+    const bassLevel = unusual.water ?? unusual.soil ?? 0;
+    if (bassLevel <= -1) cues.push('the bass is quieter');
+    if (bassLevel >= 1) cues.push('the bass is fuller');
+    if ((unusual.soil ?? 0) <= -1 && unusual.water !== undefined) cues.push('the bass drops lower');
+    if ((unusual.air ?? 0) >= 1) cues.push('the bells sound muffled');
+    if ((unusual.humidity ?? 0) >= 1) cues.push('the echo grows deeper');
+    if ((unusual.cloud ?? 0) >= 1) cues.push('the chords sound darker');
+    if (cues.length) out.push(`In the music, ${cues.slice(0, 3).join(', ')}.`);
+    return out.join(' ');
   }
 
   // On choosing a place: where you are and its long-term trend.
@@ -858,17 +1033,69 @@ export class UI {
     }, 350);
   }
 
-  // Replays the 41-year temperature run (key R or the jukebox trend button).
+  // Short spoken description of the place's 1985-2025 temperature record:
+  // the long-term rate (least-squares slope per decade) with the total change
+  // (last five years against the first five), the warmest year and how many
+  // of the five warmest were recent, the last ten years when they clearly
+  // differ, and how to listen to the note run that follows.
+  trendText() {
+    const region = this.activeRegion;
+    if (!region) return '';
+    const years = Object.keys(region.years).map(Number).sort((a, b) => a - b)
+      .filter((y) => Number.isFinite(Number(region.years[y]?.temperature)));
+    if (years.length < 6) return '';
+    const T = (y) => Number(region.years[y].temperature);
+    const avg = (list) => list.reduce((a, y) => a + T(y), 0) / list.length;
+    const slope = (list) => {
+      const mx = list.reduce((a, y) => a + y, 0) / list.length;
+      const my = avg(list);
+      const num = list.reduce((a, y) => a + (y - mx) * (T(y) - my), 0);
+      const den = list.reduce((a, y) => a + (y - mx) ** 2, 0);
+      return (num / den) * 10;
+    };
+    const fmt1 = (n) => Math.abs(n).toFixed(1);
+    const first = years[0];
+    const last = years.at(-1);
+    const out = [`Temperature trend for ${region.name}, ${first} to ${last}.`];
+
+    const rate = slope(years);
+    const total = avg(years.slice(-5)) - avg(years.slice(0, 5));
+    out.push(Math.abs(rate) < 0.05
+      ? 'Temperatures stayed about level.'
+      : `It ${rate > 0 ? 'warmed' : 'cooled'} by about ${fmt1(rate)} degrees per decade, ${fmt1(total)} degrees ${total > 0 ? 'warmer' : 'cooler'} now than in the late 1980s.`);
+
+    const byHeat = [...years].sort((a, b) => T(b) - T(a));
+    const recent = byHeat.slice(0, 5).filter((y) => y > last - 10).length;
+    out.push(`The warmest year was ${byHeat[0]}, at ${T(byHeat[0]).toFixed(1)} degrees${recent >= 2 ? `, and ${recent} of the five warmest came in the last ten years` : ''}.`);
+
+    const window = years.filter((y) => y > last - 10);
+    if (window.length >= 6) {
+      const r10 = slope(window);
+      if (Math.sign(r10) === Math.sign(rate) && Math.abs(r10) > Math.abs(rate) * 1.3 && Math.abs(r10) >= 0.1) {
+        out.push(`The last ten years ${r10 > 0 ? 'warmed' : 'cooled'} faster, about ${fmt1(r10)} degrees per decade.`);
+      } else if (Math.abs(r10) < Math.abs(rate) * 0.5 || Math.sign(r10) !== Math.sign(rate)) {
+        out.push(`The last ten years ${Math.abs(r10) < 0.1 ? 'held steady' : r10 > 0 ? 'warmed more slowly' : 'cooled slightly'}.`);
+      }
+    }
+    out.push('Listen: one note per year, left to right. Higher notes are warmer years.');
+    return out.join(' ');
+  }
+
+  // Temperature trend button and the R key: read the trend out, then play the
+  // 41-note run. Spoken whenever it is asked for, even with the voice guide off.
   playTrend() {
     const audio = window.__hearth?.audio;
     if (!audio || !this.activeRegion) return;
-    if (this.speechEnabled) {
-      this.speak('Temperature trend, 1985 to 2025.');
-      window.setTimeout(() => audio.playTrendSweep(), 2000);
+    const text = this.trendText();
+    // Short note for screen readers: the full text is already being spoken,
+    // and announcing it too would read it twice.
+    this.announceSR(this.speech && text ? 'Temperature trend' : 'Playing the temperature trend, 1985 to 2025');
+    if (this.speech && text) {
+      window.clearTimeout(this.speechTimer);
+      this.voice.say(text, { rate: this.speechRate || 1.0, voice: this.selectedVoice, mood: 'calm', whole: true, onDone: () => audio.playTrendSweep() });
     } else {
       audio.playTrendSweep();
     }
-    this.announceSR('Playing the temperature trend, 1985 to 2025');
   }
 
   // The voice guide turns itself on the first time someone uses the keyboard
@@ -917,6 +1144,27 @@ export class UI {
     if (!quiet && this.activeRegion) this.speak(`${this.placeAnchorText()} ${this.summaryText()}`);
   }
 
+  // Options are written "1.0", "0.75"... while the saved rate is a number, so
+  // match by value: String(1) is "1" and would select nothing.
+  syncRateSelect() {
+    const select = this.el.speechRateSelect;
+    if (!select) return;
+    const match = [...select.options].find((o) => Math.abs(Number(o.value) - Number(this.speechRate)) < 1e-6);
+    if (match) select.value = match.value;
+  }
+
+  // "Microsoft Ava Multilingual Online (Natural) - English (United States)"
+  // becomes "Ava Multilingual (United States)".
+  shortVoiceName(voice) {
+    return voice.name
+      .replace(/^(Microsoft|Google|Apple)\s+/i, '')
+      .replace(/\s+Online/i, '')
+      .replace(/\s*\((Natural|Neural|Enhanced|Premium)\)/gi, '')
+      .replace(/\s+-\s+English\s*/i, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
   initVoices() {
     if (!this.speech) return;
     const populate = () => {
@@ -929,7 +1177,7 @@ export class UI {
       this.el.speechVoiceSelect.innerHTML = '';
       const auto = document.createElement('option');
       auto.value = '';
-      auto.textContent = best ? `Best available (${best.name.replace(/^Microsoft\s+/, '')})` : 'Default Voice';
+      auto.textContent = best ? `Best available: ${this.shortVoiceName(best)}` : 'Default voice';
       this.el.speechVoiceSelect.appendChild(auto);
       // Natural (neural) voices first, marked with a star.
       const english = voices.filter((voice) => voice.lang.startsWith('en'))
@@ -937,7 +1185,8 @@ export class UI {
       for (const voice of english) {
         const opt = document.createElement('option');
         opt.value = voice.voiceURI;
-        opt.textContent = `${isNaturalVoice(voice) ? '\u2605 ' : ''}${voice.name} (${voice.lang})`;
+        opt.textContent = `${isNaturalVoice(voice) ? '\u2605 ' : ''}${this.shortVoiceName(voice)}`;
+        opt.title = `${voice.name} (${voice.lang})`;
         if (voice.voiceURI === this.speechVoiceUri) {
           opt.selected = true;
           this.selectedVoice = voice;
@@ -954,7 +1203,7 @@ export class UI {
   setSpeechRate(rate) {
     this.speechRate = Number.isFinite(rate) ? rate : 1.0;
     localStorage.setItem('hearth:speechRate', String(this.speechRate));
-    if (this.el.speechRateSelect) this.el.speechRateSelect.value = String(this.speechRate);
+    this.syncRateSelect();
     this.speak(`Voice guide rate set to ${this.speechRate} speed.`);
   }
 

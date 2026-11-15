@@ -23,22 +23,28 @@ Everything runs in the browser with plain JavaScript: no build step, no npm depe
 | Source | What HEARTH uses | Where |
 | --- | --- | --- |
 | [NASA POWER](https://power.larc.nasa.gov/) monthly/annual API (MERRA-2 reanalysis, CERES satellite) | Annual temperature (`T2M`), rain (`PRECTOTCORR`, as a yearly total), humidity (`RH2M`), wind (`WS2M`), sunlight (`ALLSKY_SFC_SW_DWN`), cloud cover (`CLOUD_AMT`) and root-zone soil moisture (`GWETROOT`) at each of the 28 places, 1985–2025 | Observatory music |
+| NASA POWER aerosol optical depth (`AOD_55`, MERRA-2) | How hazy the air is (dust, smoke, pollution), annual mean, 2001–2025 | Observatory music |
+| [NASA JPL GRACE / GRACE-FO mascons](https://grace.jpl.nasa.gov/data/get-data/jpl_global_mascons/) RL06.3 v04 CRI (PO.DAAC) | Water storage: all water held on land at each place (ice, snow, soil and groundwater), in cm against the 2004–2009 mean, annual mean, 2002–2025 | Observatory music |
 | [NOAA GML Mauna Loa](https://gml.noaa.gov/ccgg/trends/) annual mean CO₂ (not NASA; the record NASA shows on climate.nasa.gov) | Global CO₂, 1985–2025, the same at every place | Observatory music |
 | [NASA GISTEMP v4](https://data.giss.nasa.gov/gistemp/) | Global monthly temperature anomaly, 2000–2010 | Acoustic Lab drone |
 | NASA POWER (Cox's Bazar point file) | Monthly temperature, rain, wind, sunlight, 2000–2010 | Acoustic Lab tuning |
 | Satellite imagery | Filmstrips and place images as credited in `src/filmstrip.js` and `src/region-imagery.js` (NASA GIBS / MODIS, NASA Earth Observatory, ISS photography) | Lab filmstrips, close-up map view |
 | [Open Notify](http://open-notify.org/) / [wheretheiss.at](https://wheretheiss.at/) (not NASA) | Live ISS latitude and longitude | Live ISS mode |
 
-**Rebuild the data:** `node tools/fetch-real-nasa-data.mjs` fetches everything again and rewrites `src/regions.js`. The raw responses and their sources are kept in `assets/data/real-nasa-annual.json`.
+**Rebuild the data**
+1. `python tools/fetch-grace.py` — downloads the GRACE file (about 44 MB, cached in `~/.cache/hearth-data/`) and writes `assets/data/grace-annual.json`. It needs a free [NASA Earthdata Login](https://urs.earthdata.nasa.gov/) token, read from the `EARTHDATA_TOKEN` environment variable or from `~/.earthdata-token`. Never put the token inside this repository.
+2. `node tools/fetch-real-nasa-data.mjs` — fetches NASA POWER and CO₂ again, merges the GRACE file and rewrites `src/regions.js`. The raw responses and their sources are kept in `assets/data/real-nasa-annual.json`.
 
 **Notes on the data**
 - Values are averages over NASA POWER's roughly 50 km grid cells, not single weather stations (Everest reads about −3 °C, the cell average, not the summit).
 - Tohoku and the Great Barrier Reef sit on ocean cells, so their soil moisture comes from the nearest land cell (Fukushima coast; the Herbert River catchment that drains onto the reef).
 - "Amazon Deforestation Arc" uses Novo Progresso, Pará; it previously shared a grid cell with the Amazon Rainforest entry.
 - 2026 is not included because the year is not complete.
+- Each layer starts when its satellite record does: air haze in 2001, water storage in 2002. Before that the layer is silent. GRACE has no usable annual value for 2017 and 2018 (the gap between the GRACE and GRACE-FO missions).
+- GRACE measures all stored water, so at glacier places (Everest, Kedarnath) the fall is mostly ice loss, not groundwater. Over the sea it measures ocean-bottom pressure, so coastal places use the nearest land cell. JPL's land-hydrology scale factor is applied.
 - An earlier version of HEARTH used generated placeholder values (`tools/generate-global-regions.mjs`). They are no longer used; do not run that script, it would overwrite the real data.
 
-**Not yet included** (need a NASA Earthdata login or other registration): vegetation (MODIS NDVI), groundwater (GRACE), sea level, air quality (OMI NO₂), night lights (VIIRS Black Marble), disaster counts (EM-DAT).
+**Not yet included:** vegetation (MODIS NDVI via AppEEARS, which needs an Earthdata username and password rather than a token), sea level and night lights (VIIRS Black Marble; both need gigabytes of downloads for 28 places), disaster or fire counts (EM-DAT registration or a NASA FIRMS key).
 
 ---
 
@@ -60,7 +66,9 @@ change    = 1 / (1 + e^(−z / 1.5)),  z = (value − mean₁₉₈₅₋₂₀�
 | Wind | Wind noise, 2.5–5 kHz, right |
 | Sunlight | Bell chimes |
 | Cloud cover | Pad brightness and a soft haze, left |
-| Soil moisture | Sub-bass, 50–100 Hz |
+| Soil moisture | Sub-bass pitch, 50–100 Hz |
+| Water storage (GRACE) | Sub-bass loudness |
+| Air haze (aerosols) | The melody and bells lose their high end (clean 9 kHz → hazy 1.4 kHz) |
 | CO₂ (global) | Slow detune, 0–22 cents |
 
 **Each climate sounds different** — places are classified from their own averages:

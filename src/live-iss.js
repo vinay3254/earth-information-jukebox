@@ -445,6 +445,10 @@ export class LiveIssMode {
     this.requestId = 0;
     this.lastText = '';
     this.button.addEventListener('click', () => this.toggle());
+    // Opening a place silences the ISS recording at once, not at the next fix.
+    new MutationObserver(() => {
+      if (this.active && document.body.classList.contains('destination-open')) this.voice.stopAmbient(1.2);
+    }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
   }
 
   toggle() {
@@ -513,8 +517,14 @@ export class LiveIssMode {
     }
     this.voice.ping(note.frequency);
 
+    // The nearest place's recording plays only in the solar or orbit view:
+    // while a place is open, that place's own sound is the only recording.
     const ambient = region ? REGION_ENVIRONMENT_AUDIO[region.id] : null;
-    if (ambient) this.voice.setAmbient(ambient.file, AMBIENT_LEVEL * (ambient.volume || 0.7));
+    if (ambient && !document.body.classList.contains('destination-open')) {
+      this.voice.setAmbient(ambient.file, AMBIENT_LEVEL * (ambient.volume || 0.7));
+    } else {
+      this.voice.stopAmbient(1.2);
+    }
 
     this.marker.show(latitude, longitude);
 

@@ -32,7 +32,9 @@ const START = 1985;
 const END = 2025;
 const YEARS = Array.from({ length: END - START + 1 }, (_, i) => START + i);
 
-const POWER_PARAMS = ['T2M', 'PRECTOTCORR', 'RH2M', 'WS2M', 'ALLSKY_SFC_SW_DWN', 'CLOUD_AMT', 'GWETROOT'];
+const POWER_PARAMS = ['T2M', 'PRECTOTCORR', 'RH2M', 'WS2M', 'ALLSKY_SFC_SW_DWN', 'CLOUD_AMT', 'GWETROOT', 'AOD_55'];
+// GRACE water storage comes from tools/fetch-grace.py (needs an Earthdata token).
+const GRACE_FILE = path.join(root, 'assets/data/grace-annual.json');
 const POWER_URL = (lat, lon) =>
   `https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=${POWER_PARAMS.join(',')}`
   + `&community=RE&latitude=${lat}&longitude=${lon}&start=${START}&end=${END}&format=JSON`;
@@ -46,6 +48,8 @@ export const SIGNALS = [
   { key: 'sunlight', label: 'Sunlight', field: 'ALLSKY_SFC_SW_DWN', source: 'NASA POWER (CERES/SRB) all-sky surface solar irradiance, annual mean', unit: 'kWh/m²/day', decimals: 2, range: [1, 8], audio: 'Bell chime rate' },
   { key: 'cloud', label: 'Cloud cover', field: 'CLOUD_AMT', source: 'NASA POWER (CERES) annual mean cloud amount', unit: '%', decimals: 0, range: [0, 100], audio: 'Pad brightness and haze, left' },
   { key: 'soil', label: 'Soil moisture', field: 'GWETROOT', source: 'NASA POWER (MERRA-2) root-zone soil wetness, 0 = dry, 1 = saturated', unit: '', decimals: 2, range: [0, 1], audio: 'Sub-bass 50–100 Hz' },
+  { key: 'water', label: 'Water storage', field: 'lwe_thickness', source: 'NASA JPL GRACE/GRACE-FO mascon RL06.3: all water stored on land (ice, snow, soil and groundwater) vs the 2004-2009 mean', unit: 'cm', decimals: 1, range: [-60, 40], audio: 'Sub-bass loudness' },
+  { key: 'air', label: 'Air haze', field: 'AOD_55', source: 'NASA POWER (MERRA-2) aerosol optical depth at 550 nm, annual mean', unit: '', decimals: 2, range: [0, 1.2], audio: 'Muffles the melody and bells' },
   { key: 'carbon', label: 'CO₂ (global)', field: 'CO2', source: 'NOAA GML Mauna Loa annual mean CO2 (global)', unit: 'ppm', decimals: 1, range: [340, 430], audio: 'Detune 0–22 cents' }
 ];
 
@@ -120,6 +124,10 @@ async function main() {
     destinations: {}
   };
 
+  const grace = fs.existsSync(GRACE_FILE) ? JSON.parse(fs.readFileSync(GRACE_FILE, 'utf8')) : null;
+  if (grace) raw.sources.grace = { file: path.relative(root, GRACE_FILE), source: grace.source, units: grace.units, method: grace.method };
+  else console.log('No assets/data/grace-annual.json: run tools/fetch-grace.py for the water storage layer.');
+
   const regions = [];
   for (const original of REGIONS) {
     const fix = COORD_FIX[original.id];
@@ -153,6 +161,8 @@ async function main() {
         sunlight: round(annual(p.ALLSKY_SFC_SW_DWN, year), 3),
         cloud: round(annual(p.CLOUD_AMT, year), 1),
         soil: round(annual(p.GWETROOT, year), 3),
+        water: grace?.places?.[region.id]?.annual?.[year] ?? null,
+        air: round(annual(p.AOD_55, year), 3),
         carbon: co2[year] ?? null
       };
       years[year] = row;

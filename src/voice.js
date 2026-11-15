@@ -93,14 +93,18 @@ export class ExpressiveVoice {
   }
 
   // Speak text sentence by sentence. `mood` forces one delivery for all of it.
-  say(text, { rate = 1, voice = null, mood = null } = {}) {
+  // `onDone` runs once the last sentence has been spoken (not if it was cut
+  // off by newer speech).
+  // `whole: true` speaks the text as one utterance: no gap between sentences,
+  // for longer passages such as the temperature trend.
+  say(text, { rate = 1, voice = null, mood = null, onDone = null, whole = false } = {}) {
     if (!this.synth || !text) return;
     this.cancel();
     const token = this.token;
     const chosen = voice || this.bestVoice();
     // Basic (non-neural) voices are easier to follow a little slower.
     const basicSlowdown = chosen && !isNaturalVoice(chosen) ? 0.94 : 1;
-    const parts = sentences(text);
+    const parts = whole ? [String(text).trim()].filter(Boolean) : sentences(text);
     if (!parts.length) return;
     this.onStart?.();
     parts.forEach((part, i) => {
@@ -113,11 +117,15 @@ export class ExpressiveVoice {
       utterance.volume = style.volume;
       if (i === parts.length - 1) {
         utterance.onend = () => {
-          if (token === this.token) this.onEnd?.();
+          if (token !== this.token) return;
+          this.onEnd?.();
+          onDone?.();
         };
       }
       utterance.onerror = () => {
-        if (token === this.token && i === parts.length - 1) this.onEnd?.();
+        if (token !== this.token || i !== parts.length - 1) return;
+        this.onEnd?.();
+        onDone?.();
       };
       this.synth.speak(utterance);
     });

@@ -2752,3 +2752,140 @@ body.destination-open .hint { display: none; }
   color: var(--ink-dim);
 }
 .a11y-hint[hidden] { display: none; }
+
+/* ------------------------------------------------------------------ legibility fixes
+   Dropdowns: the open option list rendered light-grey text on white. */
+.a11y-select { color-scheme: dark; max-width: 190px; text-overflow: ellipsis; }
+.a11y-select option,
+.compare-pair-select option {
+  background-color: #0b1220;
+  color: var(--ink);
+}
+
+/* Top-right HUD over bright plates (desert, snow, cloud): a dark outline
+   behind the words, and pressed buttons as a dark chip with bright text. */
+#readout,
+.audio-controls,
+.iss-live {
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.95), 0 1px 4px rgba(0, 0, 0, 0.9), 0 0 14px rgba(0, 0, 0, 0.6);
+}
+#readout .ro-key { color: var(--ink-soft); }
+#readout .ro-val { color: var(--ink); }
+.audio-controls .audio-status { color: var(--ink-soft); }
+.audio-controls .audio-button,
+.iss-live .audio-button { color: var(--ink); }
+.audio-controls .audio-button[aria-pressed="true"],
+.iss-live .audio-button[aria-pressed="true"],
+.audio-controls #audio-toggle:not([hidden]) {
+  background: rgba(3, 8, 16, 0.72);
+  color: #7dd3fc;
+  border-radius: 4px;
+}
+.audio-controls .audio-button:hover,
+.iss-live .audio-button:hover { background: rgba(3, 8, 16, 0.6); color: #fff; }
+
+/* ------------------------------------------------------------------ splash: name only
+   The splash shows only HEARTH over the Earth animation. The loading status
+   stays readable to screen readers (visually hidden, still role="status"),
+   the progress bar and tagline are gone, and if loading fails the message
+   and Retry button come back so nobody is stuck on a silent splash. */
+.loader .loader-track,
+.loader .loader-foot { display: none; }
+.loader .loader-sub {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.loader .loader-mark { margin-bottom: 0; }
+.loader.failed .loader-sub {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 18px auto 14px;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* ------------------------------------------------------------------ splash name
+   Larger, and it arrives in the HUD's language: each letter resolves from a
+   blur in turn while the spacing tightens, a thin accent line draws out
+   beneath it, and a light sweep crosses the line like a scanner. */
+.loader .loader-mark {
+  position: relative;
+  font-size: clamp(34px, 4.8vw, 64px);
+  font-weight: 200;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  padding-bottom: 22px;
+  text-shadow: 0 0 18px rgba(56, 189, 248, 0.22);
+}
+.loader .loader-mark span {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(14px);
+  animation: hearth-letter 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.loader .loader-mark span:nth-child(1) { animation-delay: 0.35s; }
+.loader .loader-mark span:nth-child(2) { animation-delay: 0.47s; }
+.loader .loader-mark span:nth-child(3) { animation-delay: 0.59s; }
+.loader .loader-mark span:nth-child(4) { animation-delay: 0.71s; }
+.loader .loader-mark span:nth-child(5) { animation-delay: 0.83s; }
+.loader .loader-mark span:nth-child(6) { animation-delay: 0.95s; }
+
+/* Accent line under the name */
+.loader .loader-mark::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: hearth-line 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1.15s forwards;
+}
+/* Light sweep travelling along the line */
+.loader .loader-mark::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 20%;
+  width: 60px;
+  height: 5px;
+  border-radius: 3px;
+  background: radial-gradient(closest-side, rgba(186, 230, 253, 0.95), rgba(56, 189, 248, 0));
+  opacity: 0;
+  animation: hearth-sweep 2.6s ease-in-out 2.3s infinite;
+}
+
+@keyframes hearth-letter {
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+@keyframes hearth-line {
+  to { width: 62%; }
+}
+@keyframes hearth-sweep {
+  0% { left: 20%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { left: calc(80% - 60px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader .loader-mark span { animation: none; opacity: 1; filter: none; transform: none; }
+  .loader .loader-mark::after { animation: none; width: 62%; }
+  .loader .loader-mark::before { animation: none; opacity: 0; }
+}
+
+/* Splash: no line under the name, only the name and its letter animation. */
+.loader .loader-mark::before,
+.loader .loader-mark::after { content: none; display: none; animation: none; }
+.loader .loader-mark { padding-bottom: 0; }

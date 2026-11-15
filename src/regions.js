@@ -97,6 +97,32 @@ export const SIGNALS = [
     "audio": "Sub-bass 50–100 Hz"
   },
   {
+    "key": "water",
+    "label": "Water storage",
+    "field": "lwe_thickness",
+    "source": "NASA JPL GRACE/GRACE-FO mascon RL06.3: all water stored on land (ice, snow, soil and groundwater) vs the 2004-2009 mean",
+    "unit": "cm",
+    "decimals": 1,
+    "range": [
+      -60,
+      40
+    ],
+    "audio": "Sub-bass loudness"
+  },
+  {
+    "key": "air",
+    "label": "Air haze",
+    "field": "AOD_55",
+    "source": "NASA POWER (MERRA-2) aerosol optical depth at 550 nm, annual mean",
+    "unit": "",
+    "decimals": 2,
+    "range": [
+      0,
+      1.2
+    ],
+    "audio": "Muffles the melody and bells"
+  },
+  {
     "key": "carbon",
     "label": "CO₂ (global)",
     "field": "CO2",
@@ -355,6 +381,8 @@ export const REGIONS = [
         "sunlight": 3.927,
         "cloud": 72.3,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -365,6 +393,8 @@ export const REGIONS = [
         "sunlight": 3.89,
         "cloud": 73.2,
         "soil": 0.68,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -375,6 +405,8 @@ export const REGIONS = [
         "sunlight": 3.795,
         "cloud": 73.8,
         "soil": 0.65,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -385,6 +417,8 @@ export const REGIONS = [
         "sunlight": 3.629,
         "cloud": 77.4,
         "soil": 0.75,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -395,6 +429,8 @@ export const REGIONS = [
         "sunlight": 3.825,
         "cloud": 73.4,
         "soil": 0.75,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -405,6 +441,8 @@ export const REGIONS = [
         "sunlight": 3.829,
         "cloud": 70.3,
         "soil": 0.69,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -415,6 +453,8 @@ export const REGIONS = [
         "sunlight": 3.683,
         "cloud": 71.1,
         "soil": 0.78,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -425,6 +465,8 @@ export const REGIONS = [
         "sunlight": 3.736,
         "cloud": 72.5,
         "soil": 0.77,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -435,6 +477,8 @@ export const REGIONS = [
         "sunlight": 3.642,
         "cloud": 75.5,
         "soil": 0.78,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -445,6 +489,8 @@ export const REGIONS = [
         "sunlight": 3.968,
         "cloud": 71,
         "soil": 0.74,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -455,6 +501,8 @@ export const REGIONS = [
         "sunlight": 3.782,
         "cloud": 70.3,
         "soil": 0.77,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -465,6 +513,8 @@ export const REGIONS = [
         "sunlight": 3.817,
         "cloud": 68.6,
         "soil": 0.66,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -475,6 +525,8 @@ export const REGIONS = [
         "sunlight": 3.775,
         "cloud": 69.2,
         "soil": 0.7,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -485,6 +537,8 @@ export const REGIONS = [
         "sunlight": 3.599,
         "cloud": 77.6,
         "soil": 0.85,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -495,6 +549,8 @@ export const REGIONS = [
         "sunlight": 3.882,
         "cloud": 68.3,
         "soil": 0.79,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -505,6 +561,8 @@ export const REGIONS = [
         "sunlight": 3.83,
         "cloud": 70.1,
         "soil": 0.78,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -515,6 +573,8 @@ export const REGIONS = [
         "sunlight": 3.892,
         "cloud": 78.1,
         "soil": 0.73,
+        "water": null,
+        "air": 0.3,
         "carbon": 371.32
       },
       "2002": {
@@ -525,6 +585,8 @@ export const REGIONS = [
         "sunlight": 3.795,
         "cloud": 76.4,
         "soil": 0.71,
+        "water": -0.98,
+        "air": 0.3,
         "carbon": 373.45
       },
       "2003": {
@@ -535,6 +597,8 @@ export const REGIONS = [
         "sunlight": 3.555,
         "cloud": 82.5,
         "soil": 0.83,
+        "water": -0.47,
+        "air": 0.35,
         "carbon": 375.98
       },
       "2004": {
@@ -545,6 +609,8 @@ export const REGIONS = [
         "sunlight": 3.854,
         "cloud": 78.8,
         "soil": 0.78,
+        "water": 2.32,
+        "air": 0.3,
         "carbon": 377.7
       },
       "2005": {
@@ -555,6 +621,8 @@ export const REGIONS = [
         "sunlight": 3.795,
         "cloud": 79,
         "soil": 0.77,
+        "water": 1.84,
+        "air": 0.31,
         "carbon": 379.98
       },
       "2006": {
@@ -565,6 +633,8 @@ export const REGIONS = [
         "sunlight": 3.691,
         "cloud": 81,
         "soil": 0.83,
+        "water": 1.42,
+        "air": 0.32,
         "carbon": 382.09
       },
       "2007": {
@@ -575,6 +645,8 @@ export const REGIONS = [
         "sunlight": 3.824,
         "cloud": 76.8,
         "soil": 0.82,
+        "water": -1.29,
+        "air": 0.32,
         "carbon": 384.02
       },
       "2008": {
@@ -585,6 +657,8 @@ export const REGIONS = [
         "sunlight": 3.685,
         "cloud": 79.1,
         "soil": 0.8,
+        "water": -2.24,
+        "air": 0.32,
         "carbon": 385.83
       },
       "2009": {
@@ -595,6 +669,8 @@ export const REGIONS = [
         "sunlight": 3.676,
         "cloud": 78,
         "soil": 0.78,
+        "water": -2.06,
+        "air": 0.32,
         "carbon": 387.64
       },
       "2010": {
@@ -605,6 +681,8 @@ export const REGIONS = [
         "sunlight": 3.73,
         "cloud": 76.4,
         "soil": 0.85,
+        "water": -1.92,
+        "air": 0.31,
         "carbon": 390.1
       },
       "2011": {
@@ -615,6 +693,8 @@ export const REGIONS = [
         "sunlight": 3.793,
         "cloud": 74.4,
         "soil": 0.79,
+        "water": -21.36,
+        "air": 0.34,
         "carbon": 391.85
       },
       "2012": {
@@ -625,6 +705,8 @@ export const REGIONS = [
         "sunlight": 3.862,
         "cloud": 75.8,
         "soil": 0.77,
+        "water": -21.46,
+        "air": 0.28,
         "carbon": 394.06
       },
       "2013": {
@@ -635,6 +717,8 @@ export const REGIONS = [
         "sunlight": 3.737,
         "cloud": 79.3,
         "soil": 0.68,
+        "water": -19.71,
+        "air": 0.31,
         "carbon": 396.74
       },
       "2014": {
@@ -645,6 +729,8 @@ export const REGIONS = [
         "sunlight": 3.962,
         "cloud": 76.3,
         "soil": 0.71,
+        "water": -18.25,
+        "air": 0.3,
         "carbon": 398.81
       },
       "2015": {
@@ -655,6 +741,8 @@ export const REGIONS = [
         "sunlight": 3.866,
         "cloud": 72.8,
         "soil": 0.77,
+        "water": -15.62,
+        "air": 0.27,
         "carbon": 401.01
       },
       "2016": {
@@ -665,6 +753,8 @@ export const REGIONS = [
         "sunlight": 3.91,
         "cloud": 74.6,
         "soil": 0.79,
+        "water": -14.07,
+        "air": 0.26,
         "carbon": 404.41
       },
       "2017": {
@@ -675,6 +765,8 @@ export const REGIONS = [
         "sunlight": 3.854,
         "cloud": 77,
         "soil": 0.79,
+        "water": null,
+        "air": 0.28,
         "carbon": 406.76
       },
       "2018": {
@@ -685,6 +777,8 @@ export const REGIONS = [
         "sunlight": 3.726,
         "cloud": 74.7,
         "soil": 0.77,
+        "water": null,
+        "air": 0.28,
         "carbon": 408.72
       },
       "2019": {
@@ -695,6 +789,8 @@ export const REGIONS = [
         "sunlight": 3.974,
         "cloud": 78.5,
         "soil": 0.76,
+        "water": -7.44,
+        "air": 0.25,
         "carbon": 411.65
       },
       "2020": {
@@ -705,6 +801,8 @@ export const REGIONS = [
         "sunlight": 3.781,
         "cloud": 81.6,
         "soil": 0.86,
+        "water": -5.48,
+        "air": 0.26,
         "carbon": 414.21
       },
       "2021": {
@@ -715,6 +813,8 @@ export const REGIONS = [
         "sunlight": 4.017,
         "cloud": 79.2,
         "soil": 0.81,
+        "water": -2.7,
+        "air": 0.23,
         "carbon": 416.41
       },
       "2022": {
@@ -725,6 +825,8 @@ export const REGIONS = [
         "sunlight": 3.944,
         "cloud": 75.9,
         "soil": 0.8,
+        "water": -1.01,
+        "air": 0.23,
         "carbon": 418.53
       },
       "2023": {
@@ -735,6 +837,8 @@ export const REGIONS = [
         "sunlight": 4.043,
         "cloud": 72.4,
         "soil": 0.8,
+        "water": -2.59,
+        "air": 0.23,
         "carbon": 421.08
       },
       "2024": {
@@ -745,6 +849,8 @@ export const REGIONS = [
         "sunlight": 3.743,
         "cloud": 79.1,
         "soil": 0.8,
+        "water": -2.03,
+        "air": 0.23,
         "carbon": 424.61
       },
       "2025": {
@@ -755,6 +861,8 @@ export const REGIONS = [
         "sunlight": 3.98,
         "cloud": 69.8,
         "soil": 0.8,
+        "water": 0.21,
+        "air": 0.24,
         "carbon": 427.35
       }
     },
@@ -786,6 +894,8 @@ export const REGIONS = [
         "sunlight": 4.973,
         "cloud": 79.4,
         "soil": 0.76,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -796,6 +906,8 @@ export const REGIONS = [
         "sunlight": 4.954,
         "cloud": 79.6,
         "soil": 0.82,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -806,6 +918,8 @@ export const REGIONS = [
         "sunlight": 4.934,
         "cloud": 75.2,
         "soil": 0.81,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -816,6 +930,8 @@ export const REGIONS = [
         "sunlight": 4.626,
         "cloud": 82.9,
         "soil": 0.82,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -826,6 +942,8 @@ export const REGIONS = [
         "sunlight": 4.847,
         "cloud": 80.8,
         "soil": 0.77,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -836,6 +954,8 @@ export const REGIONS = [
         "sunlight": 5.026,
         "cloud": 75.6,
         "soil": 0.75,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -846,6 +966,8 @@ export const REGIONS = [
         "sunlight": 4.925,
         "cloud": 78.7,
         "soil": 0.78,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -856,6 +978,8 @@ export const REGIONS = [
         "sunlight": 4.931,
         "cloud": 76.1,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -866,6 +990,8 @@ export const REGIONS = [
         "sunlight": 4.814,
         "cloud": 78.5,
         "soil": 0.81,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -876,6 +1002,8 @@ export const REGIONS = [
         "sunlight": 4.787,
         "cloud": 80.2,
         "soil": 0.85,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -886,6 +1014,8 @@ export const REGIONS = [
         "sunlight": 4.848,
         "cloud": 79.1,
         "soil": 0.86,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -896,6 +1026,8 @@ export const REGIONS = [
         "sunlight": 4.772,
         "cloud": 78.7,
         "soil": 0.88,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -906,6 +1038,8 @@ export const REGIONS = [
         "sunlight": 4.924,
         "cloud": 71.7,
         "soil": 0.86,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -916,6 +1050,8 @@ export const REGIONS = [
         "sunlight": 4.886,
         "cloud": 73.5,
         "soil": 0.82,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -926,6 +1062,8 @@ export const REGIONS = [
         "sunlight": 4.902,
         "cloud": 75.7,
         "soil": 0.82,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -936,6 +1074,8 @@ export const REGIONS = [
         "sunlight": 4.81,
         "cloud": 76.3,
         "soil": 0.82,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -946,6 +1086,8 @@ export const REGIONS = [
         "sunlight": 5.021,
         "cloud": 85.3,
         "soil": 0.82,
+        "water": null,
+        "air": 0.22,
         "carbon": 371.32
       },
       "2002": {
@@ -956,6 +1098,8 @@ export const REGIONS = [
         "sunlight": 5.122,
         "cloud": 80.2,
         "soil": 0.84,
+        "water": -2.42,
+        "air": 0.26,
         "carbon": 373.45
       },
       "2003": {
@@ -966,6 +1110,8 @@ export const REGIONS = [
         "sunlight": 4.943,
         "cloud": 84.6,
         "soil": 0.88,
+        "water": -5.75,
+        "air": 0.24,
         "carbon": 375.98
       },
       "2004": {
@@ -976,6 +1122,8 @@ export const REGIONS = [
         "sunlight": 4.967,
         "cloud": 83.8,
         "soil": 0.87,
+        "water": -9.97,
+        "air": 0.25,
         "carbon": 377.7
       },
       "2005": {
@@ -986,6 +1134,8 @@ export const REGIONS = [
         "sunlight": 4.823,
         "cloud": 83.7,
         "soil": 0.82,
+        "water": -3.33,
+        "air": 0.26,
         "carbon": 379.98
       },
       "2006": {
@@ -996,6 +1146,8 @@ export const REGIONS = [
         "sunlight": 4.815,
         "cloud": 82.2,
         "soil": 0.86,
+        "water": -0.16,
+        "air": 0.3,
         "carbon": 382.09
       },
       "2007": {
@@ -1006,6 +1158,8 @@ export const REGIONS = [
         "sunlight": 4.82,
         "cloud": 82.4,
         "soil": 0.82,
+        "water": 2.59,
+        "air": 0.26,
         "carbon": 384.02
       },
       "2008": {
@@ -1016,6 +1170,8 @@ export const REGIONS = [
         "sunlight": 4.807,
         "cloud": 84.7,
         "soil": 0.8,
+        "water": 4.45,
+        "air": 0.27,
         "carbon": 385.83
       },
       "2009": {
@@ -1026,6 +1182,8 @@ export const REGIONS = [
         "sunlight": 4.943,
         "cloud": 82.7,
         "soil": 0.82,
+        "water": 6.43,
+        "air": 0.24,
         "carbon": 387.64
       },
       "2010": {
@@ -1036,6 +1194,8 @@ export const REGIONS = [
         "sunlight": 4.794,
         "cloud": 84.8,
         "soil": 0.85,
+        "water": 7.78,
+        "air": 0.25,
         "carbon": 390.1
       },
       "2011": {
@@ -1046,6 +1206,8 @@ export const REGIONS = [
         "sunlight": 4.898,
         "cloud": 85.4,
         "soil": 0.84,
+        "water": 9.09,
+        "air": 0.27,
         "carbon": 391.85
       },
       "2012": {
@@ -1056,6 +1218,8 @@ export const REGIONS = [
         "sunlight": 4.934,
         "cloud": 84.2,
         "soil": 0.81,
+        "water": 10.27,
+        "air": 0.27,
         "carbon": 394.06
       },
       "2013": {
@@ -1066,6 +1230,8 @@ export const REGIONS = [
         "sunlight": 4.819,
         "cloud": 86.1,
         "soil": 0.85,
+        "water": 11.77,
+        "air": 0.26,
         "carbon": 396.74
       },
       "2014": {
@@ -1076,6 +1242,8 @@ export const REGIONS = [
         "sunlight": 4.952,
         "cloud": 81.6,
         "soil": 0.8,
+        "water": 12.92,
+        "air": 0.31,
         "carbon": 398.81
       },
       "2015": {
@@ -1086,6 +1254,8 @@ export const REGIONS = [
         "sunlight": 5.011,
         "cloud": 82.6,
         "soil": 0.88,
+        "water": 14.59,
+        "air": 0.35,
         "carbon": 401.01
       },
       "2016": {
@@ -1096,6 +1266,8 @@ export const REGIONS = [
         "sunlight": 4.96,
         "cloud": 85.1,
         "soil": 0.88,
+        "water": 16.16,
+        "air": 0.27,
         "carbon": 404.41
       },
       "2017": {
@@ -1106,6 +1278,8 @@ export const REGIONS = [
         "sunlight": 4.961,
         "cloud": 87,
         "soil": 0.87,
+        "water": null,
+        "air": 0.22,
         "carbon": 406.76
       },
       "2018": {
@@ -1116,6 +1290,8 @@ export const REGIONS = [
         "sunlight": 5.051,
         "cloud": 86.9,
         "soil": 0.91,
+        "water": null,
+        "air": 0.28,
         "carbon": 408.72
       },
       "2019": {
@@ -1126,6 +1302,8 @@ export const REGIONS = [
         "sunlight": 5.131,
         "cloud": 81.6,
         "soil": 0.86,
+        "water": 18.81,
+        "air": 0.3,
         "carbon": 411.65
       },
       "2020": {
@@ -1136,6 +1314,8 @@ export const REGIONS = [
         "sunlight": 4.935,
         "cloud": 85.6,
         "soil": 0.88,
+        "water": 19.59,
+        "air": 0.26,
         "carbon": 414.21
       },
       "2021": {
@@ -1146,6 +1326,8 @@ export const REGIONS = [
         "sunlight": 5.019,
         "cloud": 85.6,
         "soil": 0.93,
+        "water": 20.79,
+        "air": 0.23,
         "carbon": 416.41
       },
       "2022": {
@@ -1156,6 +1338,8 @@ export const REGIONS = [
         "sunlight": 4.884,
         "cloud": 89.9,
         "soil": 0.93,
+        "water": 21.74,
+        "air": 0.25,
         "carbon": 418.53
       },
       "2023": {
@@ -1166,6 +1350,8 @@ export const REGIONS = [
         "sunlight": 5.008,
         "cloud": 85,
         "soil": 0.87,
+        "water": 22.31,
+        "air": 0.28,
         "carbon": 421.08
       },
       "2024": {
@@ -1176,6 +1362,8 @@ export const REGIONS = [
         "sunlight": 5.098,
         "cloud": 83,
         "soil": 0.87,
+        "water": 22.96,
+        "air": 0.28,
         "carbon": 424.61
       },
       "2025": {
@@ -1186,6 +1374,8 @@ export const REGIONS = [
         "sunlight": 4.945,
         "cloud": 86.6,
         "soil": 0.9,
+        "water": 23.43,
+        "air": 0.28,
         "carbon": 427.35
       }
     }
@@ -1214,6 +1404,8 @@ export const REGIONS = [
         "sunlight": 3.091,
         "cloud": 63.2,
         "soil": 0.4,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -1224,6 +1416,8 @@ export const REGIONS = [
         "sunlight": 3.093,
         "cloud": 66.6,
         "soil": 0.42,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -1234,6 +1428,8 @@ export const REGIONS = [
         "sunlight": 3.128,
         "cloud": 65.2,
         "soil": 0.42,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -1244,6 +1440,8 @@ export const REGIONS = [
         "sunlight": 3.097,
         "cloud": 65,
         "soil": 0.4,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -1254,6 +1452,8 @@ export const REGIONS = [
         "sunlight": 2.944,
         "cloud": 67.5,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -1264,6 +1464,8 @@ export const REGIONS = [
         "sunlight": 2.815,
         "cloud": 70.7,
         "soil": 0.43,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -1274,6 +1476,8 @@ export const REGIONS = [
         "sunlight": 2.982,
         "cloud": 65.2,
         "soil": 0.43,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -1284,6 +1488,8 @@ export const REGIONS = [
         "sunlight": 3.133,
         "cloud": 64.6,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -1294,6 +1500,8 @@ export const REGIONS = [
         "sunlight": 3.027,
         "cloud": 68.5,
         "soil": 0.45,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -1304,6 +1512,8 @@ export const REGIONS = [
         "sunlight": 3.241,
         "cloud": 63.5,
         "soil": 0.43,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -1314,6 +1524,8 @@ export const REGIONS = [
         "sunlight": 3.031,
         "cloud": 62.9,
         "soil": 0.4,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -1324,6 +1536,8 @@ export const REGIONS = [
         "sunlight": 3.248,
         "cloud": 59.9,
         "soil": 0.4,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -1334,6 +1548,8 @@ export const REGIONS = [
         "sunlight": 2.996,
         "cloud": 68.5,
         "soil": 0.42,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -1344,6 +1560,8 @@ export const REGIONS = [
         "sunlight": 3.058,
         "cloud": 65.2,
         "soil": 0.44,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -1354,6 +1572,8 @@ export const REGIONS = [
         "sunlight": 3.308,
         "cloud": 62.6,
         "soil": 0.44,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -1364,6 +1584,8 @@ export const REGIONS = [
         "sunlight": 3.106,
         "cloud": 63.4,
         "soil": 0.43,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -1374,6 +1596,8 @@ export const REGIONS = [
         "sunlight": 3.133,
         "cloud": 67.3,
         "soil": 0.42,
+        "water": null,
+        "air": 0.31,
         "carbon": 371.32
       },
       "2002": {
@@ -1384,6 +1608,8 @@ export const REGIONS = [
         "sunlight": 3.205,
         "cloud": 66.6,
         "soil": 0.41,
+        "water": -3.23,
+        "air": 0.34,
         "carbon": 373.45
       },
       "2003": {
@@ -1394,6 +1620,8 @@ export const REGIONS = [
         "sunlight": 3.22,
         "cloud": 64.8,
         "soil": 0.45,
+        "water": -2.52,
+        "air": 0.3,
         "carbon": 375.98
       },
       "2004": {
@@ -1404,6 +1632,8 @@ export const REGIONS = [
         "sunlight": 3.156,
         "cloud": 69.6,
         "soil": 0.47,
+        "water": 0.74,
+        "air": 0.28,
         "carbon": 377.7
       },
       "2005": {
@@ -1414,6 +1644,8 @@ export const REGIONS = [
         "sunlight": 3.337,
         "cloud": 69.1,
         "soil": 0.44,
+        "water": 1.16,
+        "air": 0.3,
         "carbon": 379.98
       },
       "2006": {
@@ -1424,6 +1656,8 @@ export const REGIONS = [
         "sunlight": 3.199,
         "cloud": 70.4,
         "soil": 0.44,
+        "water": 3.79,
+        "air": 0.3,
         "carbon": 382.09
       },
       "2007": {
@@ -1434,6 +1668,8 @@ export const REGIONS = [
         "sunlight": 3.258,
         "cloud": 71.7,
         "soil": 0.39,
+        "water": -0.37,
+        "air": 0.28,
         "carbon": 384.02
       },
       "2008": {
@@ -1444,6 +1680,8 @@ export const REGIONS = [
         "sunlight": 3.078,
         "cloud": 74.1,
         "soil": 0.42,
+        "water": -2.85,
+        "air": 0.32,
         "carbon": 385.83
       },
       "2009": {
@@ -1454,6 +1692,8 @@ export const REGIONS = [
         "sunlight": 3.215,
         "cloud": 73.3,
         "soil": 0.43,
+        "water": -2.47,
+        "air": 0.32,
         "carbon": 387.64
       },
       "2010": {
@@ -1464,6 +1704,8 @@ export const REGIONS = [
         "sunlight": 3.344,
         "cloud": 73.6,
         "soil": 0.44,
+        "water": -2.64,
+        "air": 0.29,
         "carbon": 390.1
       },
       "2011": {
@@ -1474,6 +1716,8 @@ export const REGIONS = [
         "sunlight": 3.289,
         "cloud": 67.3,
         "soil": 0.43,
+        "water": -3.92,
+        "air": 0.27,
         "carbon": 391.85
       },
       "2012": {
@@ -1484,6 +1728,8 @@ export const REGIONS = [
         "sunlight": 3.238,
         "cloud": 70.5,
         "soil": 0.42,
+        "water": -7.48,
+        "air": 0.27,
         "carbon": 394.06
       },
       "2013": {
@@ -1494,6 +1740,8 @@ export const REGIONS = [
         "sunlight": 3.267,
         "cloud": 73.9,
         "soil": 0.48,
+        "water": -1.3,
+        "air": 0.28,
         "carbon": 396.74
       },
       "2014": {
@@ -1504,6 +1752,8 @@ export const REGIONS = [
         "sunlight": 3.413,
         "cloud": 66.1,
         "soil": 0.37,
+        "water": -9.06,
+        "air": 0.26,
         "carbon": 398.81
       },
       "2015": {
@@ -1514,6 +1764,8 @@ export const REGIONS = [
         "sunlight": 3.343,
         "cloud": 67.4,
         "soil": 0.36,
+        "water": -16.52,
+        "air": 0.26,
         "carbon": 401.01
       },
       "2016": {
@@ -1524,6 +1776,8 @@ export const REGIONS = [
         "sunlight": 3.154,
         "cloud": 72.7,
         "soil": 0.46,
+        "water": -14.91,
+        "air": 0.27,
         "carbon": 404.41
       },
       "2017": {
@@ -1534,6 +1788,8 @@ export const REGIONS = [
         "sunlight": 3.21,
         "cloud": 72.1,
         "soil": 0.46,
+        "water": null,
+        "air": 0.29,
         "carbon": 406.76
       },
       "2018": {
@@ -1544,6 +1800,8 @@ export const REGIONS = [
         "sunlight": 3.413,
         "cloud": 68.4,
         "soil": 0.46,
+        "water": null,
+        "air": 0.25,
         "carbon": 408.72
       },
       "2019": {
@@ -1554,6 +1812,8 @@ export const REGIONS = [
         "sunlight": 3.271,
         "cloud": 70,
         "soil": 0.36,
+        "water": -18.22,
+        "air": 0.29,
         "carbon": 411.65
       },
       "2020": {
@@ -1564,6 +1824,8 @@ export const REGIONS = [
         "sunlight": 3.232,
         "cloud": 69.1,
         "soil": 0.38,
+        "water": -25.23,
+        "air": 0.27,
         "carbon": 414.21
       },
       "2021": {
@@ -1574,6 +1836,8 @@ export const REGIONS = [
         "sunlight": 3.216,
         "cloud": 69.2,
         "soil": 0.46,
+        "water": -19.83,
+        "air": 0.28,
         "carbon": 416.41
       },
       "2022": {
@@ -1584,6 +1848,8 @@ export const REGIONS = [
         "sunlight": 3.049,
         "cloud": 71.5,
         "soil": 0.46,
+        "water": -16.4,
+        "air": 0.26,
         "carbon": 418.53
       },
       "2023": {
@@ -1594,6 +1860,8 @@ export const REGIONS = [
         "sunlight": 3.148,
         "cloud": 69.9,
         "soil": 0.54,
+        "water": -11.77,
+        "air": 0.28,
         "carbon": 421.08
       },
       "2024": {
@@ -1604,6 +1872,8 @@ export const REGIONS = [
         "sunlight": 3.34,
         "cloud": 64.6,
         "soil": 0.51,
+        "water": -12.67,
+        "air": 0.25,
         "carbon": 424.61
       },
       "2025": {
@@ -1614,6 +1884,8 @@ export const REGIONS = [
         "sunlight": 3.136,
         "cloud": 69.2,
         "soil": 0.41,
+        "water": -21.47,
+        "air": 0.28,
         "carbon": 427.35
       }
     }
@@ -1642,6 +1914,8 @@ export const REGIONS = [
         "sunlight": 3.643,
         "cloud": 58.3,
         "soil": 0.7,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -1652,6 +1926,8 @@ export const REGIONS = [
         "sunlight": 3.712,
         "cloud": 59,
         "soil": 0.69,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -1662,6 +1938,8 @@ export const REGIONS = [
         "sunlight": 3.543,
         "cloud": 65.1,
         "soil": 0.71,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -1672,6 +1950,8 @@ export const REGIONS = [
         "sunlight": 3.597,
         "cloud": 59.9,
         "soil": 0.69,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -1682,6 +1962,8 @@ export const REGIONS = [
         "sunlight": 3.559,
         "cloud": 55.9,
         "soil": 0.65,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -1692,6 +1974,8 @@ export const REGIONS = [
         "sunlight": 3.597,
         "cloud": 55.2,
         "soil": 0.65,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -1702,6 +1986,8 @@ export const REGIONS = [
         "sunlight": 3.673,
         "cloud": 55.2,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -1712,6 +1998,8 @@ export const REGIONS = [
         "sunlight": 3.689,
         "cloud": 55.6,
         "soil": 0.69,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -1722,6 +2010,8 @@ export const REGIONS = [
         "sunlight": 3.752,
         "cloud": 56.5,
         "soil": 0.71,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -1732,6 +2022,8 @@ export const REGIONS = [
         "sunlight": 3.684,
         "cloud": 57.6,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -1742,6 +2034,8 @@ export const REGIONS = [
         "sunlight": 3.63,
         "cloud": 57.6,
         "soil": 0.72,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -1752,6 +2046,8 @@ export const REGIONS = [
         "sunlight": 3.586,
         "cloud": 58.7,
         "soil": 0.76,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -1762,6 +2058,8 @@ export const REGIONS = [
         "sunlight": 3.688,
         "cloud": 52.5,
         "soil": 0.69,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -1772,6 +2070,8 @@ export const REGIONS = [
         "sunlight": 3.721,
         "cloud": 53,
         "soil": 0.69,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -1782,6 +2082,8 @@ export const REGIONS = [
         "sunlight": 3.511,
         "cloud": 59.3,
         "soil": 0.69,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -1792,6 +2094,8 @@ export const REGIONS = [
         "sunlight": 3.609,
         "cloud": 55.2,
         "soil": 0.69,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -1802,6 +2106,8 @@ export const REGIONS = [
         "sunlight": 3.723,
         "cloud": 69.4,
         "soil": 0.73,
+        "water": null,
+        "air": 0.31,
         "carbon": 371.32
       },
       "2002": {
@@ -1812,6 +2118,8 @@ export const REGIONS = [
         "sunlight": 3.649,
         "cloud": 69.8,
         "soil": 0.7,
+        "water": 10.27,
+        "air": 0.33,
         "carbon": 373.45
       },
       "2003": {
@@ -1822,6 +2130,8 @@ export const REGIONS = [
         "sunlight": 4.016,
         "cloud": 62.8,
         "soil": 0.69,
+        "water": 3.26,
+        "air": 0.32,
         "carbon": 375.98
       },
       "2004": {
@@ -1832,6 +2142,8 @@ export const REGIONS = [
         "sunlight": 3.735,
         "cloud": 63.8,
         "soil": 0.75,
+        "water": 5.89,
+        "air": 0.32,
         "carbon": 377.7
       },
       "2005": {
@@ -1842,6 +2154,8 @@ export const REGIONS = [
         "sunlight": 3.794,
         "cloud": 61.1,
         "soil": 0.74,
+        "water": 1.07,
+        "air": 0.31,
         "carbon": 379.98
       },
       "2006": {
@@ -1852,6 +2166,8 @@ export const REGIONS = [
         "sunlight": 3.804,
         "cloud": 60.2,
         "soil": 0.71,
+        "water": -0.31,
+        "air": 0.31,
         "carbon": 382.09
       },
       "2007": {
@@ -1862,6 +2178,8 @@ export const REGIONS = [
         "sunlight": 3.983,
         "cloud": 56.4,
         "soil": 0.67,
+        "water": -6.26,
+        "air": 0.29,
         "carbon": 384.02
       },
       "2008": {
@@ -1872,6 +2190,8 @@ export const REGIONS = [
         "sunlight": 3.745,
         "cloud": 61.7,
         "soil": 0.73,
+        "water": -1.81,
+        "air": 0.3,
         "carbon": 385.83
       },
       "2009": {
@@ -1882,6 +2202,8 @@ export const REGIONS = [
         "sunlight": 3.845,
         "cloud": 61.3,
         "soil": 0.74,
+        "water": 1.42,
+        "air": 0.3,
         "carbon": 387.64
       },
       "2010": {
@@ -1892,6 +2214,8 @@ export const REGIONS = [
         "sunlight": 3.701,
         "cloud": 64.3,
         "soil": 0.79,
+        "water": 2.63,
+        "air": 0.29,
         "carbon": 390.1
       },
       "2011": {
@@ -1902,6 +2226,8 @@ export const REGIONS = [
         "sunlight": 4.09,
         "cloud": 52.8,
         "soil": 0.71,
+        "water": -2.88,
+        "air": 0.27,
         "carbon": 391.85
       },
       "2012": {
@@ -1912,6 +2238,8 @@ export const REGIONS = [
         "sunlight": 3.986,
         "cloud": 56.3,
         "soil": 0.65,
+        "water": -3.71,
+        "air": 0.28,
         "carbon": 394.06
       },
       "2013": {
@@ -1922,6 +2250,8 @@ export const REGIONS = [
         "sunlight": 3.749,
         "cloud": 63.5,
         "soil": 0.77,
+        "water": 6.75,
+        "air": 0.29,
         "carbon": 396.74
       },
       "2014": {
@@ -1932,6 +2262,8 @@ export const REGIONS = [
         "sunlight": 3.655,
         "cloud": 67.3,
         "soil": 0.79,
+        "water": 6.21,
+        "air": 0.3,
         "carbon": 398.81
       },
       "2015": {
@@ -1942,6 +2274,8 @@ export const REGIONS = [
         "sunlight": 3.917,
         "cloud": 58.6,
         "soil": 0.74,
+        "water": 0.53,
+        "air": 0.27,
         "carbon": 401.01
       },
       "2016": {
@@ -1952,6 +2286,8 @@ export const REGIONS = [
         "sunlight": 3.788,
         "cloud": 62,
         "soil": 0.76,
+        "water": -3.75,
+        "air": 0.27,
         "carbon": 404.41
       },
       "2017": {
@@ -1962,6 +2298,8 @@ export const REGIONS = [
         "sunlight": 3.965,
         "cloud": 57.8,
         "soil": 0.74,
+        "water": null,
+        "air": 0.24,
         "carbon": 406.76
       },
       "2018": {
@@ -1972,6 +2310,8 @@ export const REGIONS = [
         "sunlight": 3.888,
         "cloud": 61.2,
         "soil": 0.75,
+        "water": null,
+        "air": 0.26,
         "carbon": 408.72
       },
       "2019": {
@@ -1982,6 +2322,8 @@ export const REGIONS = [
         "sunlight": 3.808,
         "cloud": 61,
         "soil": 0.74,
+        "water": -8.9,
+        "air": 0.25,
         "carbon": 411.65
       },
       "2020": {
@@ -1992,6 +2334,8 @@ export const REGIONS = [
         "sunlight": 3.992,
         "cloud": 55.4,
         "soil": 0.73,
+        "water": -10.16,
+        "air": 0.23,
         "carbon": 414.21
       },
       "2021": {
@@ -2002,6 +2346,8 @@ export const REGIONS = [
         "sunlight": 3.97,
         "cloud": 58.4,
         "soil": 0.71,
+        "water": -10.7,
+        "air": 0.24,
         "carbon": 416.41
       },
       "2022": {
@@ -2012,6 +2358,8 @@ export const REGIONS = [
         "sunlight": 4.04,
         "cloud": 52.7,
         "soil": 0.64,
+        "water": -20.64,
+        "air": 0.23,
         "carbon": 418.53
       },
       "2023": {
@@ -2022,6 +2370,8 @@ export const REGIONS = [
         "sunlight": 3.808,
         "cloud": 56.9,
         "soil": 0.68,
+        "water": -16.95,
+        "air": 0.23,
         "carbon": 421.08
       },
       "2024": {
@@ -2032,6 +2382,8 @@ export const REGIONS = [
         "sunlight": 3.663,
         "cloud": 59.3,
         "soil": 0.75,
+        "water": -10.1,
+        "air": 0.25,
         "carbon": 424.61
       },
       "2025": {
@@ -2042,6 +2394,8 @@ export const REGIONS = [
         "sunlight": 3.906,
         "cloud": 53.4,
         "soil": 0.78,
+        "water": -14.97,
+        "air": 0.24,
         "carbon": 427.35
       }
     }
@@ -2070,6 +2424,8 @@ export const REGIONS = [
         "sunlight": 4.633,
         "cloud": 61.4,
         "soil": 0.52,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -2080,6 +2436,8 @@ export const REGIONS = [
         "sunlight": 4.399,
         "cloud": 68.5,
         "soil": 0.54,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -2090,6 +2448,8 @@ export const REGIONS = [
         "sunlight": 4.62,
         "cloud": 65.1,
         "soil": 0.47,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -2100,6 +2460,8 @@ export const REGIONS = [
         "sunlight": 4.63,
         "cloud": 64.6,
         "soil": 0.46,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -2110,6 +2472,8 @@ export const REGIONS = [
         "sunlight": 4.605,
         "cloud": 57.3,
         "soil": 0.51,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -2120,6 +2484,8 @@ export const REGIONS = [
         "sunlight": 4.635,
         "cloud": 59,
         "soil": 0.49,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -2130,6 +2496,8 @@ export const REGIONS = [
         "sunlight": 4.521,
         "cloud": 58.7,
         "soil": 0.46,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -2140,6 +2508,8 @@ export const REGIONS = [
         "sunlight": 4.61,
         "cloud": 58.8,
         "soil": 0.45,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -2150,6 +2520,8 @@ export const REGIONS = [
         "sunlight": 4.501,
         "cloud": 58.7,
         "soil": 0.55,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -2160,6 +2532,8 @@ export const REGIONS = [
         "sunlight": 4.677,
         "cloud": 56.2,
         "soil": 0.47,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -2170,6 +2544,8 @@ export const REGIONS = [
         "sunlight": 4.542,
         "cloud": 61,
         "soil": 0.58,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -2180,6 +2556,8 @@ export const REGIONS = [
         "sunlight": 4.575,
         "cloud": 61.1,
         "soil": 0.59,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -2190,6 +2568,8 @@ export const REGIONS = [
         "sunlight": 4.669,
         "cloud": 57.4,
         "soil": 0.59,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -2200,6 +2580,8 @@ export const REGIONS = [
         "sunlight": 4.582,
         "cloud": 59.9,
         "soil": 0.6,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -2210,6 +2592,8 @@ export const REGIONS = [
         "sunlight": 4.809,
         "cloud": 54.3,
         "soil": 0.56,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -2220,6 +2604,8 @@ export const REGIONS = [
         "sunlight": 4.744,
         "cloud": 54.3,
         "soil": 0.49,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -2230,6 +2616,8 @@ export const REGIONS = [
         "sunlight": 4.69,
         "cloud": 53.1,
         "soil": 0.43,
+        "water": null,
+        "air": 0.08,
         "carbon": 371.32
       },
       "2002": {
@@ -2240,6 +2628,8 @@ export const REGIONS = [
         "sunlight": 4.895,
         "cloud": 46.9,
         "soil": 0.47,
+        "water": -3.66,
+        "air": 0.08,
         "carbon": 373.45
       },
       "2003": {
@@ -2250,6 +2640,8 @@ export const REGIONS = [
         "sunlight": 4.665,
         "cloud": 51,
         "soil": 0.49,
+        "water": -2.19,
+        "air": 0.08,
         "carbon": 375.98
       },
       "2004": {
@@ -2260,6 +2652,8 @@ export const REGIONS = [
         "sunlight": 4.746,
         "cloud": 47.8,
         "soil": 0.48,
+        "water": 0.4,
+        "air": 0.07,
         "carbon": 377.7
       },
       "2005": {
@@ -2270,6 +2664,8 @@ export const REGIONS = [
         "sunlight": 4.632,
         "cloud": 51.8,
         "soil": 0.48,
+        "water": 0.92,
+        "air": 0.08,
         "carbon": 379.98
       },
       "2006": {
@@ -2280,6 +2676,8 @@ export const REGIONS = [
         "sunlight": 4.687,
         "cloud": 51.1,
         "soil": 0.54,
+        "water": 7.4,
+        "air": 0.09,
         "carbon": 382.09
       },
       "2007": {
@@ -2290,6 +2688,8 @@ export const REGIONS = [
         "sunlight": 4.831,
         "cloud": 47.5,
         "soil": 0.46,
+        "water": -1.65,
+        "air": 0.07,
         "carbon": 384.02
       },
       "2008": {
@@ -2300,6 +2700,8 @@ export const REGIONS = [
         "sunlight": 4.792,
         "cloud": 50.1,
         "soil": 0.45,
+        "water": -2.08,
+        "air": 0.09,
         "carbon": 385.83
       },
       "2009": {
@@ -2310,6 +2712,8 @@ export const REGIONS = [
         "sunlight": 4.783,
         "cloud": 49.1,
         "soil": 0.44,
+        "water": -4.99,
+        "air": 0.09,
         "carbon": 387.64
       },
       "2010": {
@@ -2320,6 +2724,8 @@ export const REGIONS = [
         "sunlight": 4.47,
         "cloud": 58.6,
         "soil": 0.45,
+        "water": -1.6,
+        "air": 0.08,
         "carbon": 390.1
       },
       "2011": {
@@ -2330,6 +2736,8 @@ export const REGIONS = [
         "sunlight": 4.599,
         "cloud": 53.2,
         "soil": 0.51,
+        "water": 2.83,
+        "air": 0.09,
         "carbon": 391.85
       },
       "2012": {
@@ -2340,6 +2748,8 @@ export const REGIONS = [
         "sunlight": 4.667,
         "cloud": 47.6,
         "soil": 0.45,
+        "water": -1.62,
+        "air": 0.1,
         "carbon": 394.06
       },
       "2013": {
@@ -2350,6 +2760,8 @@ export const REGIONS = [
         "sunlight": 4.849,
         "cloud": 43.8,
         "soil": 0.43,
+        "water": -2.08,
+        "air": 0.08,
         "carbon": 396.74
       },
       "2014": {
@@ -2360,6 +2772,8 @@ export const REGIONS = [
         "sunlight": 4.735,
         "cloud": 48.4,
         "soil": 0.43,
+        "water": -9.76,
+        "air": 0.09,
         "carbon": 398.81
       },
       "2015": {
@@ -2370,6 +2784,8 @@ export const REGIONS = [
         "sunlight": 4.723,
         "cloud": 49.3,
         "soil": 0.46,
+        "water": -5.8,
+        "air": 0.09,
         "carbon": 401.01
       },
       "2016": {
@@ -2380,6 +2796,8 @@ export const REGIONS = [
         "sunlight": 4.689,
         "cloud": 48.8,
         "soil": 0.49,
+        "water": 2.18,
+        "air": 0.07,
         "carbon": 404.41
       },
       "2017": {
@@ -2390,6 +2808,8 @@ export const REGIONS = [
         "sunlight": 4.592,
         "cloud": 50.8,
         "soil": 0.52,
+        "water": null,
+        "air": 0.1,
         "carbon": 406.76
       },
       "2018": {
@@ -2400,6 +2820,8 @@ export const REGIONS = [
         "sunlight": 4.729,
         "cloud": 46.8,
         "soil": 0.44,
+        "water": null,
+        "air": 0.1,
         "carbon": 408.72
       },
       "2019": {
@@ -2410,6 +2832,8 @@ export const REGIONS = [
         "sunlight": 4.707,
         "cloud": 47.4,
         "soil": 0.48,
+        "water": 1.46,
+        "air": 0.08,
         "carbon": 411.65
       },
       "2020": {
@@ -2420,6 +2844,8 @@ export const REGIONS = [
         "sunlight": 4.842,
         "cloud": 45.6,
         "soil": 0.43,
+        "water": -4.96,
+        "air": 0.09,
         "carbon": 414.21
       },
       "2021": {
@@ -2430,6 +2856,8 @@ export const REGIONS = [
         "sunlight": 4.829,
         "cloud": 48.8,
         "soil": 0.4,
+        "water": -8.44,
+        "air": 0.1,
         "carbon": 416.41
       },
       "2022": {
@@ -2440,6 +2868,8 @@ export const REGIONS = [
         "sunlight": 4.799,
         "cloud": 47.5,
         "soil": 0.41,
+        "water": -6.76,
+        "air": 0.09,
         "carbon": 418.53
       },
       "2023": {
@@ -2450,6 +2880,8 @@ export const REGIONS = [
         "sunlight": 4.629,
         "cloud": 50.2,
         "soil": 0.46,
+        "water": -2.28,
+        "air": 0.1,
         "carbon": 421.08
       },
       "2024": {
@@ -2460,6 +2892,8 @@ export const REGIONS = [
         "sunlight": 4.716,
         "cloud": 49.2,
         "soil": 0.47,
+        "water": -0.82,
+        "air": 0.09,
         "carbon": 424.61
       },
       "2025": {
@@ -2470,6 +2904,8 @@ export const REGIONS = [
         "sunlight": 4.782,
         "cloud": 47.7,
         "soil": 0.51,
+        "water": 2.46,
+        "air": 0.09,
         "carbon": 427.35
       }
     }
@@ -2498,6 +2934,8 @@ export const REGIONS = [
         "sunlight": 4.685,
         "cloud": 56.7,
         "soil": 0.51,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -2508,6 +2946,8 @@ export const REGIONS = [
         "sunlight": 4.811,
         "cloud": 50,
         "soil": 0.47,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -2518,6 +2958,8 @@ export const REGIONS = [
         "sunlight": 4.659,
         "cloud": 53.1,
         "soil": 0.49,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -2528,6 +2970,8 @@ export const REGIONS = [
         "sunlight": 4.62,
         "cloud": 55.1,
         "soil": 0.61,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -2538,6 +2982,8 @@ export const REGIONS = [
         "sunlight": 4.582,
         "cloud": 58.5,
         "soil": 0.59,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -2548,6 +2994,8 @@ export const REGIONS = [
         "sunlight": 4.529,
         "cloud": 57.6,
         "soil": 0.65,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -2558,6 +3006,8 @@ export const REGIONS = [
         "sunlight": 4.792,
         "cloud": 51.8,
         "soil": 0.5,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -2568,6 +3018,8 @@ export const REGIONS = [
         "sunlight": 4.426,
         "cloud": 61.2,
         "soil": 0.49,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -2578,6 +3030,8 @@ export const REGIONS = [
         "sunlight": 4.611,
         "cloud": 56.2,
         "soil": 0.44,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -2588,6 +3042,8 @@ export const REGIONS = [
         "sunlight": 4.799,
         "cloud": 49.6,
         "soil": 0.43,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -2598,6 +3054,8 @@ export const REGIONS = [
         "sunlight": 4.466,
         "cloud": 58,
         "soil": 0.48,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -2608,6 +3066,8 @@ export const REGIONS = [
         "sunlight": 4.584,
         "cloud": 54.3,
         "soil": 0.47,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -2618,6 +3078,8 @@ export const REGIONS = [
         "sunlight": 4.619,
         "cloud": 53.1,
         "soil": 0.45,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -2628,6 +3090,8 @@ export const REGIONS = [
         "sunlight": 4.503,
         "cloud": 59.2,
         "soil": 0.54,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -2638,6 +3102,8 @@ export const REGIONS = [
         "sunlight": 4.479,
         "cloud": 58.6,
         "soil": 0.48,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -2648,6 +3114,8 @@ export const REGIONS = [
         "sunlight": 4.587,
         "cloud": 54.9,
         "soil": 0.44,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -2658,6 +3126,8 @@ export const REGIONS = [
         "sunlight": 4.533,
         "cloud": 63.7,
         "soil": 0.46,
+        "water": null,
+        "air": 0.12,
         "carbon": 371.32
       },
       "2002": {
@@ -2668,6 +3138,8 @@ export const REGIONS = [
         "sunlight": 4.751,
         "cloud": 58.9,
         "soil": 0.43,
+        "water": -0.05,
+        "air": 0.11,
         "carbon": 373.45
       },
       "2003": {
@@ -2678,6 +3150,8 @@ export const REGIONS = [
         "sunlight": 4.614,
         "cloud": 55.6,
         "soil": 0.49,
+        "water": -0.06,
+        "air": 0.13,
         "carbon": 375.98
       },
       "2004": {
@@ -2688,6 +3162,8 @@ export const REGIONS = [
         "sunlight": 4.752,
         "cloud": 51.3,
         "soil": 0.43,
+        "water": 0.02,
+        "air": 0.12,
         "carbon": 377.7
       },
       "2005": {
@@ -2698,6 +3174,8 @@ export const REGIONS = [
         "sunlight": 4.783,
         "cloud": 50.9,
         "soil": 0.44,
+        "water": 0.01,
+        "air": 0.12,
         "carbon": 379.98
       },
       "2006": {
@@ -2708,6 +3186,8 @@ export const REGIONS = [
         "sunlight": 4.57,
         "cloud": 50.8,
         "soil": 0.43,
+        "water": 0.13,
+        "air": 0.15,
         "carbon": 382.09
       },
       "2007": {
@@ -2718,6 +3198,8 @@ export const REGIONS = [
         "sunlight": 4.708,
         "cloud": 49.7,
         "soil": 0.52,
+        "water": 0.02,
+        "air": 0.14,
         "carbon": 384.02
       },
       "2008": {
@@ -2728,6 +3210,8 @@ export const REGIONS = [
         "sunlight": 4.536,
         "cloud": 54.3,
         "soil": 0.46,
+        "water": -0.12,
+        "air": 0.12,
         "carbon": 385.83
       },
       "2009": {
@@ -2738,6 +3222,8 @@ export const REGIONS = [
         "sunlight": 4.647,
         "cloud": 53.4,
         "soil": 0.44,
+        "water": -0.06,
+        "air": 0.13,
         "carbon": 387.64
       },
       "2010": {
@@ -2748,6 +3234,8 @@ export const REGIONS = [
         "sunlight": 4.443,
         "cloud": 56.6,
         "soil": 0.48,
+        "water": -0.17,
+        "air": 0.13,
         "carbon": 390.1
       },
       "2011": {
@@ -2758,6 +3246,8 @@ export const REGIONS = [
         "sunlight": 4.363,
         "cloud": 57.3,
         "soil": 0.48,
+        "water": -0.21,
+        "air": 0.14,
         "carbon": 391.85
       },
       "2012": {
@@ -2768,6 +3258,8 @@ export const REGIONS = [
         "sunlight": 4.566,
         "cloud": 53.5,
         "soil": 0.49,
+        "water": -0.44,
+        "air": 0.13,
         "carbon": 394.06
       },
       "2013": {
@@ -2778,6 +3270,8 @@ export const REGIONS = [
         "sunlight": 4.799,
         "cloud": 48.5,
         "soil": 0.48,
+        "water": -0.17,
+        "air": 0.11,
         "carbon": 396.74
       },
       "2014": {
@@ -2788,6 +3282,8 @@ export const REGIONS = [
         "sunlight": 4.649,
         "cloud": 52.8,
         "soil": 0.45,
+        "water": -0.03,
+        "air": 0.12,
         "carbon": 398.81
       },
       "2015": {
@@ -2798,6 +3294,8 @@ export const REGIONS = [
         "sunlight": 4.6,
         "cloud": 56.9,
         "soil": 0.49,
+        "water": -0.07,
+        "air": 0.13,
         "carbon": 401.01
       },
       "2016": {
@@ -2808,6 +3306,8 @@ export const REGIONS = [
         "sunlight": 4.805,
         "cloud": 56.8,
         "soil": 0.45,
+        "water": -0.04,
+        "air": 0.12,
         "carbon": 404.41
       },
       "2017": {
@@ -2818,6 +3318,8 @@ export const REGIONS = [
         "sunlight": 4.703,
         "cloud": 59.7,
         "soil": 0.43,
+        "water": null,
+        "air": 0.12,
         "carbon": 406.76
       },
       "2018": {
@@ -2828,6 +3330,8 @@ export const REGIONS = [
         "sunlight": 4.795,
         "cloud": 54.4,
         "soil": 0.4,
+        "water": null,
+        "air": 0.12,
         "carbon": 408.72
       },
       "2019": {
@@ -2838,6 +3342,8 @@ export const REGIONS = [
         "sunlight": 4.919,
         "cloud": 53.2,
         "soil": 0.4,
+        "water": 0.16,
+        "air": 0.15,
         "carbon": 411.65
       },
       "2020": {
@@ -2848,6 +3354,8 @@ export const REGIONS = [
         "sunlight": 4.435,
         "cloud": 60.6,
         "soil": 0.5,
+        "water": -0.08,
+        "air": 0.15,
         "carbon": 414.21
       },
       "2021": {
@@ -2858,6 +3366,8 @@ export const REGIONS = [
         "sunlight": 4.559,
         "cloud": 59.5,
         "soil": 0.48,
+        "water": -0.31,
+        "air": 0.11,
         "carbon": 416.41
       },
       "2022": {
@@ -2868,6 +3378,8 @@ export const REGIONS = [
         "sunlight": 4.477,
         "cloud": 61.5,
         "soil": 0.66,
+        "water": -0.65,
+        "air": 0.13,
         "carbon": 418.53
       },
       "2023": {
@@ -2878,6 +3390,8 @@ export const REGIONS = [
         "sunlight": 4.871,
         "cloud": 47.9,
         "soil": 0.41,
+        "water": -0.52,
+        "air": 0.12,
         "carbon": 421.08
       },
       "2024": {
@@ -2888,6 +3402,8 @@ export const REGIONS = [
         "sunlight": 4.523,
         "cloud": 57.4,
         "soil": 0.46,
+        "water": -0.43,
+        "air": 0.13,
         "carbon": 424.61
       },
       "2025": {
@@ -2898,6 +3414,8 @@ export const REGIONS = [
         "sunlight": 4.602,
         "cloud": 55.9,
         "soil": 0.45,
+        "water": -0.4,
+        "air": 0.11,
         "carbon": 427.35
       }
     }
@@ -2926,6 +3444,8 @@ export const REGIONS = [
         "sunlight": 4.507,
         "cloud": 77.7,
         "soil": 0.84,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -2936,6 +3456,8 @@ export const REGIONS = [
         "sunlight": 4.634,
         "cloud": 78.7,
         "soil": 0.82,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -2946,6 +3468,8 @@ export const REGIONS = [
         "sunlight": 4.766,
         "cloud": 72.7,
         "soil": 0.78,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -2956,6 +3480,8 @@ export const REGIONS = [
         "sunlight": 4.753,
         "cloud": 69.4,
         "soil": 0.83,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -2966,6 +3492,8 @@ export const REGIONS = [
         "sunlight": 4.566,
         "cloud": 76.8,
         "soil": 0.86,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -2976,6 +3504,8 @@ export const REGIONS = [
         "sunlight": 4.83,
         "cloud": 72.3,
         "soil": 0.82,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -2986,6 +3516,8 @@ export const REGIONS = [
         "sunlight": 4.785,
         "cloud": 69.8,
         "soil": 0.82,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -2996,6 +3528,8 @@ export const REGIONS = [
         "sunlight": 4.717,
         "cloud": 70.6,
         "soil": 0.77,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -3006,6 +3540,8 @@ export const REGIONS = [
         "sunlight": 4.719,
         "cloud": 65.5,
         "soil": 0.83,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -3016,6 +3552,8 @@ export const REGIONS = [
         "sunlight": 4.803,
         "cloud": 66.2,
         "soil": 0.82,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -3026,6 +3564,8 @@ export const REGIONS = [
         "sunlight": 4.755,
         "cloud": 66.5,
         "soil": 0.82,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -3036,6 +3576,8 @@ export const REGIONS = [
         "sunlight": 4.98,
         "cloud": 67,
         "soil": 0.81,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -3046,6 +3588,8 @@ export const REGIONS = [
         "sunlight": 4.988,
         "cloud": 62.2,
         "soil": 0.76,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -3056,6 +3600,8 @@ export const REGIONS = [
         "sunlight": 5.095,
         "cloud": 61.4,
         "soil": 0.71,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -3066,6 +3612,8 @@ export const REGIONS = [
         "sunlight": 5.056,
         "cloud": 64.8,
         "soil": 0.79,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -3076,6 +3624,8 @@ export const REGIONS = [
         "sunlight": 4.849,
         "cloud": 66.9,
         "soil": 0.8,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -3086,6 +3636,8 @@ export const REGIONS = [
         "sunlight": 4.891,
         "cloud": 75.4,
         "soil": 0.81,
+        "water": null,
+        "air": 0.39,
         "carbon": 371.32
       },
       "2002": {
@@ -3096,6 +3648,8 @@ export const REGIONS = [
         "sunlight": 5.023,
         "cloud": 75.4,
         "soil": 0.77,
+        "water": -10.15,
+        "air": 0.36,
         "carbon": 373.45
       },
       "2003": {
@@ -3106,6 +3660,8 @@ export const REGIONS = [
         "sunlight": 4.894,
         "cloud": 73.3,
         "soil": 0.78,
+        "water": -6.84,
+        "air": 0.39,
         "carbon": 375.98
       },
       "2004": {
@@ -3116,6 +3672,8 @@ export const REGIONS = [
         "sunlight": 4.844,
         "cloud": 76.7,
         "soil": 0.8,
+        "water": -1.84,
+        "air": 0.39,
         "carbon": 377.7
       },
       "2005": {
@@ -3126,6 +3684,8 @@ export const REGIONS = [
         "sunlight": 4.862,
         "cloud": 76.1,
         "soil": 0.78,
+        "water": -8.67,
+        "air": 0.45,
         "carbon": 379.98
       },
       "2006": {
@@ -3136,6 +3696,8 @@ export const REGIONS = [
         "sunlight": 4.818,
         "cloud": 76.5,
         "soil": 0.73,
+        "water": 2.97,
+        "air": 0.38,
         "carbon": 382.09
       },
       "2007": {
@@ -3146,6 +3708,8 @@ export const REGIONS = [
         "sunlight": 4.952,
         "cloud": 72.3,
         "soil": 0.64,
+        "water": -3.45,
+        "air": 0.43,
         "carbon": 384.02
       },
       "2008": {
@@ -3156,6 +3720,8 @@ export const REGIONS = [
         "sunlight": 4.952,
         "cloud": 70.8,
         "soil": 0.73,
+        "water": 0.57,
+        "air": 0.37,
         "carbon": 385.83
       },
       "2009": {
@@ -3166,6 +3732,8 @@ export const REGIONS = [
         "sunlight": 4.937,
         "cloud": 70.7,
         "soil": 0.82,
+        "water": 10.42,
+        "air": 0.37,
         "carbon": 387.64
       },
       "2010": {
@@ -3176,6 +3744,8 @@ export const REGIONS = [
         "sunlight": 5.031,
         "cloud": 67.3,
         "soil": 0.75,
+        "water": -8.99,
+        "air": 0.38,
         "carbon": 390.1
       },
       "2011": {
@@ -3186,6 +3756,8 @@ export const REGIONS = [
         "sunlight": 5.001,
         "cloud": 66.5,
         "soil": 0.81,
+        "water": -0.67,
+        "air": 0.33,
         "carbon": 391.85
       },
       "2012": {
@@ -3196,6 +3768,8 @@ export const REGIONS = [
         "sunlight": 4.993,
         "cloud": 68.4,
         "soil": 0.81,
+        "water": 0.86,
+        "air": 0.36,
         "carbon": 394.06
       },
       "2013": {
@@ -3206,6 +3780,8 @@ export const REGIONS = [
         "sunlight": 5.002,
         "cloud": 71.3,
         "soil": 0.77,
+        "water": 1.47,
+        "air": 0.3,
         "carbon": 396.74
       },
       "2014": {
@@ -3216,6 +3792,8 @@ export const REGIONS = [
         "sunlight": 5.036,
         "cloud": 69.5,
         "soil": 0.68,
+        "water": 0.07,
+        "air": 0.32,
         "carbon": 398.81
       },
       "2015": {
@@ -3226,6 +3804,8 @@ export const REGIONS = [
         "sunlight": 5.149,
         "cloud": 65.9,
         "soil": 0.66,
+        "water": -5.28,
+        "air": 0.38,
         "carbon": 401.01
       },
       "2016": {
@@ -3236,6 +3816,8 @@ export const REGIONS = [
         "sunlight": 5.119,
         "cloud": 67.9,
         "soil": 0.62,
+        "water": -20.19,
+        "air": 0.33,
         "carbon": 404.41
       },
       "2017": {
@@ -3246,6 +3828,8 @@ export const REGIONS = [
         "sunlight": 5.061,
         "cloud": 68.3,
         "soil": 0.72,
+        "water": null,
+        "air": 0.38,
         "carbon": 406.76
       },
       "2018": {
@@ -3256,6 +3840,8 @@ export const REGIONS = [
         "sunlight": 5.061,
         "cloud": 74.4,
         "soil": 0.67,
+        "water": null,
+        "air": 0.33,
         "carbon": 408.72
       },
       "2019": {
@@ -3266,6 +3852,8 @@ export const REGIONS = [
         "sunlight": 5.127,
         "cloud": 74.2,
         "soil": 0.77,
+        "water": -2.02,
+        "air": 0.34,
         "carbon": 411.65
       },
       "2020": {
@@ -3276,6 +3864,8 @@ export const REGIONS = [
         "sunlight": 5.066,
         "cloud": 68.2,
         "soil": 0.76,
+        "water": -1.06,
+        "air": 0.35,
         "carbon": 414.21
       },
       "2021": {
@@ -3286,6 +3876,8 @@ export const REGIONS = [
         "sunlight": 5,
         "cloud": 75.8,
         "soil": 0.74,
+        "water": 7.92,
+        "air": 0.32,
         "carbon": 416.41
       },
       "2022": {
@@ -3296,6 +3888,8 @@ export const REGIONS = [
         "sunlight": 4.968,
         "cloud": 66.9,
         "soil": 0.83,
+        "water": 9.2,
+        "air": 0.37,
         "carbon": 418.53
       },
       "2023": {
@@ -3306,6 +3900,8 @@ export const REGIONS = [
         "sunlight": 5.132,
         "cloud": 63.3,
         "soil": 0.8,
+        "water": -0.55,
+        "air": 0.31,
         "carbon": 421.08
       },
       "2024": {
@@ -3316,6 +3912,8 @@ export const REGIONS = [
         "sunlight": 5.005,
         "cloud": 62.5,
         "soil": 0.76,
+        "water": -12.45,
+        "air": 0.38,
         "carbon": 424.61
       },
       "2025": {
@@ -3326,6 +3924,8 @@ export const REGIONS = [
         "sunlight": 5.006,
         "cloud": 68.3,
         "soil": 0.71,
+        "water": -4,
+        "air": 0.29,
         "carbon": 427.35
       }
     },
@@ -3357,6 +3957,8 @@ export const REGIONS = [
         "sunlight": 5.875,
         "cloud": 36.3,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -3367,6 +3969,8 @@ export const REGIONS = [
         "sunlight": 5.887,
         "cloud": 36.4,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -3377,6 +3981,8 @@ export const REGIONS = [
         "sunlight": 5.876,
         "cloud": 39.5,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -3387,6 +3993,8 @@ export const REGIONS = [
         "sunlight": 5.821,
         "cloud": 38.5,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -3397,6 +4005,8 @@ export const REGIONS = [
         "sunlight": 5.976,
         "cloud": 35.1,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -3407,6 +4017,8 @@ export const REGIONS = [
         "sunlight": 6.015,
         "cloud": 32.6,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -3417,6 +4029,8 @@ export const REGIONS = [
         "sunlight": 5.846,
         "cloud": 35.6,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -3427,6 +4041,8 @@ export const REGIONS = [
         "sunlight": 5.954,
         "cloud": 37.2,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -3437,6 +4053,8 @@ export const REGIONS = [
         "sunlight": 5.966,
         "cloud": 35,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -3447,6 +4065,8 @@ export const REGIONS = [
         "sunlight": 5.931,
         "cloud": 31.7,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -3457,6 +4077,8 @@ export const REGIONS = [
         "sunlight": 6.098,
         "cloud": 23.9,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -3467,6 +4089,8 @@ export const REGIONS = [
         "sunlight": 6.047,
         "cloud": 30.7,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -3477,6 +4101,8 @@ export const REGIONS = [
         "sunlight": 6.084,
         "cloud": 31,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -3487,6 +4113,8 @@ export const REGIONS = [
         "sunlight": 6.033,
         "cloud": 32.2,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -3497,6 +4125,8 @@ export const REGIONS = [
         "sunlight": 6.119,
         "cloud": 24.6,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -3507,6 +4137,8 @@ export const REGIONS = [
         "sunlight": 6.124,
         "cloud": 24.8,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -3517,6 +4149,8 @@ export const REGIONS = [
         "sunlight": 6.229,
         "cloud": 17,
         "soil": 0.38,
+        "water": null,
+        "air": 0.27,
         "carbon": 371.32
       },
       "2002": {
@@ -3527,6 +4161,8 @@ export const REGIONS = [
         "sunlight": 6.122,
         "cloud": 20.5,
         "soil": 0.38,
+        "water": -0.2,
+        "air": 0.28,
         "carbon": 373.45
       },
       "2003": {
@@ -3537,6 +4173,8 @@ export const REGIONS = [
         "sunlight": 6.11,
         "cloud": 21.4,
         "soil": 0.38,
+        "water": -0.53,
+        "air": 0.3,
         "carbon": 375.98
       },
       "2004": {
@@ -3547,6 +4185,8 @@ export const REGIONS = [
         "sunlight": 6.111,
         "cloud": 22.2,
         "soil": 0.38,
+        "water": -0.27,
+        "air": 0.29,
         "carbon": 377.7
       },
       "2005": {
@@ -3557,6 +4197,8 @@ export const REGIONS = [
         "sunlight": 6.093,
         "cloud": 20,
         "soil": 0.38,
+        "water": 0.54,
+        "air": 0.26,
         "carbon": 379.98
       },
       "2006": {
@@ -3567,6 +4209,8 @@ export const REGIONS = [
         "sunlight": 6.086,
         "cloud": 18.9,
         "soil": 0.38,
+        "water": 0.33,
+        "air": 0.29,
         "carbon": 382.09
       },
       "2007": {
@@ -3577,6 +4221,8 @@ export const REGIONS = [
         "sunlight": 6.038,
         "cloud": 19.8,
         "soil": 0.38,
+        "water": 0.02,
+        "air": 0.28,
         "carbon": 384.02
       },
       "2008": {
@@ -3587,6 +4233,8 @@ export const REGIONS = [
         "sunlight": 6.086,
         "cloud": 19.8,
         "soil": 0.38,
+        "water": -0.14,
+        "air": 0.29,
         "carbon": 385.83
       },
       "2009": {
@@ -3597,6 +4245,8 @@ export const REGIONS = [
         "sunlight": 6.092,
         "cloud": 18.7,
         "soil": 0.38,
+        "water": -0.47,
+        "air": 0.28,
         "carbon": 387.64
       },
       "2010": {
@@ -3607,6 +4257,8 @@ export const REGIONS = [
         "sunlight": 6.059,
         "cloud": 17.4,
         "soil": 0.38,
+        "water": -0.55,
+        "air": 0.31,
         "carbon": 390.1
       },
       "2011": {
@@ -3617,6 +4269,8 @@ export const REGIONS = [
         "sunlight": 6.078,
         "cloud": 17.1,
         "soil": 0.38,
+        "water": -0.4,
+        "air": 0.27,
         "carbon": 391.85
       },
       "2012": {
@@ -3627,6 +4281,8 @@ export const REGIONS = [
         "sunlight": 5.999,
         "cloud": 20.6,
         "soil": 0.38,
+        "water": -0.55,
+        "air": 0.3,
         "carbon": 394.06
       },
       "2013": {
@@ -3637,6 +4293,8 @@ export const REGIONS = [
         "sunlight": 6.104,
         "cloud": 19,
         "soil": 0.38,
+        "water": -1.1,
+        "air": 0.29,
         "carbon": 396.74
       },
       "2014": {
@@ -3647,6 +4305,8 @@ export const REGIONS = [
         "sunlight": 6.086,
         "cloud": 19.4,
         "soil": 0.38,
+        "water": -1.07,
+        "air": 0.27,
         "carbon": 398.81
       },
       "2015": {
@@ -3657,6 +4317,8 @@ export const REGIONS = [
         "sunlight": 5.973,
         "cloud": 21,
         "soil": 0.38,
+        "water": -1.68,
+        "air": 0.32,
         "carbon": 401.01
       },
       "2016": {
@@ -3667,6 +4329,8 @@ export const REGIONS = [
         "sunlight": 6.089,
         "cloud": 18.9,
         "soil": 0.41,
+        "water": -1.27,
+        "air": 0.27,
         "carbon": 404.41
       },
       "2017": {
@@ -3677,6 +4341,8 @@ export const REGIONS = [
         "sunlight": 6.104,
         "cloud": 18.2,
         "soil": 0.42,
+        "water": null,
+        "air": 0.27,
         "carbon": 406.76
       },
       "2018": {
@@ -3687,6 +4353,8 @@ export const REGIONS = [
         "sunlight": 5.977,
         "cloud": 22.2,
         "soil": 0.4,
+        "water": null,
+        "air": 0.3,
         "carbon": 408.72
       },
       "2019": {
@@ -3697,6 +4365,8 @@ export const REGIONS = [
         "sunlight": 6.082,
         "cloud": 17.6,
         "soil": 0.39,
+        "water": -2.64,
+        "air": 0.29,
         "carbon": 411.65
       },
       "2020": {
@@ -3707,6 +4377,8 @@ export const REGIONS = [
         "sunlight": 6.038,
         "cloud": 19.2,
         "soil": 0.41,
+        "water": -2.62,
+        "air": 0.27,
         "carbon": 414.21
       },
       "2021": {
@@ -3717,6 +4389,8 @@ export const REGIONS = [
         "sunlight": 6.164,
         "cloud": 17.5,
         "soil": 0.4,
+        "water": -2.7,
+        "air": 0.26,
         "carbon": 416.41
       },
       "2022": {
@@ -3727,6 +4401,8 @@ export const REGIONS = [
         "sunlight": 6.031,
         "cloud": 18.1,
         "soil": 0.39,
+        "water": -3.07,
+        "air": 0.29,
         "carbon": 418.53
       },
       "2023": {
@@ -3737,6 +4413,8 @@ export const REGIONS = [
         "sunlight": 5.921,
         "cloud": 19.7,
         "soil": 0.41,
+        "water": -2.9,
+        "air": 0.31,
         "carbon": 421.08
       },
       "2024": {
@@ -3747,6 +4425,8 @@ export const REGIONS = [
         "sunlight": 6.075,
         "cloud": 15.7,
         "soil": 0.4,
+        "water": -3.19,
+        "air": 0.27,
         "carbon": 424.61
       },
       "2025": {
@@ -3757,6 +4437,8 @@ export const REGIONS = [
         "sunlight": 6.055,
         "cloud": 18.3,
         "soil": 0.38,
+        "water": -3.99,
+        "air": 0.27,
         "carbon": 427.35
       }
     }
@@ -3785,6 +4467,8 @@ export const REGIONS = [
         "sunlight": 5.34,
         "cloud": 47.3,
         "soil": 0.44,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -3795,6 +4479,8 @@ export const REGIONS = [
         "sunlight": 5.412,
         "cloud": 47.1,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -3805,6 +4491,8 @@ export const REGIONS = [
         "sunlight": 5.408,
         "cloud": 46.5,
         "soil": 0.36,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -3815,6 +4503,8 @@ export const REGIONS = [
         "sunlight": 5.188,
         "cloud": 50.1,
         "soil": 0.41,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -3825,6 +4515,8 @@ export const REGIONS = [
         "sunlight": 5.346,
         "cloud": 47.4,
         "soil": 0.36,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -3835,6 +4527,8 @@ export const REGIONS = [
         "sunlight": 5.129,
         "cloud": 48.9,
         "soil": 0.42,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -3845,6 +4539,8 @@ export const REGIONS = [
         "sunlight": 5.35,
         "cloud": 44.7,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -3855,6 +4551,8 @@ export const REGIONS = [
         "sunlight": 5.134,
         "cloud": 47.3,
         "soil": 0.4,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -3865,6 +4563,8 @@ export const REGIONS = [
         "sunlight": 5.297,
         "cloud": 47.3,
         "soil": 0.4,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -3875,6 +4575,8 @@ export const REGIONS = [
         "sunlight": 5.512,
         "cloud": 40.1,
         "soil": 0.42,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -3885,6 +4587,8 @@ export const REGIONS = [
         "sunlight": 5.218,
         "cloud": 42.7,
         "soil": 0.44,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -3895,6 +4599,8 @@ export const REGIONS = [
         "sunlight": 5.187,
         "cloud": 42.9,
         "soil": 0.45,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -3905,6 +4611,8 @@ export const REGIONS = [
         "sunlight": 5.204,
         "cloud": 47.6,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -3915,6 +4623,8 @@ export const REGIONS = [
         "sunlight": 5.109,
         "cloud": 43.6,
         "soil": 0.42,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -3925,6 +4635,8 @@ export const REGIONS = [
         "sunlight": 5.123,
         "cloud": 35.1,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -3935,6 +4647,8 @@ export const REGIONS = [
         "sunlight": 5.157,
         "cloud": 35.2,
         "soil": 0.36,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -3945,6 +4659,8 @@ export const REGIONS = [
         "sunlight": 5.059,
         "cloud": 32.6,
         "soil": 0.37,
+        "water": null,
+        "air": 0.59,
         "carbon": 371.32
       },
       "2002": {
@@ -3955,6 +4671,8 @@ export const REGIONS = [
         "sunlight": 5.039,
         "cloud": 34.7,
         "soil": 0.37,
+        "water": 9.68,
+        "air": 0.65,
         "carbon": 373.45
       },
       "2003": {
@@ -3965,6 +4683,8 @@ export const REGIONS = [
         "sunlight": 4.767,
         "cloud": 42.3,
         "soil": 0.39,
+        "water": 9.07,
+        "air": 0.66,
         "carbon": 375.98
       },
       "2004": {
@@ -3975,6 +4695,8 @@ export const REGIONS = [
         "sunlight": 4.98,
         "cloud": 36.4,
         "soil": 0.4,
+        "water": 8.96,
+        "air": 0.63,
         "carbon": 377.7
       },
       "2005": {
@@ -3985,6 +4707,8 @@ export const REGIONS = [
         "sunlight": 5.043,
         "cloud": 36.8,
         "soil": 0.38,
+        "water": 5.92,
+        "air": 0.6,
         "carbon": 379.98
       },
       "2006": {
@@ -3995,6 +4719,8 @@ export const REGIONS = [
         "sunlight": 5.06,
         "cloud": 36,
         "soil": 0.37,
+        "water": -2.1,
+        "air": 0.6,
         "carbon": 382.09
       },
       "2007": {
@@ -4005,6 +4731,8 @@ export const REGIONS = [
         "sunlight": 4.932,
         "cloud": 35.7,
         "soil": 0.38,
+        "water": -6.86,
+        "air": 0.63,
         "carbon": 384.02
       },
       "2008": {
@@ -4015,6 +4743,8 @@ export const REGIONS = [
         "sunlight": 4.745,
         "cloud": 37.4,
         "soil": 0.44,
+        "water": -1.16,
+        "air": 0.69,
         "carbon": 385.83
       },
       "2009": {
@@ -4025,6 +4755,8 @@ export const REGIONS = [
         "sunlight": 5.079,
         "cloud": 33.9,
         "soil": 0.4,
+        "water": -4.76,
+        "air": 0.63,
         "carbon": 387.64
       },
       "2010": {
@@ -4035,6 +4767,8 @@ export const REGIONS = [
         "sunlight": 4.804,
         "cloud": 40.8,
         "soil": 0.42,
+        "water": -7.02,
+        "air": 0.67,
         "carbon": 390.1
       },
       "2011": {
@@ -4045,6 +4779,8 @@ export const REGIONS = [
         "sunlight": 4.845,
         "cloud": 34.5,
         "soil": 0.44,
+        "water": 0.87,
+        "air": 0.66,
         "carbon": 391.85
       },
       "2012": {
@@ -4055,6 +4791,8 @@ export const REGIONS = [
         "sunlight": 4.915,
         "cloud": 36.9,
         "soil": 0.45,
+        "water": -1.2,
+        "air": 0.71,
         "carbon": 394.06
       },
       "2013": {
@@ -4065,6 +4803,8 @@ export const REGIONS = [
         "sunlight": 4.81,
         "cloud": 38,
         "soil": 0.49,
+        "water": -0.07,
+        "air": 0.66,
         "carbon": 396.74
       },
       "2014": {
@@ -4075,6 +4815,8 @@ export const REGIONS = [
         "sunlight": 4.892,
         "cloud": 38.3,
         "soil": 0.41,
+        "water": 1.97,
+        "air": 0.69,
         "carbon": 398.81
       },
       "2015": {
@@ -4085,6 +4827,8 @@ export const REGIONS = [
         "sunlight": 4.906,
         "cloud": 36,
         "soil": 0.38,
+        "water": -9.88,
+        "air": 0.69,
         "carbon": 401.01
       },
       "2016": {
@@ -4095,6 +4839,8 @@ export const REGIONS = [
         "sunlight": 4.818,
         "cloud": 37.1,
         "soil": 0.43,
+        "water": -19.64,
+        "air": 0.73,
         "carbon": 404.41
       },
       "2017": {
@@ -4105,6 +4851,8 @@ export const REGIONS = [
         "sunlight": 4.807,
         "cloud": 42.9,
         "soil": 0.37,
+        "water": null,
+        "air": 0.7,
         "carbon": 406.76
       },
       "2018": {
@@ -4115,6 +4863,8 @@ export const REGIONS = [
         "sunlight": 4.699,
         "cloud": 42.6,
         "soil": 0.46,
+        "water": null,
+        "air": 0.71,
         "carbon": 408.72
       },
       "2019": {
@@ -4125,6 +4875,8 @@ export const REGIONS = [
         "sunlight": 4.603,
         "cloud": 51,
         "soil": 0.43,
+        "water": -18.8,
+        "air": 0.77,
         "carbon": 411.65
       },
       "2020": {
@@ -4135,6 +4887,8 @@ export const REGIONS = [
         "sunlight": 4.766,
         "cloud": 45.6,
         "soil": 0.38,
+        "water": -17.18,
+        "air": 0.72,
         "carbon": 414.21
       },
       "2021": {
@@ -4145,6 +4899,8 @@ export const REGIONS = [
         "sunlight": 4.651,
         "cloud": 49.6,
         "soil": 0.45,
+        "water": -17.15,
+        "air": 0.72,
         "carbon": 416.41
       },
       "2022": {
@@ -4155,6 +4911,8 @@ export const REGIONS = [
         "sunlight": 4.703,
         "cloud": 42.6,
         "soil": 0.45,
+        "water": -13.68,
+        "air": 0.74,
         "carbon": 418.53
       },
       "2023": {
@@ -4165,6 +4923,8 @@ export const REGIONS = [
         "sunlight": 4.616,
         "cloud": 43.9,
         "soil": 0.42,
+        "water": -16.03,
+        "air": 0.76,
         "carbon": 421.08
       },
       "2024": {
@@ -4175,6 +4935,8 @@ export const REGIONS = [
         "sunlight": 4.531,
         "cloud": 48,
         "soil": 0.49,
+        "water": -17.84,
+        "air": 0.83,
         "carbon": 424.61
       },
       "2025": {
@@ -4185,6 +4947,8 @@ export const REGIONS = [
         "sunlight": 4.597,
         "cloud": 45.9,
         "soil": 0.52,
+        "water": -10.23,
+        "air": 0.75,
         "carbon": 427.35
       }
     }
@@ -4213,6 +4977,8 @@ export const REGIONS = [
         "sunlight": 5.75,
         "cloud": 48.7,
         "soil": 0.57,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -4223,6 +4989,8 @@ export const REGIONS = [
         "sunlight": 5.836,
         "cloud": 45.7,
         "soil": 0.56,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -4233,6 +5001,8 @@ export const REGIONS = [
         "sunlight": 5.795,
         "cloud": 47.3,
         "soil": 0.56,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -4243,6 +5013,8 @@ export const REGIONS = [
         "sunlight": 5.545,
         "cloud": 52.2,
         "soil": 0.58,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -4253,6 +5025,8 @@ export const REGIONS = [
         "sunlight": 5.546,
         "cloud": 50.8,
         "soil": 0.67,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -4263,6 +5037,8 @@ export const REGIONS = [
         "sunlight": 5.671,
         "cloud": 44.6,
         "soil": 0.65,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -4273,6 +5049,8 @@ export const REGIONS = [
         "sunlight": 5.648,
         "cloud": 45.3,
         "soil": 0.62,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -4283,6 +5061,8 @@ export const REGIONS = [
         "sunlight": 5.813,
         "cloud": 42.8,
         "soil": 0.54,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -4293,6 +5073,8 @@ export const REGIONS = [
         "sunlight": 5.908,
         "cloud": 41.7,
         "soil": 0.54,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -4303,6 +5085,8 @@ export const REGIONS = [
         "sunlight": 5.85,
         "cloud": 47,
         "soil": 0.57,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -4313,6 +5097,8 @@ export const REGIONS = [
         "sunlight": 5.803,
         "cloud": 44.8,
         "soil": 0.57,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -4323,6 +5109,8 @@ export const REGIONS = [
         "sunlight": 5.808,
         "cloud": 43.8,
         "soil": 0.56,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -4333,6 +5121,8 @@ export const REGIONS = [
         "sunlight": 5.659,
         "cloud": 46.2,
         "soil": 0.6,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -4343,6 +5133,8 @@ export const REGIONS = [
         "sunlight": 5.526,
         "cloud": 51,
         "soil": 0.67,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -4353,6 +5145,8 @@ export const REGIONS = [
         "sunlight": 5.407,
         "cloud": 53.2,
         "soil": 0.65,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -4363,6 +5157,8 @@ export const REGIONS = [
         "sunlight": 5.486,
         "cloud": 51.7,
         "soil": 0.68,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -4373,6 +5169,8 @@ export const REGIONS = [
         "sunlight": 5.982,
         "cloud": 48,
         "soil": 0.56,
+        "water": null,
+        "air": 0.11,
         "carbon": 371.32
       },
       "2002": {
@@ -4383,6 +5181,8 @@ export const REGIONS = [
         "sunlight": 6.07,
         "cloud": 45.9,
         "soil": 0.53,
+        "water": -10.75,
+        "air": 0.1,
         "carbon": 373.45
       },
       "2003": {
@@ -4393,6 +5193,8 @@ export const REGIONS = [
         "sunlight": 5.89,
         "cloud": 58.5,
         "soil": 0.54,
+        "water": -12.84,
+        "air": 0.11,
         "carbon": 375.98
       },
       "2004": {
@@ -4403,6 +5205,8 @@ export const REGIONS = [
         "sunlight": 5.76,
         "cloud": 58.9,
         "soil": 0.63,
+        "water": -14.14,
+        "air": 0.11,
         "carbon": 377.7
       },
       "2005": {
@@ -4413,6 +5217,8 @@ export const REGIONS = [
         "sunlight": 5.789,
         "cloud": 54.4,
         "soil": 0.56,
+        "water": -11.91,
+        "air": 0.11,
         "carbon": 379.98
       },
       "2006": {
@@ -4423,6 +5229,8 @@ export const REGIONS = [
         "sunlight": 5.589,
         "cloud": 52.8,
         "soil": 0.66,
+        "water": -4.63,
+        "air": 0.11,
         "carbon": 382.09
       },
       "2007": {
@@ -4433,6 +5241,8 @@ export const REGIONS = [
         "sunlight": 5.588,
         "cloud": 51.8,
         "soil": 0.59,
+        "water": 2.25,
+        "air": 0.12,
         "carbon": 384.02
       },
       "2008": {
@@ -4443,6 +5253,8 @@ export const REGIONS = [
         "sunlight": 5.568,
         "cloud": 54.4,
         "soil": 0.6,
+        "water": 10.48,
+        "air": 0.11,
         "carbon": 385.83
       },
       "2009": {
@@ -4453,6 +5265,8 @@ export const REGIONS = [
         "sunlight": 5.669,
         "cloud": 49.8,
         "soil": 0.64,
+        "water": 17.95,
+        "air": 0.11,
         "carbon": 387.64
       },
       "2010": {
@@ -4463,6 +5277,8 @@ export const REGIONS = [
         "sunlight": 5.077,
         "cloud": 63.7,
         "soil": 0.66,
+        "water": 20.96,
+        "air": 0.13,
         "carbon": 390.1
       },
       "2011": {
@@ -4473,6 +5289,8 @@ export const REGIONS = [
         "sunlight": 5.535,
         "cloud": 52,
         "soil": 0.7,
+        "water": 34.93,
+        "air": 0.13,
         "carbon": 391.85
       },
       "2012": {
@@ -4483,6 +5301,8 @@ export const REGIONS = [
         "sunlight": 5.663,
         "cloud": 48.2,
         "soil": 0.64,
+        "water": 29.84,
+        "air": 0.11,
         "carbon": 394.06
       },
       "2013": {
@@ -4493,6 +5313,8 @@ export const REGIONS = [
         "sunlight": 5.811,
         "cloud": 47.1,
         "soil": 0.56,
+        "water": 16.63,
+        "air": 0.1,
         "carbon": 396.74
       },
       "2014": {
@@ -4503,6 +5325,8 @@ export const REGIONS = [
         "sunlight": 5.839,
         "cloud": 45.6,
         "soil": 0.57,
+        "water": 11.06,
+        "air": 0.1,
         "carbon": 398.81
       },
       "2015": {
@@ -4513,6 +5337,8 @@ export const REGIONS = [
         "sunlight": 5.915,
         "cloud": 48.7,
         "soil": 0.5,
+        "water": 4.31,
+        "air": 0.11,
         "carbon": 401.01
       },
       "2016": {
@@ -4523,6 +5349,8 @@ export const REGIONS = [
         "sunlight": 5.823,
         "cloud": 51.7,
         "soil": 0.53,
+        "water": 12.19,
+        "air": 0.1,
         "carbon": 404.41
       },
       "2017": {
@@ -4533,6 +5361,8 @@ export const REGIONS = [
         "sunlight": 5.809,
         "cloud": 53,
         "soil": 0.5,
+        "water": null,
+        "air": 0.1,
         "carbon": 406.76
       },
       "2018": {
@@ -4543,6 +5373,8 @@ export const REGIONS = [
         "sunlight": 5.736,
         "cloud": 52.2,
         "soil": 0.53,
+        "water": null,
+        "air": 0.11,
         "carbon": 408.72
       },
       "2019": {
@@ -4553,6 +5385,8 @@ export const REGIONS = [
         "sunlight": 5.766,
         "cloud": 53.5,
         "soil": 0.54,
+        "water": 15.31,
+        "air": 0.12,
         "carbon": 411.65
       },
       "2020": {
@@ -4563,6 +5397,8 @@ export const REGIONS = [
         "sunlight": 5.81,
         "cloud": 52.4,
         "soil": 0.51,
+        "water": 10.69,
+        "air": 0.1,
         "carbon": 414.21
       },
       "2021": {
@@ -4573,6 +5409,8 @@ export const REGIONS = [
         "sunlight": 5.446,
         "cloud": 60.1,
         "soil": 0.55,
+        "water": 15.19,
+        "air": 0.1,
         "carbon": 416.41
       },
       "2022": {
@@ -4583,6 +5421,8 @@ export const REGIONS = [
         "sunlight": 5.685,
         "cloud": 54.4,
         "soil": 0.55,
+        "water": 15.12,
+        "air": 0.12,
         "carbon": 418.53
       },
       "2023": {
@@ -4593,6 +5433,8 @@ export const REGIONS = [
         "sunlight": 5.691,
         "cloud": 56,
         "soil": 0.52,
+        "water": 22.59,
+        "air": 0.11,
         "carbon": 421.08
       },
       "2024": {
@@ -4603,6 +5445,8 @@ export const REGIONS = [
         "sunlight": 5.516,
         "cloud": 57.4,
         "soil": 0.53,
+        "water": 22.02,
+        "air": 0.11,
         "carbon": 424.61
       },
       "2025": {
@@ -4613,6 +5457,8 @@ export const REGIONS = [
         "sunlight": 5.491,
         "cloud": 58.7,
         "soil": 0.58,
+        "water": 28.89,
+        "air": 0.12,
         "carbon": 427.35
       }
     },
@@ -4644,6 +5490,8 @@ export const REGIONS = [
         "sunlight": 4.726,
         "cloud": 68.2,
         "soil": 0.62,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -4654,6 +5502,8 @@ export const REGIONS = [
         "sunlight": 4.929,
         "cloud": 66.6,
         "soil": 0.6,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -4664,6 +5514,8 @@ export const REGIONS = [
         "sunlight": 4.761,
         "cloud": 63.7,
         "soil": 0.63,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -4674,6 +5526,8 @@ export const REGIONS = [
         "sunlight": 4.801,
         "cloud": 63.6,
         "soil": 0.67,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -4684,6 +5538,8 @@ export const REGIONS = [
         "sunlight": 4.965,
         "cloud": 64.8,
         "soil": 0.61,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -4694,6 +5550,8 @@ export const REGIONS = [
         "sunlight": 4.836,
         "cloud": 63,
         "soil": 0.58,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -4704,6 +5562,8 @@ export const REGIONS = [
         "sunlight": 4.993,
         "cloud": 63.2,
         "soil": 0.6,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -4714,6 +5574,8 @@ export const REGIONS = [
         "sunlight": 5.074,
         "cloud": 61.3,
         "soil": 0.58,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -4724,6 +5586,8 @@ export const REGIONS = [
         "sunlight": 4.885,
         "cloud": 62.3,
         "soil": 0.54,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -4734,6 +5598,8 @@ export const REGIONS = [
         "sunlight": 5.018,
         "cloud": 61,
         "soil": 0.51,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -4744,6 +5610,8 @@ export const REGIONS = [
         "sunlight": 4.959,
         "cloud": 59.7,
         "soil": 0.53,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -4754,6 +5622,8 @@ export const REGIONS = [
         "sunlight": 5.014,
         "cloud": 56.8,
         "soil": 0.57,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -4764,6 +5634,8 @@ export const REGIONS = [
         "sunlight": 4.869,
         "cloud": 60.8,
         "soil": 0.56,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -4774,6 +5646,8 @@ export const REGIONS = [
         "sunlight": 4.746,
         "cloud": 58.5,
         "soil": 0.57,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -4784,6 +5658,8 @@ export const REGIONS = [
         "sunlight": 4.617,
         "cloud": 60.6,
         "soil": 0.57,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -4794,6 +5670,8 @@ export const REGIONS = [
         "sunlight": 4.636,
         "cloud": 60.8,
         "soil": 0.6,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -4804,6 +5682,8 @@ export const REGIONS = [
         "sunlight": 4.66,
         "cloud": 72.5,
         "soil": 0.59,
+        "water": null,
+        "air": 0.34,
         "carbon": 371.32
       },
       "2002": {
@@ -4814,6 +5694,8 @@ export const REGIONS = [
         "sunlight": 4.452,
         "cloud": 73,
         "soil": 0.56,
+        "water": 17.17,
+        "air": 0.37,
         "carbon": 373.45
       },
       "2003": {
@@ -4824,6 +5706,8 @@ export const REGIONS = [
         "sunlight": 4.449,
         "cloud": 72.4,
         "soil": 0.56,
+        "water": 16.43,
+        "air": 0.36,
         "carbon": 375.98
       },
       "2004": {
@@ -4834,6 +5718,8 @@ export const REGIONS = [
         "sunlight": 4.382,
         "cloud": 74.3,
         "soil": 0.65,
+        "water": 8.44,
+        "air": 0.42,
         "carbon": 377.7
       },
       "2005": {
@@ -4844,6 +5730,8 @@ export const REGIONS = [
         "sunlight": 4.583,
         "cloud": 71.8,
         "soil": 0.66,
+        "water": 0.23,
+        "air": 0.37,
         "carbon": 379.98
       },
       "2006": {
@@ -4854,6 +5742,8 @@ export const REGIONS = [
         "sunlight": 4.538,
         "cloud": 71.9,
         "soil": 0.62,
+        "water": -0.68,
+        "air": 0.35,
         "carbon": 382.09
       },
       "2007": {
@@ -4864,6 +5754,8 @@ export const REGIONS = [
         "sunlight": 4.441,
         "cloud": 74.2,
         "soil": 0.68,
+        "water": 2.37,
+        "air": 0.4,
         "carbon": 384.02
       },
       "2008": {
@@ -4874,6 +5766,8 @@ export const REGIONS = [
         "sunlight": 4.545,
         "cloud": 73.2,
         "soil": 0.7,
+        "water": 2.48,
+        "air": 0.4,
         "carbon": 385.83
       },
       "2009": {
@@ -4884,6 +5778,8 @@ export const REGIONS = [
         "sunlight": 4.792,
         "cloud": 69.4,
         "soil": 0.61,
+        "water": -12.84,
+        "air": 0.35,
         "carbon": 387.64
       },
       "2010": {
@@ -4894,6 +5790,8 @@ export const REGIONS = [
         "sunlight": 4.753,
         "cloud": 70.4,
         "soil": 0.65,
+        "water": -20.24,
+        "air": 0.4,
         "carbon": 390.1
       },
       "2011": {
@@ -4904,6 +5802,8 @@ export const REGIONS = [
         "sunlight": 4.509,
         "cloud": 72.3,
         "soil": 0.73,
+        "water": -12.37,
+        "air": 0.39,
         "carbon": 391.85
       },
       "2012": {
@@ -4914,6 +5814,8 @@ export const REGIONS = [
         "sunlight": 4.855,
         "cloud": 68.5,
         "soil": 0.68,
+        "water": -25.55,
+        "air": 0.32,
         "carbon": 394.06
       },
       "2013": {
@@ -4924,6 +5826,8 @@ export const REGIONS = [
         "sunlight": 4.605,
         "cloud": 72.6,
         "soil": 0.72,
+        "water": -25.34,
+        "air": 0.29,
         "carbon": 396.74
       },
       "2014": {
@@ -4934,6 +5838,8 @@ export const REGIONS = [
         "sunlight": 4.702,
         "cloud": 71.5,
         "soil": 0.73,
+        "water": -22.13,
+        "air": 0.36,
         "carbon": 398.81
       },
       "2015": {
@@ -4944,6 +5850,8 @@ export const REGIONS = [
         "sunlight": 4.474,
         "cloud": 73.7,
         "soil": 0.74,
+        "water": -22.95,
+        "air": 0.5,
         "carbon": 401.01
       },
       "2016": {
@@ -4954,6 +5862,8 @@ export const REGIONS = [
         "sunlight": 4.5,
         "cloud": 72.1,
         "soil": 0.76,
+        "water": -41.86,
+        "air": 0.5,
         "carbon": 404.41
       },
       "2017": {
@@ -4964,6 +5874,8 @@ export const REGIONS = [
         "sunlight": 4.496,
         "cloud": 65.7,
         "soil": 0.77,
+        "water": null,
+        "air": 0.46,
         "carbon": 406.76
       },
       "2018": {
@@ -4974,6 +5886,8 @@ export const REGIONS = [
         "sunlight": 4.384,
         "cloud": 65,
         "soil": 0.76,
+        "water": null,
+        "air": 0.51,
         "carbon": 408.72
       },
       "2019": {
@@ -4984,6 +5898,8 @@ export const REGIONS = [
         "sunlight": 4.386,
         "cloud": 68,
         "soil": 0.75,
+        "water": -38.53,
+        "air": 0.45,
         "carbon": 411.65
       },
       "2020": {
@@ -4994,6 +5910,8 @@ export const REGIONS = [
         "sunlight": 4.214,
         "cloud": 68.8,
         "soil": 0.78,
+        "water": -26.19,
+        "air": 0.42,
         "carbon": 414.21
       },
       "2021": {
@@ -5004,6 +5922,8 @@ export const REGIONS = [
         "sunlight": 4.251,
         "cloud": 68.3,
         "soil": 0.77,
+        "water": -30.64,
+        "air": 0.46,
         "carbon": 416.41
       },
       "2022": {
@@ -5014,6 +5934,8 @@ export const REGIONS = [
         "sunlight": 4.21,
         "cloud": 68,
         "soil": 0.78,
+        "water": -39.22,
+        "air": 0.51,
         "carbon": 418.53
       },
       "2023": {
@@ -5024,6 +5946,8 @@ export const REGIONS = [
         "sunlight": 4.298,
         "cloud": 65.8,
         "soil": 0.75,
+        "water": -51.39,
+        "air": 0.45,
         "carbon": 421.08
       },
       "2024": {
@@ -5034,6 +5958,8 @@ export const REGIONS = [
         "sunlight": 4.249,
         "cloud": 67,
         "soil": 0.8,
+        "water": -53.05,
+        "air": 0.5,
         "carbon": 424.61
       },
       "2025": {
@@ -5044,6 +5970,8 @@ export const REGIONS = [
         "sunlight": 4.332,
         "cloud": 65.6,
         "soil": 0.84,
+        "water": -53.53,
+        "air": 0.42,
         "carbon": 427.35
       }
     }
@@ -5072,6 +6000,8 @@ export const REGIONS = [
         "sunlight": 5.163,
         "cloud": 49,
         "soil": 0.41,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -5082,6 +6012,8 @@ export const REGIONS = [
         "sunlight": 5.14,
         "cloud": 48.8,
         "soil": 0.4,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -5092,6 +6024,8 @@ export const REGIONS = [
         "sunlight": 5.197,
         "cloud": 49.2,
         "soil": 0.41,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -5102,6 +6036,8 @@ export const REGIONS = [
         "sunlight": 5.149,
         "cloud": 50.2,
         "soil": 0.41,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -5112,6 +6048,8 @@ export const REGIONS = [
         "sunlight": 5.548,
         "cloud": 41.3,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -5122,6 +6060,8 @@ export const REGIONS = [
         "sunlight": 5.263,
         "cloud": 48.8,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -5132,6 +6072,8 @@ export const REGIONS = [
         "sunlight": 5.25,
         "cloud": 47.2,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -5142,6 +6084,8 @@ export const REGIONS = [
         "sunlight": 5.2,
         "cloud": 46.3,
         "soil": 0.42,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -5152,6 +6096,8 @@ export const REGIONS = [
         "sunlight": 5.406,
         "cloud": 43.9,
         "soil": 0.45,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -5162,6 +6108,8 @@ export const REGIONS = [
         "sunlight": 5.224,
         "cloud": 48.9,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -5172,6 +6120,8 @@ export const REGIONS = [
         "sunlight": 5.267,
         "cloud": 46.5,
         "soil": 0.41,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -5182,6 +6132,8 @@ export const REGIONS = [
         "sunlight": 5.402,
         "cloud": 47.1,
         "soil": 0.37,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -5192,6 +6144,8 @@ export const REGIONS = [
         "sunlight": 5.365,
         "cloud": 47.1,
         "soil": 0.4,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -5202,6 +6156,8 @@ export const REGIONS = [
         "sunlight": 5.346,
         "cloud": 47.2,
         "soil": 0.43,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -5212,6 +6168,8 @@ export const REGIONS = [
         "sunlight": 5.457,
         "cloud": 41,
         "soil": 0.42,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -5222,6 +6180,8 @@ export const REGIONS = [
         "sunlight": 5.402,
         "cloud": 46.6,
         "soil": 0.4,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -5232,6 +6192,8 @@ export const REGIONS = [
         "sunlight": 5.427,
         "cloud": 47.2,
         "soil": 0.39,
+        "water": null,
+        "air": 0.08,
         "carbon": 371.32
       },
       "2002": {
@@ -5242,6 +6204,8 @@ export const REGIONS = [
         "sunlight": 5.636,
         "cloud": 42.7,
         "soil": 0.37,
+        "water": -6.35,
+        "air": 0.08,
         "carbon": 373.45
       },
       "2003": {
@@ -5252,6 +6216,8 @@ export const REGIONS = [
         "sunlight": 5.438,
         "cloud": 46.2,
         "soil": 0.39,
+        "water": -4.4,
+        "air": 0.08,
         "carbon": 375.98
       },
       "2004": {
@@ -5262,6 +6228,8 @@ export const REGIONS = [
         "sunlight": 5.439,
         "cloud": 43,
         "soil": 0.41,
+        "water": -5.14,
+        "air": 0.08,
         "carbon": 377.7
       },
       "2005": {
@@ -5272,6 +6240,8 @@ export const REGIONS = [
         "sunlight": 5.341,
         "cloud": 47.5,
         "soil": 0.47,
+        "water": 7.36,
+        "air": 0.08,
         "carbon": 379.98
       },
       "2006": {
@@ -5282,6 +6252,8 @@ export const REGIONS = [
         "sunlight": 5.352,
         "cloud": 46.3,
         "soil": 0.4,
+        "water": 2.18,
+        "air": 0.08,
         "carbon": 382.09
       },
       "2007": {
@@ -5292,6 +6264,8 @@ export const REGIONS = [
         "sunlight": 5.49,
         "cloud": 43.6,
         "soil": 0.41,
+        "water": -2.41,
+        "air": 0.08,
         "carbon": 384.02
       },
       "2008": {
@@ -5302,6 +6276,8 @@ export const REGIONS = [
         "sunlight": 5.531,
         "cloud": 40.5,
         "soil": 0.41,
+        "water": 0.43,
+        "air": 0.08,
         "carbon": 385.83
       },
       "2009": {
@@ -5312,6 +6288,8 @@ export const REGIONS = [
         "sunlight": 5.426,
         "cloud": 43.9,
         "soil": 0.39,
+        "water": -2.42,
+        "air": 0.08,
         "carbon": 387.64
       },
       "2010": {
@@ -5322,6 +6300,8 @@ export const REGIONS = [
         "sunlight": 5.347,
         "cloud": 46.9,
         "soil": 0.41,
+        "water": 1.04,
+        "air": 0.08,
         "carbon": 390.1
       },
       "2011": {
@@ -5332,6 +6312,8 @@ export const REGIONS = [
         "sunlight": 5.441,
         "cloud": 41.7,
         "soil": 0.4,
+        "water": 4.41,
+        "air": 0.08,
         "carbon": 391.85
       },
       "2012": {
@@ -5342,6 +6324,8 @@ export const REGIONS = [
         "sunlight": 5.527,
         "cloud": 36,
         "soil": 0.39,
+        "water": -0.18,
+        "air": 0.08,
         "carbon": 394.06
       },
       "2013": {
@@ -5352,6 +6336,8 @@ export const REGIONS = [
         "sunlight": 5.448,
         "cloud": 36.4,
         "soil": 0.4,
+        "water": -4.27,
+        "air": 0.08,
         "carbon": 396.74
       },
       "2014": {
@@ -5362,6 +6348,8 @@ export const REGIONS = [
         "sunlight": 5.443,
         "cloud": 38.8,
         "soil": 0.4,
+        "water": -8.12,
+        "air": 0.07,
         "carbon": 398.81
       },
       "2015": {
@@ -5372,6 +6360,8 @@ export const REGIONS = [
         "sunlight": 5.296,
         "cloud": 38.9,
         "soil": 0.42,
+        "water": -9.47,
+        "air": 0.08,
         "carbon": 401.01
       },
       "2016": {
@@ -5382,6 +6372,8 @@ export const REGIONS = [
         "sunlight": 5.388,
         "cloud": 40.3,
         "soil": 0.4,
+        "water": -12.48,
+        "air": 0.07,
         "carbon": 404.41
       },
       "2017": {
@@ -5392,6 +6384,8 @@ export const REGIONS = [
         "sunlight": 5.426,
         "cloud": 39.2,
         "soil": 0.41,
+        "water": null,
+        "air": 0.07,
         "carbon": 406.76
       },
       "2018": {
@@ -5402,6 +6396,8 @@ export const REGIONS = [
         "sunlight": 5.492,
         "cloud": 38.2,
         "soil": 0.38,
+        "water": null,
+        "air": 0.07,
         "carbon": 408.72
       },
       "2019": {
@@ -5412,6 +6408,8 @@ export const REGIONS = [
         "sunlight": 5.307,
         "cloud": 41.1,
         "soil": 0.41,
+        "water": -9.32,
+        "air": 0.07,
         "carbon": 411.65
       },
       "2020": {
@@ -5422,6 +6420,8 @@ export const REGIONS = [
         "sunlight": 5.68,
         "cloud": 35.1,
         "soil": 0.39,
+        "water": -11.48,
+        "air": 0.07,
         "carbon": 414.21
       },
       "2021": {
@@ -5432,6 +6432,8 @@ export const REGIONS = [
         "sunlight": 5.409,
         "cloud": 42.8,
         "soil": 0.38,
+        "water": -17.82,
+        "air": 0.09,
         "carbon": 416.41
       },
       "2022": {
@@ -5442,6 +6444,8 @@ export const REGIONS = [
         "sunlight": 5.501,
         "cloud": 40.7,
         "soil": 0.4,
+        "water": -17.94,
+        "air": 0.09,
         "carbon": 418.53
       },
       "2023": {
@@ -5452,6 +6456,8 @@ export const REGIONS = [
         "sunlight": 5.331,
         "cloud": 41.9,
         "soil": 0.44,
+        "water": -7.58,
+        "air": 0.09,
         "carbon": 421.08
       },
       "2024": {
@@ -5462,6 +6468,8 @@ export const REGIONS = [
         "sunlight": 5.411,
         "cloud": 39.7,
         "soil": 0.4,
+        "water": -8.31,
+        "air": 0.09,
         "carbon": 424.61
       },
       "2025": {
@@ -5472,6 +6480,8 @@ export const REGIONS = [
         "sunlight": 5.499,
         "cloud": 38.1,
         "soil": 0.39,
+        "water": -15.14,
+        "air": 0.1,
         "carbon": 427.35
       }
     }
@@ -5500,6 +6510,8 @@ export const REGIONS = [
         "sunlight": 4.984,
         "cloud": 82.3,
         "soil": 0.49,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -5510,6 +6522,8 @@ export const REGIONS = [
         "sunlight": 5.117,
         "cloud": 78.9,
         "soil": 0.44,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -5520,6 +6534,8 @@ export const REGIONS = [
         "sunlight": 5.412,
         "cloud": 76.6,
         "soil": 0.4,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -5530,6 +6546,8 @@ export const REGIONS = [
         "sunlight": 5.146,
         "cloud": 77.5,
         "soil": 0.42,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -5540,6 +6558,8 @@ export const REGIONS = [
         "sunlight": 5.216,
         "cloud": 81.2,
         "soil": 0.44,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -5550,6 +6570,8 @@ export const REGIONS = [
         "sunlight": 5.3,
         "cloud": 79.4,
         "soil": 0.44,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -5560,6 +6582,8 @@ export const REGIONS = [
         "sunlight": 5.441,
         "cloud": 74.9,
         "soil": 0.42,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -5570,6 +6594,8 @@ export const REGIONS = [
         "sunlight": 5.199,
         "cloud": 78.4,
         "soil": 0.42,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -5580,6 +6606,8 @@ export const REGIONS = [
         "sunlight": 4.843,
         "cloud": 82,
         "soil": 0.43,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -5590,6 +6618,8 @@ export const REGIONS = [
         "sunlight": 5.129,
         "cloud": 80.6,
         "soil": 0.51,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -5600,6 +6630,8 @@ export const REGIONS = [
         "sunlight": 5.389,
         "cloud": 75.1,
         "soil": 0.43,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -5610,6 +6642,8 @@ export const REGIONS = [
         "sunlight": 5.145,
         "cloud": 81.1,
         "soil": 0.42,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -5620,6 +6654,8 @@ export const REGIONS = [
         "sunlight": 5.31,
         "cloud": 79.4,
         "soil": 0.47,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -5630,6 +6666,8 @@ export const REGIONS = [
         "sunlight": 5.448,
         "cloud": 76.5,
         "soil": 0.47,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -5640,6 +6678,8 @@ export const REGIONS = [
         "sunlight": 5.103,
         "cloud": 80.6,
         "soil": 0.47,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -5650,6 +6690,8 @@ export const REGIONS = [
         "sunlight": 5.057,
         "cloud": 82.1,
         "soil": 0.51,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -5660,6 +6702,8 @@ export const REGIONS = [
         "sunlight": 5.017,
         "cloud": 71.3,
         "soil": 0.51,
+        "water": null,
+        "air": 0.17,
         "carbon": 371.32
       },
       "2002": {
@@ -5670,6 +6714,8 @@ export const REGIONS = [
         "sunlight": 4.848,
         "cloud": 73.3,
         "soil": 0.46,
+        "water": 4.89,
+        "air": 0.18,
         "carbon": 373.45
       },
       "2003": {
@@ -5680,6 +6726,8 @@ export const REGIONS = [
         "sunlight": 5.195,
         "cloud": 61.3,
         "soil": 0.44,
+        "water": 4.8,
+        "air": 0.15,
         "carbon": 375.98
       },
       "2004": {
@@ -5690,6 +6738,8 @@ export const REGIONS = [
         "sunlight": 5.112,
         "cloud": 62.7,
         "soil": 0.45,
+        "water": 2.28,
+        "air": 0.17,
         "carbon": 377.7
       },
       "2005": {
@@ -5700,6 +6750,8 @@ export const REGIONS = [
         "sunlight": 5.304,
         "cloud": 58.3,
         "soil": 0.41,
+        "water": -3.03,
+        "air": 0.19,
         "carbon": 379.98
       },
       "2006": {
@@ -5710,6 +6762,8 @@ export const REGIONS = [
         "sunlight": 5.188,
         "cloud": 60.7,
         "soil": 0.54,
+        "water": 1.13,
+        "air": 0.18,
         "carbon": 382.09
       },
       "2007": {
@@ -5720,6 +6774,8 @@ export const REGIONS = [
         "sunlight": 5.125,
         "cloud": 61.6,
         "soil": 0.49,
+        "water": 1.53,
+        "air": 0.2,
         "carbon": 384.02
       },
       "2008": {
@@ -5730,6 +6786,8 @@ export const REGIONS = [
         "sunlight": 5.268,
         "cloud": 61.1,
         "soil": 0.5,
+        "water": -1.88,
+        "air": 0.17,
         "carbon": 385.83
       },
       "2009": {
@@ -5740,6 +6798,8 @@ export const REGIONS = [
         "sunlight": 5.255,
         "cloud": 61.6,
         "soil": 0.43,
+        "water": -0.02,
+        "air": 0.15,
         "carbon": 387.64
       },
       "2010": {
@@ -5750,6 +6810,8 @@ export const REGIONS = [
         "sunlight": 5.283,
         "cloud": 59.1,
         "soil": 0.46,
+        "water": -1.81,
+        "air": 0.19,
         "carbon": 390.1
       },
       "2011": {
@@ -5760,6 +6822,8 @@ export const REGIONS = [
         "sunlight": 5.076,
         "cloud": 63.5,
         "soil": 0.56,
+        "water": 0.91,
+        "air": 0.16,
         "carbon": 391.85
       },
       "2012": {
@@ -5770,6 +6834,8 @@ export const REGIONS = [
         "sunlight": 5.113,
         "cloud": 62.4,
         "soil": 0.47,
+        "water": 3.03,
+        "air": 0.16,
         "carbon": 394.06
       },
       "2013": {
@@ -5780,6 +6846,8 @@ export const REGIONS = [
         "sunlight": 5.126,
         "cloud": 62,
         "soil": 0.51,
+        "water": 3.33,
+        "air": 0.14,
         "carbon": 396.74
       },
       "2014": {
@@ -5790,6 +6858,8 @@ export const REGIONS = [
         "sunlight": 5.149,
         "cloud": 60.9,
         "soil": 0.48,
+        "water": 1.79,
+        "air": 0.15,
         "carbon": 398.81
       },
       "2015": {
@@ -5800,6 +6870,8 @@ export const REGIONS = [
         "sunlight": 5.15,
         "cloud": 60,
         "soil": 0.46,
+        "water": 4.55,
+        "air": 0.15,
         "carbon": 401.01
       },
       "2016": {
@@ -5810,6 +6882,8 @@ export const REGIONS = [
         "sunlight": 5.458,
         "cloud": 55.6,
         "soil": 0.43,
+        "water": -0.89,
+        "air": 0.14,
         "carbon": 404.41
       },
       "2017": {
@@ -5820,6 +6894,8 @@ export const REGIONS = [
         "sunlight": 4.995,
         "cloud": 63,
         "soil": 0.45,
+        "water": null,
+        "air": 0.17,
         "carbon": 406.76
       },
       "2018": {
@@ -5830,6 +6906,8 @@ export const REGIONS = [
         "sunlight": 4.962,
         "cloud": 66.9,
         "soil": 0.46,
+        "water": null,
+        "air": 0.16,
         "carbon": 408.72
       },
       "2019": {
@@ -5840,6 +6918,8 @@ export const REGIONS = [
         "sunlight": 5.053,
         "cloud": 65.6,
         "soil": 0.46,
+        "water": 0.66,
+        "air": 0.16,
         "carbon": 411.65
       },
       "2020": {
@@ -5850,6 +6930,8 @@ export const REGIONS = [
         "sunlight": 5.127,
         "cloud": 63.7,
         "soil": 0.46,
+        "water": -0.61,
+        "air": 0.18,
         "carbon": 414.21
       },
       "2021": {
@@ -5860,6 +6942,8 @@ export const REGIONS = [
         "sunlight": 5.052,
         "cloud": 66.3,
         "soil": 0.51,
+        "water": -0.17,
+        "air": 0.15,
         "carbon": 416.41
       },
       "2022": {
@@ -5870,6 +6954,8 @@ export const REGIONS = [
         "sunlight": 5.284,
         "cloud": 62.7,
         "soil": 0.49,
+        "water": -2.96,
+        "air": 0.21,
         "carbon": 418.53
       },
       "2023": {
@@ -5880,6 +6966,8 @@ export const REGIONS = [
         "sunlight": 5.061,
         "cloud": 64.4,
         "soil": 0.39,
+        "water": -4.14,
+        "air": 0.22,
         "carbon": 421.08
       },
       "2024": {
@@ -5890,6 +6978,8 @@ export const REGIONS = [
         "sunlight": 4.995,
         "cloud": 64.4,
         "soil": 0.43,
+        "water": -1.71,
+        "air": 0.26,
         "carbon": 424.61
       },
       "2025": {
@@ -5900,6 +6990,8 @@ export const REGIONS = [
         "sunlight": 4.879,
         "cloud": 66.9,
         "soil": 0.5,
+        "water": 2.19,
+        "air": 0.2,
         "carbon": 427.35
       }
     }
@@ -5928,6 +7020,8 @@ export const REGIONS = [
         "sunlight": 5.922,
         "cloud": 48.1,
         "soil": 0.3,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -5938,6 +7032,8 @@ export const REGIONS = [
         "sunlight": 5.92,
         "cloud": 47.9,
         "soil": 0.3,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -5948,6 +7044,8 @@ export const REGIONS = [
         "sunlight": 6.075,
         "cloud": 50.6,
         "soil": 0.27,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -5958,6 +7056,8 @@ export const REGIONS = [
         "sunlight": 5.948,
         "cloud": 47.3,
         "soil": 0.31,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -5968,6 +7068,8 @@ export const REGIONS = [
         "sunlight": 5.838,
         "cloud": 49.4,
         "soil": 0.3,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -5978,6 +7080,8 @@ export const REGIONS = [
         "sunlight": 5.874,
         "cloud": 44.4,
         "soil": 0.27,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -5988,6 +7092,8 @@ export const REGIONS = [
         "sunlight": 5.801,
         "cloud": 44.5,
         "soil": 0.28,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -5998,6 +7104,8 @@ export const REGIONS = [
         "sunlight": 6.095,
         "cloud": 41.7,
         "soil": 0.27,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -6008,6 +7116,8 @@ export const REGIONS = [
         "sunlight": 5.778,
         "cloud": 48.7,
         "soil": 0.28,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -6018,6 +7128,8 @@ export const REGIONS = [
         "sunlight": 6.094,
         "cloud": 38.5,
         "soil": 0.27,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -6028,6 +7140,8 @@ export const REGIONS = [
         "sunlight": 5.976,
         "cloud": 42.7,
         "soil": 0.26,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -6038,6 +7152,8 @@ export const REGIONS = [
         "sunlight": 5.813,
         "cloud": 41.9,
         "soil": 0.28,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -6048,6 +7164,8 @@ export const REGIONS = [
         "sunlight": 5.878,
         "cloud": 46.5,
         "soil": 0.32,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -6058,6 +7176,8 @@ export const REGIONS = [
         "sunlight": 5.891,
         "cloud": 41.6,
         "soil": 0.28,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -6068,6 +7188,8 @@ export const REGIONS = [
         "sunlight": 6.045,
         "cloud": 43.7,
         "soil": 0.28,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -6078,6 +7200,8 @@ export const REGIONS = [
         "sunlight": 5.786,
         "cloud": 50,
         "soil": 0.34,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -6088,6 +7212,8 @@ export const REGIONS = [
         "sunlight": 5.752,
         "cloud": 47.5,
         "soil": 0.3,
+        "water": null,
+        "air": 0.21,
         "carbon": 371.32
       },
       "2002": {
@@ -6098,6 +7224,8 @@ export const REGIONS = [
         "sunlight": 5.971,
         "cloud": 44.6,
         "soil": 0.26,
+        "water": -9.74,
+        "air": 0.18,
         "carbon": 373.45
       },
       "2003": {
@@ -6108,6 +7236,8 @@ export const REGIONS = [
         "sunlight": 6.023,
         "cloud": 45,
         "soil": 0.27,
+        "water": -9.88,
+        "air": 0.16,
         "carbon": 375.98
       },
       "2004": {
@@ -6118,6 +7248,8 @@ export const REGIONS = [
         "sunlight": 5.848,
         "cloud": 56.4,
         "soil": 0.3,
+        "water": 1.4,
+        "air": 0.17,
         "carbon": 377.7
       },
       "2005": {
@@ -6128,6 +7260,8 @@ export const REGIONS = [
         "sunlight": 5.905,
         "cloud": 55.6,
         "soil": 0.27,
+        "water": -20.48,
+        "air": 0.16,
         "carbon": 379.98
       },
       "2006": {
@@ -6138,6 +7272,8 @@ export const REGIONS = [
         "sunlight": 5.65,
         "cloud": 58.3,
         "soil": 0.3,
+        "water": -1.7,
+        "air": 0.18,
         "carbon": 382.09
       },
       "2007": {
@@ -6148,6 +7284,8 @@ export const REGIONS = [
         "sunlight": 5.794,
         "cloud": 50.4,
         "soil": 0.27,
+        "water": -9.52,
+        "air": 0.17,
         "carbon": 384.02
       },
       "2008": {
@@ -6158,6 +7296,8 @@ export const REGIONS = [
         "sunlight": 5.839,
         "cloud": 39.9,
         "soil": 0.32,
+        "water": 12.42,
+        "air": 0.19,
         "carbon": 385.83
       },
       "2009": {
@@ -6168,6 +7308,8 @@ export const REGIONS = [
         "sunlight": 5.858,
         "cloud": 42.5,
         "soil": 0.3,
+        "water": 17.88,
+        "air": 0.18,
         "carbon": 387.64
       },
       "2010": {
@@ -6178,6 +7320,8 @@ export const REGIONS = [
         "sunlight": 5.743,
         "cloud": 44.3,
         "soil": 0.28,
+        "water": 18.81,
+        "air": 0.18,
         "carbon": 390.1
       },
       "2011": {
@@ -6188,6 +7332,8 @@ export const REGIONS = [
         "sunlight": 5.856,
         "cloud": 39.5,
         "soil": 0.29,
+        "water": 14.95,
+        "air": 0.18,
         "carbon": 391.85
       },
       "2012": {
@@ -6198,6 +7344,8 @@ export const REGIONS = [
         "sunlight": 5.928,
         "cloud": 39.3,
         "soil": 0.29,
+        "water": 6.55,
+        "air": 0.17,
         "carbon": 394.06
       },
       "2013": {
@@ -6208,6 +7356,8 @@ export const REGIONS = [
         "sunlight": 5.99,
         "cloud": 36,
         "soil": 0.27,
+        "water": 6.09,
+        "air": 0.17,
         "carbon": 396.74
       },
       "2014": {
@@ -6218,6 +7368,8 @@ export const REGIONS = [
         "sunlight": 5.82,
         "cloud": 41.8,
         "soil": 0.3,
+        "water": 8.18,
+        "air": 0.18,
         "carbon": 398.81
       },
       "2015": {
@@ -6228,6 +7380,8 @@ export const REGIONS = [
         "sunlight": 6.162,
         "cloud": 33.5,
         "soil": 0.31,
+        "water": 1.05,
+        "air": 0.16,
         "carbon": 401.01
       },
       "2016": {
@@ -6238,6 +7392,8 @@ export const REGIONS = [
         "sunlight": 5.945,
         "cloud": 39.5,
         "soil": 0.3,
+        "water": -11.96,
+        "air": 0.16,
         "carbon": 404.41
       },
       "2017": {
@@ -6248,6 +7404,8 @@ export const REGIONS = [
         "sunlight": 5.662,
         "cloud": 44.5,
         "soil": 0.34,
+        "water": null,
+        "air": 0.18,
         "carbon": 406.76
       },
       "2018": {
@@ -6258,6 +7416,8 @@ export const REGIONS = [
         "sunlight": 5.976,
         "cloud": 39.4,
         "soil": 0.34,
+        "water": null,
+        "air": 0.15,
         "carbon": 408.72
       },
       "2019": {
@@ -6268,6 +7428,8 @@ export const REGIONS = [
         "sunlight": 6.197,
         "cloud": 36.5,
         "soil": 0.28,
+        "water": -15.76,
+        "air": 0.14,
         "carbon": 411.65
       },
       "2020": {
@@ -6278,6 +7440,8 @@ export const REGIONS = [
         "sunlight": 5.782,
         "cloud": 43.4,
         "soil": 0.3,
+        "water": -20.21,
+        "air": 0.19,
         "carbon": 414.21
       },
       "2021": {
@@ -6288,6 +7452,8 @@ export const REGIONS = [
         "sunlight": 5.876,
         "cloud": 41.1,
         "soil": 0.33,
+        "water": 6.8,
+        "air": 0.19,
         "carbon": 416.41
       },
       "2022": {
@@ -6298,6 +7464,8 @@ export const REGIONS = [
         "sunlight": 5.815,
         "cloud": 38.6,
         "soil": 0.34,
+        "water": -8.57,
+        "air": 0.2,
         "carbon": 418.53
       },
       "2023": {
@@ -6308,6 +7476,8 @@ export const REGIONS = [
         "sunlight": 5.887,
         "cloud": 36.4,
         "soil": 0.28,
+        "water": -12.87,
+        "air": 0.2,
         "carbon": 421.08
       },
       "2024": {
@@ -6318,6 +7488,8 @@ export const REGIONS = [
         "sunlight": 6.099,
         "cloud": 31.8,
         "soil": 0.28,
+        "water": -28.73,
+        "air": 0.18,
         "carbon": 424.61
       },
       "2025": {
@@ -6328,6 +7500,8 @@ export const REGIONS = [
         "sunlight": 5.72,
         "cloud": 41.1,
         "soil": 0.32,
+        "water": -21.03,
+        "air": 0.2,
         "carbon": 427.35
       }
     }
@@ -6356,6 +7530,8 @@ export const REGIONS = [
         "sunlight": 4.394,
         "cloud": 64.9,
         "soil": 0.52,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -6366,6 +7542,8 @@ export const REGIONS = [
         "sunlight": 4.13,
         "cloud": 68.7,
         "soil": 0.57,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -6376,6 +7554,8 @@ export const REGIONS = [
         "sunlight": 4.171,
         "cloud": 66.9,
         "soil": 0.62,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -6386,6 +7566,8 @@ export const REGIONS = [
         "sunlight": 4.505,
         "cloud": 60.9,
         "soil": 0.43,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -6396,6 +7578,8 @@ export const REGIONS = [
         "sunlight": 4.728,
         "cloud": 61.6,
         "soil": 0.4,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -6406,6 +7590,8 @@ export const REGIONS = [
         "sunlight": 4.337,
         "cloud": 64.4,
         "soil": 0.47,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -6416,6 +7602,8 @@ export const REGIONS = [
         "sunlight": 4.501,
         "cloud": 66.2,
         "soil": 0.42,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -6426,6 +7614,8 @@ export const REGIONS = [
         "sunlight": 4.502,
         "cloud": 63.7,
         "soil": 0.52,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -6436,6 +7626,8 @@ export const REGIONS = [
         "sunlight": 4.335,
         "cloud": 62.4,
         "soil": 0.47,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -6446,6 +7638,8 @@ export const REGIONS = [
         "sunlight": 4.513,
         "cloud": 62.9,
         "soil": 0.47,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -6456,6 +7650,8 @@ export const REGIONS = [
         "sunlight": 4.603,
         "cloud": 61.7,
         "soil": 0.54,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -6466,6 +7662,8 @@ export const REGIONS = [
         "sunlight": 4.576,
         "cloud": 58.5,
         "soil": 0.46,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -6476,6 +7674,8 @@ export const REGIONS = [
         "sunlight": 4.525,
         "cloud": 61.7,
         "soil": 0.53,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -6486,6 +7686,8 @@ export const REGIONS = [
         "sunlight": 4.519,
         "cloud": 62.2,
         "soil": 0.63,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -6496,6 +7698,8 @@ export const REGIONS = [
         "sunlight": 4.706,
         "cloud": 59.3,
         "soil": 0.5,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -6506,6 +7710,8 @@ export const REGIONS = [
         "sunlight": 4.607,
         "cloud": 59.9,
         "soil": 0.56,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -6516,6 +7722,8 @@ export const REGIONS = [
         "sunlight": 4.382,
         "cloud": 59.8,
         "soil": 0.62,
+        "water": null,
+        "air": 0.19,
         "carbon": 371.32
       },
       "2002": {
@@ -6526,6 +7734,8 @@ export const REGIONS = [
         "sunlight": 4.305,
         "cloud": 59.2,
         "soil": 0.67,
+        "water": 2.58,
+        "air": 0.2,
         "carbon": 373.45
       },
       "2003": {
@@ -6536,6 +7746,8 @@ export const REGIONS = [
         "sunlight": 4.707,
         "cloud": 54.9,
         "soil": 0.57,
+        "water": 1.71,
+        "air": 0.17,
         "carbon": 375.98
       },
       "2004": {
@@ -6546,6 +7758,8 @@ export const REGIONS = [
         "sunlight": 4.777,
         "cloud": 52.5,
         "soil": 0.53,
+        "water": 0,
+        "air": 0.15,
         "carbon": 377.7
       },
       "2005": {
@@ -6556,6 +7770,8 @@ export const REGIONS = [
         "sunlight": 4.783,
         "cloud": 53.9,
         "soil": 0.48,
+        "water": 0.28,
+        "air": 0.17,
         "carbon": 379.98
       },
       "2006": {
@@ -6566,6 +7782,8 @@ export const REGIONS = [
         "sunlight": 4.727,
         "cloud": 53.3,
         "soil": 0.45,
+        "water": -0.62,
+        "air": 0.16,
         "carbon": 382.09
       },
       "2007": {
@@ -6576,6 +7794,8 @@ export const REGIONS = [
         "sunlight": 4.624,
         "cloud": 55.3,
         "soil": 0.58,
+        "water": 0.82,
+        "air": 0.23,
         "carbon": 384.02
       },
       "2008": {
@@ -6586,6 +7806,8 @@ export const REGIONS = [
         "sunlight": 4.795,
         "cloud": 51.3,
         "soil": 0.5,
+        "water": -0.26,
+        "air": 0.14,
         "carbon": 385.83
       },
       "2009": {
@@ -6596,6 +7818,8 @@ export const REGIONS = [
         "sunlight": 4.547,
         "cloud": 53.8,
         "soil": 0.52,
+        "water": -0.21,
+        "air": 0.14,
         "carbon": 387.64
       },
       "2010": {
@@ -6606,6 +7830,8 @@ export const REGIONS = [
         "sunlight": 4.733,
         "cloud": 51.9,
         "soil": 0.53,
+        "water": 1.1,
+        "air": 0.18,
         "carbon": 390.1
       },
       "2011": {
@@ -6616,6 +7842,8 @@ export const REGIONS = [
         "sunlight": 4.774,
         "cloud": 52.3,
         "soil": 0.55,
+        "water": 0.34,
+        "air": 0.15,
         "carbon": 391.85
       },
       "2012": {
@@ -6626,6 +7854,8 @@ export const REGIONS = [
         "sunlight": 4.757,
         "cloud": 53.2,
         "soil": 0.44,
+        "water": -0.81,
+        "air": 0.16,
         "carbon": 394.06
       },
       "2013": {
@@ -6636,6 +7866,8 @@ export const REGIONS = [
         "sunlight": 4.775,
         "cloud": 50.7,
         "soil": 0.5,
+        "water": 0.12,
+        "air": 0.14,
         "carbon": 396.74
       },
       "2014": {
@@ -6646,6 +7878,8 @@ export const REGIONS = [
         "sunlight": 4.528,
         "cloud": 57.6,
         "soil": 0.54,
+        "water": 0.92,
+        "air": 0.16,
         "carbon": 398.81
       },
       "2015": {
@@ -6656,6 +7890,8 @@ export const REGIONS = [
         "sunlight": 4.533,
         "cloud": 56.8,
         "soil": 0.57,
+        "water": 0.76,
+        "air": 0.17,
         "carbon": 401.01
       },
       "2016": {
@@ -6666,6 +7902,8 @@ export const REGIONS = [
         "sunlight": 4.541,
         "cloud": 59.3,
         "soil": 0.61,
+        "water": 1.57,
+        "air": 0.17,
         "carbon": 404.41
       },
       "2017": {
@@ -6676,6 +7914,8 @@ export const REGIONS = [
         "sunlight": 4.606,
         "cloud": 56,
         "soil": 0.53,
+        "water": null,
+        "air": 0.18,
         "carbon": 406.76
       },
       "2018": {
@@ -6686,6 +7926,8 @@ export const REGIONS = [
         "sunlight": 4.708,
         "cloud": 52.7,
         "soil": 0.5,
+        "water": null,
+        "air": 0.15,
         "carbon": 408.72
       },
       "2019": {
@@ -6696,6 +7938,8 @@ export const REGIONS = [
         "sunlight": 4.555,
         "cloud": 54.8,
         "soil": 0.52,
+        "water": 1.79,
+        "air": 0.18,
         "carbon": 411.65
       },
       "2020": {
@@ -6706,6 +7950,8 @@ export const REGIONS = [
         "sunlight": 4.811,
         "cloud": 49.3,
         "soil": 0.51,
+        "water": 0.02,
+        "air": 0.18,
         "carbon": 414.21
       },
       "2021": {
@@ -6716,6 +7962,8 @@ export const REGIONS = [
         "sunlight": 4.753,
         "cloud": 48.2,
         "soil": 0.48,
+        "water": 0.14,
+        "air": 0.15,
         "carbon": 416.41
       },
       "2022": {
@@ -6726,6 +7974,8 @@ export const REGIONS = [
         "sunlight": 4.766,
         "cloud": 49.8,
         "soil": 0.51,
+        "water": -0.07,
+        "air": 0.18,
         "carbon": 418.53
       },
       "2023": {
@@ -6736,6 +7986,8 @@ export const REGIONS = [
         "sunlight": 4.478,
         "cloud": 54.1,
         "soil": 0.56,
+        "water": -0.33,
+        "air": 0.17,
         "carbon": 421.08
       },
       "2024": {
@@ -6746,6 +7998,8 @@ export const REGIONS = [
         "sunlight": 4.43,
         "cloud": 56.9,
         "soil": 0.63,
+        "water": 1.55,
+        "air": 0.27,
         "carbon": 424.61
       },
       "2025": {
@@ -6756,6 +8010,8 @@ export const REGIONS = [
         "sunlight": 4.81,
         "cloud": 49.5,
         "soil": 0.55,
+        "water": 0.26,
+        "air": 0.15,
         "carbon": 427.35
       }
     }
@@ -6784,6 +8040,8 @@ export const REGIONS = [
         "sunlight": 4.733,
         "cloud": 57.7,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -6794,6 +8052,8 @@ export const REGIONS = [
         "sunlight": 4.722,
         "cloud": 61,
         "soil": 0.7,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -6804,6 +8064,8 @@ export const REGIONS = [
         "sunlight": 4.527,
         "cloud": 62.1,
         "soil": 0.78,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -6814,6 +8076,8 @@ export const REGIONS = [
         "sunlight": 4.67,
         "cloud": 59.4,
         "soil": 0.82,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -6824,6 +8088,8 @@ export const REGIONS = [
         "sunlight": 4.639,
         "cloud": 62,
         "soil": 0.78,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -6834,6 +8100,8 @@ export const REGIONS = [
         "sunlight": 4.893,
         "cloud": 58.4,
         "soil": 0.71,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -6844,6 +8112,8 @@ export const REGIONS = [
         "sunlight": 4.754,
         "cloud": 59,
         "soil": 0.77,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -6854,6 +8124,8 @@ export const REGIONS = [
         "sunlight": 4.494,
         "cloud": 63.4,
         "soil": 0.72,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -6864,6 +8136,8 @@ export const REGIONS = [
         "sunlight": 4.635,
         "cloud": 59.3,
         "soil": 0.72,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -6874,6 +8148,8 @@ export const REGIONS = [
         "sunlight": 4.835,
         "cloud": 54.9,
         "soil": 0.75,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -6884,6 +8160,8 @@ export const REGIONS = [
         "sunlight": 4.735,
         "cloud": 56.9,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -6894,6 +8172,8 @@ export const REGIONS = [
         "sunlight": 4.566,
         "cloud": 59.8,
         "soil": 0.8,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -6904,6 +8184,8 @@ export const REGIONS = [
         "sunlight": 4.875,
         "cloud": 54.9,
         "soil": 0.71,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -6914,6 +8196,8 @@ export const REGIONS = [
         "sunlight": 4.618,
         "cloud": 60.7,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -6924,6 +8208,8 @@ export const REGIONS = [
         "sunlight": 4.681,
         "cloud": 55.4,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -6934,6 +8220,8 @@ export const REGIONS = [
         "sunlight": 4.665,
         "cloud": 57.7,
         "soil": 0.71,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -6944,6 +8232,8 @@ export const REGIONS = [
         "sunlight": 4.971,
         "cloud": 58.3,
         "soil": 0.71,
+        "water": null,
+        "air": 0.24,
         "carbon": 371.32
       },
       "2002": {
@@ -6954,6 +8244,8 @@ export const REGIONS = [
         "sunlight": 4.906,
         "cloud": 59.5,
         "soil": 0.72,
+        "water": -19.25,
+        "air": 0.26,
         "carbon": 373.45
       },
       "2003": {
@@ -6964,6 +8256,8 @@ export const REGIONS = [
         "sunlight": 4.722,
         "cloud": 59.6,
         "soil": 0.76,
+        "water": -10.31,
+        "air": 0.27,
         "carbon": 375.98
       },
       "2004": {
@@ -6974,6 +8268,8 @@ export const REGIONS = [
         "sunlight": 4.492,
         "cloud": 64.7,
         "soil": 0.81,
+        "water": -2.1,
+        "air": 0.29,
         "carbon": 377.7
       },
       "2005": {
@@ -6984,6 +8280,8 @@ export const REGIONS = [
         "sunlight": 4.481,
         "cloud": 63.5,
         "soil": 0.7,
+        "water": 5.77,
+        "air": 0.31,
         "carbon": 379.98
       },
       "2006": {
@@ -6994,6 +8292,8 @@ export const REGIONS = [
         "sunlight": 4.637,
         "cloud": 60,
         "soil": 0.66,
+        "water": -7.98,
+        "air": 0.28,
         "carbon": 382.09
       },
       "2007": {
@@ -7004,6 +8304,8 @@ export const REGIONS = [
         "sunlight": 4.799,
         "cloud": 56.1,
         "soil": 0.67,
+        "water": -5.17,
+        "air": 0.28,
         "carbon": 384.02
       },
       "2008": {
@@ -7014,6 +8316,8 @@ export const REGIONS = [
         "sunlight": 4.445,
         "cloud": 63.6,
         "soil": 0.7,
+        "water": -0.94,
+        "air": 0.3,
         "carbon": 385.83
       },
       "2009": {
@@ -7024,6 +8328,8 @@ export const REGIONS = [
         "sunlight": 4.495,
         "cloud": 68,
         "soil": 0.71,
+        "water": 10.42,
+        "air": 0.29,
         "carbon": 387.64
       },
       "2010": {
@@ -7034,6 +8340,8 @@ export const REGIONS = [
         "sunlight": 4.762,
         "cloud": 59.2,
         "soil": 0.73,
+        "water": 4,
+        "air": 0.3,
         "carbon": 390.1
       },
       "2011": {
@@ -7044,6 +8352,8 @@ export const REGIONS = [
         "sunlight": 4.69,
         "cloud": 60.2,
         "soil": 0.68,
+        "water": 6,
+        "air": 0.26,
         "carbon": 391.85
       },
       "2012": {
@@ -7054,6 +8364,8 @@ export const REGIONS = [
         "sunlight": 4.916,
         "cloud": 57.6,
         "soil": 0.69,
+        "water": 1.64,
+        "air": 0.23,
         "carbon": 394.06
       },
       "2013": {
@@ -7064,6 +8376,8 @@ export const REGIONS = [
         "sunlight": 4.516,
         "cloud": 65.8,
         "soil": 0.73,
+        "water": -1.27,
+        "air": 0.26,
         "carbon": 396.74
       },
       "2014": {
@@ -7074,6 +8388,8 @@ export const REGIONS = [
         "sunlight": 5.204,
         "cloud": 53.3,
         "soil": 0.65,
+        "water": -34.06,
+        "air": 0.24,
         "carbon": 398.81
       },
       "2015": {
@@ -7084,6 +8400,8 @@ export const REGIONS = [
         "sunlight": 4.671,
         "cloud": 62.2,
         "soil": 0.69,
+        "water": -38.48,
+        "air": 0.28,
         "carbon": 401.01
       },
       "2016": {
@@ -7094,6 +8412,8 @@ export const REGIONS = [
         "sunlight": 4.757,
         "cloud": 61.7,
         "soil": 0.77,
+        "water": -12.99,
+        "air": 0.27,
         "carbon": 404.41
       },
       "2017": {
@@ -7104,6 +8424,8 @@ export const REGIONS = [
         "sunlight": 4.819,
         "cloud": 59.3,
         "soil": 0.72,
+        "water": null,
+        "air": 0.23,
         "carbon": 406.76
       },
       "2018": {
@@ -7114,6 +8436,8 @@ export const REGIONS = [
         "sunlight": 4.597,
         "cloud": 64.9,
         "soil": 0.77,
+        "water": null,
+        "air": 0.29,
         "carbon": 408.72
       },
       "2019": {
@@ -7124,6 +8448,8 @@ export const REGIONS = [
         "sunlight": 4.78,
         "cloud": 59.7,
         "soil": 0.75,
+        "water": -22.53,
+        "air": 0.27,
         "carbon": 411.65
       },
       "2020": {
@@ -7134,6 +8460,8 @@ export const REGIONS = [
         "sunlight": 4.564,
         "cloud": 62.6,
         "soil": 0.78,
+        "water": -19.25,
+        "air": 0.3,
         "carbon": 414.21
       },
       "2021": {
@@ -7144,6 +8472,8 @@ export const REGIONS = [
         "sunlight": 4.729,
         "cloud": 62.3,
         "soil": 0.76,
+        "water": -29.68,
+        "air": 0.25,
         "carbon": 416.41
       },
       "2022": {
@@ -7154,6 +8484,8 @@ export const REGIONS = [
         "sunlight": 4.524,
         "cloud": 62.4,
         "soil": 0.75,
+        "water": -17.42,
+        "air": 0.3,
         "carbon": 418.53
       },
       "2023": {
@@ -7164,6 +8496,8 @@ export const REGIONS = [
         "sunlight": 4.691,
         "cloud": 61.4,
         "soil": 0.71,
+        "water": -4.29,
+        "air": 0.28,
         "carbon": 421.08
       },
       "2024": {
@@ -7174,6 +8508,8 @@ export const REGIONS = [
         "sunlight": 4.622,
         "cloud": 57.5,
         "soil": 0.69,
+        "water": -27.5,
+        "air": 0.31,
         "carbon": 424.61
       },
       "2025": {
@@ -7184,6 +8520,8 @@ export const REGIONS = [
         "sunlight": 4.77,
         "cloud": 60.9,
         "soil": 0.68,
+        "water": -28.12,
+        "air": 0.25,
         "carbon": 427.35
       }
     }
@@ -7212,6 +8550,8 @@ export const REGIONS = [
         "sunlight": 5.672,
         "cloud": 46.8,
         "soil": 0.53,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -7222,6 +8562,8 @@ export const REGIONS = [
         "sunlight": 5.72,
         "cloud": 43.8,
         "soil": 0.49,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -7232,6 +8574,8 @@ export const REGIONS = [
         "sunlight": 5.751,
         "cloud": 46.4,
         "soil": 0.47,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -7242,6 +8586,8 @@ export const REGIONS = [
         "sunlight": 5.474,
         "cloud": 50.7,
         "soil": 0.57,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -7252,6 +8598,8 @@ export const REGIONS = [
         "sunlight": 5.468,
         "cloud": 48.2,
         "soil": 0.59,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -7262,6 +8610,8 @@ export const REGIONS = [
         "sunlight": 5.644,
         "cloud": 43,
         "soil": 0.58,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -7272,6 +8622,8 @@ export const REGIONS = [
         "sunlight": 5.618,
         "cloud": 43.9,
         "soil": 0.57,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -7282,6 +8634,8 @@ export const REGIONS = [
         "sunlight": 5.777,
         "cloud": 43.7,
         "soil": 0.47,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -7292,6 +8646,8 @@ export const REGIONS = [
         "sunlight": 5.806,
         "cloud": 41.2,
         "soil": 0.48,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -7302,6 +8658,8 @@ export const REGIONS = [
         "sunlight": 5.826,
         "cloud": 44.7,
         "soil": 0.48,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -7312,6 +8670,8 @@ export const REGIONS = [
         "sunlight": 5.765,
         "cloud": 42.2,
         "soil": 0.49,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -7322,6 +8682,8 @@ export const REGIONS = [
         "sunlight": 5.759,
         "cloud": 41,
         "soil": 0.49,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -7332,6 +8694,8 @@ export const REGIONS = [
         "sunlight": 5.591,
         "cloud": 46.2,
         "soil": 0.53,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -7342,6 +8706,8 @@ export const REGIONS = [
         "sunlight": 5.386,
         "cloud": 51.4,
         "soil": 0.54,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -7352,6 +8718,8 @@ export const REGIONS = [
         "sunlight": 5.484,
         "cloud": 50.5,
         "soil": 0.53,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -7362,6 +8730,8 @@ export const REGIONS = [
         "sunlight": 5.495,
         "cloud": 50.4,
         "soil": 0.59,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -7372,6 +8742,8 @@ export const REGIONS = [
         "sunlight": 5.961,
         "cloud": 41.7,
         "soil": 0.48,
+        "water": null,
+        "air": 0.1,
         "carbon": 371.32
       },
       "2002": {
@@ -7382,6 +8754,8 @@ export const REGIONS = [
         "sunlight": 6.081,
         "cloud": 40.2,
         "soil": 0.47,
+        "water": -5.83,
+        "air": 0.09,
         "carbon": 373.45
       },
       "2003": {
@@ -7392,6 +8766,8 @@ export const REGIONS = [
         "sunlight": 5.815,
         "cloud": 51.2,
         "soil": 0.49,
+        "water": -3.58,
+        "air": 0.1,
         "carbon": 375.98
       },
       "2004": {
@@ -7402,6 +8778,8 @@ export const REGIONS = [
         "sunlight": 5.788,
         "cloud": 51,
         "soil": 0.48,
+        "water": -7.25,
+        "air": 0.1,
         "carbon": 377.7
       },
       "2005": {
@@ -7412,6 +8790,8 @@ export const REGIONS = [
         "sunlight": 5.776,
         "cloud": 46.2,
         "soil": 0.49,
+        "water": -6.28,
+        "air": 0.1,
         "carbon": 379.98
       },
       "2006": {
@@ -7422,6 +8802,8 @@ export const REGIONS = [
         "sunlight": 5.629,
         "cloud": 43.5,
         "soil": 0.49,
+        "water": -6.06,
+        "air": 0.11,
         "carbon": 382.09
       },
       "2007": {
@@ -7432,6 +8814,8 @@ export const REGIONS = [
         "sunlight": 5.566,
         "cloud": 43.5,
         "soil": 0.54,
+        "water": 1.13,
+        "air": 0.11,
         "carbon": 384.02
       },
       "2008": {
@@ -7442,6 +8826,8 @@ export const REGIONS = [
         "sunlight": 5.607,
         "cloud": 44.6,
         "soil": 0.55,
+        "water": 11.04,
+        "air": 0.1,
         "carbon": 385.83
       },
       "2009": {
@@ -7452,6 +8838,8 @@ export const REGIONS = [
         "sunlight": 5.67,
         "cloud": 41.2,
         "soil": 0.55,
+        "water": 7.42,
+        "air": 0.11,
         "carbon": 387.64
       },
       "2010": {
@@ -7462,6 +8850,8 @@ export const REGIONS = [
         "sunlight": 5.005,
         "cloud": 57.7,
         "soil": 0.58,
+        "water": 23.55,
+        "air": 0.13,
         "carbon": 390.1
       },
       "2011": {
@@ -7472,6 +8862,8 @@ export const REGIONS = [
         "sunlight": 5.55,
         "cloud": 43.3,
         "soil": 0.6,
+        "water": 38.99,
+        "air": 0.12,
         "carbon": 391.85
       },
       "2012": {
@@ -7482,6 +8874,8 @@ export const REGIONS = [
         "sunlight": 5.667,
         "cloud": 41.7,
         "soil": 0.54,
+        "water": 35.09,
+        "air": 0.1,
         "carbon": 394.06
       },
       "2013": {
@@ -7492,6 +8886,8 @@ export const REGIONS = [
         "sunlight": 5.778,
         "cloud": 39.8,
         "soil": 0.52,
+        "water": 23.8,
+        "air": 0.09,
         "carbon": 396.74
       },
       "2014": {
@@ -7502,6 +8898,8 @@ export const REGIONS = [
         "sunlight": 5.765,
         "cloud": 37.9,
         "soil": 0.5,
+        "water": 17.27,
+        "air": 0.1,
         "carbon": 398.81
       },
       "2015": {
@@ -7512,6 +8910,8 @@ export const REGIONS = [
         "sunlight": 5.921,
         "cloud": 40.4,
         "soil": 0.46,
+        "water": 12.86,
+        "air": 0.1,
         "carbon": 401.01
       },
       "2016": {
@@ -7522,6 +8922,8 @@ export const REGIONS = [
         "sunlight": 5.732,
         "cloud": 46.9,
         "soil": 0.53,
+        "water": 12.22,
+        "air": 0.1,
         "carbon": 404.41
       },
       "2017": {
@@ -7532,6 +8934,8 @@ export const REGIONS = [
         "sunlight": 5.737,
         "cloud": 46.2,
         "soil": 0.57,
+        "water": null,
+        "air": 0.09,
         "carbon": 406.76
       },
       "2018": {
@@ -7542,6 +8946,8 @@ export const REGIONS = [
         "sunlight": 5.719,
         "cloud": 44.2,
         "soil": 0.51,
+        "water": null,
+        "air": 0.1,
         "carbon": 408.72
       },
       "2019": {
@@ -7552,6 +8958,8 @@ export const REGIONS = [
         "sunlight": 5.734,
         "cloud": 46.4,
         "soil": 0.54,
+        "water": 8.72,
+        "air": 0.11,
         "carbon": 411.65
       },
       "2020": {
@@ -7562,6 +8970,8 @@ export const REGIONS = [
         "sunlight": 5.817,
         "cloud": 44.5,
         "soil": 0.51,
+        "water": 5.41,
+        "air": 0.1,
         "carbon": 414.21
       },
       "2021": {
@@ -7572,6 +8982,8 @@ export const REGIONS = [
         "sunlight": 5.514,
         "cloud": 52.1,
         "soil": 0.53,
+        "water": 3.71,
+        "air": 0.1,
         "carbon": 416.41
       },
       "2022": {
@@ -7582,6 +8994,8 @@ export const REGIONS = [
         "sunlight": 5.657,
         "cloud": 48.1,
         "soil": 0.55,
+        "water": 7.06,
+        "air": 0.12,
         "carbon": 418.53
       },
       "2023": {
@@ -7592,6 +9006,8 @@ export const REGIONS = [
         "sunlight": 5.73,
         "cloud": 44.8,
         "soil": 0.52,
+        "water": 5.74,
+        "air": 0.11,
         "carbon": 421.08
       },
       "2024": {
@@ -7602,6 +9018,8 @@ export const REGIONS = [
         "sunlight": 5.659,
         "cloud": 49,
         "soil": 0.5,
+        "water": 6.35,
+        "air": 0.11,
         "carbon": 424.61
       },
       "2025": {
@@ -7612,6 +9030,8 @@ export const REGIONS = [
         "sunlight": 5.497,
         "cloud": 49.1,
         "soil": 0.57,
+        "water": 12.35,
+        "air": 0.11,
         "carbon": 427.35
       }
     }
@@ -7640,6 +9060,8 @@ export const REGIONS = [
         "sunlight": 5.08,
         "cloud": 64.4,
         "soil": 0.59,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -7650,6 +9072,8 @@ export const REGIONS = [
         "sunlight": 5.1,
         "cloud": 63.9,
         "soil": 0.56,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -7660,6 +9084,8 @@ export const REGIONS = [
         "sunlight": 4.795,
         "cloud": 66.3,
         "soil": 0.61,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -7670,6 +9096,8 @@ export const REGIONS = [
         "sunlight": 4.701,
         "cloud": 68,
         "soil": 0.59,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -7680,6 +9108,8 @@ export const REGIONS = [
         "sunlight": 4.924,
         "cloud": 67.4,
         "soil": 0.48,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -7690,6 +9120,8 @@ export const REGIONS = [
         "sunlight": 4.609,
         "cloud": 71.3,
         "soil": 0.54,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -7700,6 +9132,8 @@ export const REGIONS = [
         "sunlight": 4.663,
         "cloud": 72.9,
         "soil": 0.59,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -7710,6 +9144,8 @@ export const REGIONS = [
         "sunlight": 4.695,
         "cloud": 73.9,
         "soil": 0.48,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -7720,6 +9156,8 @@ export const REGIONS = [
         "sunlight": 4.718,
         "cloud": 68.4,
         "soil": 0.53,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -7730,6 +9168,8 @@ export const REGIONS = [
         "sunlight": 4.838,
         "cloud": 67.1,
         "soil": 0.56,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -7740,6 +9180,8 @@ export const REGIONS = [
         "sunlight": 4.719,
         "cloud": 67.4,
         "soil": 0.61,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -7750,6 +9192,8 @@ export const REGIONS = [
         "sunlight": 4.851,
         "cloud": 62.7,
         "soil": 0.58,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -7760,6 +9204,8 @@ export const REGIONS = [
         "sunlight": 4.806,
         "cloud": 63.2,
         "soil": 0.69,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -7770,6 +9216,8 @@ export const REGIONS = [
         "sunlight": 4.89,
         "cloud": 59.9,
         "soil": 0.75,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -7780,6 +9228,8 @@ export const REGIONS = [
         "sunlight": 4.915,
         "cloud": 59.2,
         "soil": 0.67,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -7790,6 +9240,8 @@ export const REGIONS = [
         "sunlight": 4.834,
         "cloud": 59.8,
         "soil": 0.74,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -7800,6 +9252,8 @@ export const REGIONS = [
         "sunlight": 4.939,
         "cloud": 56.1,
         "soil": 0.74,
+        "water": null,
+        "air": 0.32,
         "carbon": 371.32
       },
       "2002": {
@@ -7810,6 +9264,8 @@ export const REGIONS = [
         "sunlight": 4.924,
         "cloud": 56.5,
         "soil": 0.73,
+        "water": 6.66,
+        "air": 0.36,
         "carbon": 373.45
       },
       "2003": {
@@ -7820,6 +9276,8 @@ export const REGIONS = [
         "sunlight": 4.926,
         "cloud": 54.4,
         "soil": 0.67,
+        "water": 3.16,
+        "air": 0.32,
         "carbon": 375.98
       },
       "2004": {
@@ -7830,6 +9288,8 @@ export const REGIONS = [
         "sunlight": 4.892,
         "cloud": 54.9,
         "soil": 0.69,
+        "water": 6.73,
+        "air": 0.34,
         "carbon": 377.7
       },
       "2005": {
@@ -7840,6 +9300,8 @@ export const REGIONS = [
         "sunlight": 4.832,
         "cloud": 61.8,
         "soil": 0.67,
+        "water": -1.91,
+        "air": 0.35,
         "carbon": 379.98
       },
       "2006": {
@@ -7850,6 +9312,8 @@ export const REGIONS = [
         "sunlight": 4.964,
         "cloud": 61.6,
         "soil": 0.72,
+        "water": -5.53,
+        "air": 0.36,
         "carbon": 382.09
       },
       "2007": {
@@ -7860,6 +9324,8 @@ export const REGIONS = [
         "sunlight": 4.813,
         "cloud": 61.2,
         "soil": 0.75,
+        "water": 4.84,
+        "air": 0.37,
         "carbon": 384.02
       },
       "2008": {
@@ -7870,6 +9336,8 @@ export const REGIONS = [
         "sunlight": 4.832,
         "cloud": 59,
         "soil": 0.72,
+        "water": 3.04,
+        "air": 0.4,
         "carbon": 385.83
       },
       "2009": {
@@ -7880,6 +9348,8 @@ export const REGIONS = [
         "sunlight": 4.873,
         "cloud": 58.9,
         "soil": 0.74,
+        "water": -7.16,
+        "air": 0.4,
         "carbon": 387.64
       },
       "2010": {
@@ -7890,6 +9360,8 @@ export const REGIONS = [
         "sunlight": 4.915,
         "cloud": 65.1,
         "soil": 0.75,
+        "water": -3.1,
+        "air": 0.37,
         "carbon": 390.1
       },
       "2011": {
@@ -7900,6 +9372,8 @@ export const REGIONS = [
         "sunlight": 4.811,
         "cloud": 61.4,
         "soil": 0.74,
+        "water": 2.38,
+        "air": 0.43,
         "carbon": 391.85
       },
       "2012": {
@@ -7910,6 +9384,8 @@ export const REGIONS = [
         "sunlight": 4.795,
         "cloud": 63.6,
         "soil": 0.72,
+        "water": -5.8,
+        "air": 0.46,
         "carbon": 394.06
       },
       "2013": {
@@ -7920,6 +9396,8 @@ export const REGIONS = [
         "sunlight": 4.803,
         "cloud": 63.6,
         "soil": 0.75,
+        "water": -11.31,
+        "air": 0.42,
         "carbon": 396.74
       },
       "2014": {
@@ -7930,6 +9408,8 @@ export const REGIONS = [
         "sunlight": 5.067,
         "cloud": 59.1,
         "soil": 0.71,
+        "water": -11.91,
+        "air": 0.4,
         "carbon": 398.81
       },
       "2015": {
@@ -7940,6 +9420,8 @@ export const REGIONS = [
         "sunlight": 4.662,
         "cloud": 62.8,
         "soil": 0.73,
+        "water": -10.93,
+        "air": 0.47,
         "carbon": 401.01
       },
       "2016": {
@@ -7950,6 +9432,8 @@ export const REGIONS = [
         "sunlight": 4.69,
         "cloud": 62.2,
         "soil": 0.78,
+        "water": -9.66,
+        "air": 0.44,
         "carbon": 404.41
       },
       "2017": {
@@ -7960,6 +9444,8 @@ export const REGIONS = [
         "sunlight": 4.751,
         "cloud": 57.3,
         "soil": 0.84,
+        "water": null,
+        "air": 0.4,
         "carbon": 406.76
       },
       "2018": {
@@ -7970,6 +9456,8 @@ export const REGIONS = [
         "sunlight": 4.806,
         "cloud": 55.9,
         "soil": 0.8,
+        "water": null,
+        "air": 0.48,
         "carbon": 408.72
       },
       "2019": {
@@ -7980,6 +9468,8 @@ export const REGIONS = [
         "sunlight": 4.946,
         "cloud": 53.5,
         "soil": 0.8,
+        "water": -8.38,
+        "air": 0.42,
         "carbon": 411.65
       },
       "2020": {
@@ -7990,6 +9480,8 @@ export const REGIONS = [
         "sunlight": 4.788,
         "cloud": 58,
         "soil": 0.82,
+        "water": -0.96,
+        "air": 0.37,
         "carbon": 414.21
       },
       "2021": {
@@ -8000,6 +9492,8 @@ export const REGIONS = [
         "sunlight": 4.771,
         "cloud": 57.2,
         "soil": 0.75,
+        "water": -8.36,
+        "air": 0.45,
         "carbon": 416.41
       },
       "2022": {
@@ -8010,6 +9504,8 @@ export const REGIONS = [
         "sunlight": 4.948,
         "cloud": 54.7,
         "soil": 0.76,
+        "water": -7.32,
+        "air": 0.44,
         "carbon": 418.53
       },
       "2023": {
@@ -8020,6 +9516,8 @@ export const REGIONS = [
         "sunlight": 4.792,
         "cloud": 58.5,
         "soil": 0.77,
+        "water": -13.68,
+        "air": 0.46,
         "carbon": 421.08
       },
       "2024": {
@@ -8030,6 +9528,8 @@ export const REGIONS = [
         "sunlight": 4.666,
         "cloud": 60.9,
         "soil": 0.78,
+        "water": -8.65,
+        "air": 0.5,
         "carbon": 424.61
       },
       "2025": {
@@ -8040,6 +9540,8 @@ export const REGIONS = [
         "sunlight": 4.745,
         "cloud": 55.8,
         "soil": 0.76,
+        "water": -5.29,
+        "air": 0.41,
         "carbon": 427.35
       }
     }
@@ -8068,6 +9570,8 @@ export const REGIONS = [
         "sunlight": 4.309,
         "cloud": 84.4,
         "soil": 0.84,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -8078,6 +9582,8 @@ export const REGIONS = [
         "sunlight": 4.307,
         "cloud": 84.6,
         "soil": 0.86,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -8088,6 +9594,8 @@ export const REGIONS = [
         "sunlight": 4.425,
         "cloud": 78.3,
         "soil": 0.79,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -8098,6 +9606,8 @@ export const REGIONS = [
         "sunlight": 4.474,
         "cloud": 79.3,
         "soil": 0.85,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -8108,6 +9618,8 @@ export const REGIONS = [
         "sunlight": 4.373,
         "cloud": 80.4,
         "soil": 0.87,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -8118,6 +9630,8 @@ export const REGIONS = [
         "sunlight": 4.549,
         "cloud": 77.5,
         "soil": 0.82,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -8128,6 +9642,8 @@ export const REGIONS = [
         "sunlight": 4.557,
         "cloud": 75.6,
         "soil": 0.77,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -8138,6 +9654,8 @@ export const REGIONS = [
         "sunlight": 4.483,
         "cloud": 76.2,
         "soil": 0.66,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -8148,6 +9666,8 @@ export const REGIONS = [
         "sunlight": 4.481,
         "cloud": 73.3,
         "soil": 0.77,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -8158,6 +9678,8 @@ export const REGIONS = [
         "sunlight": 4.561,
         "cloud": 73.1,
         "soil": 0.84,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -8168,6 +9690,8 @@ export const REGIONS = [
         "sunlight": 4.55,
         "cloud": 75.1,
         "soil": 0.78,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -8178,6 +9702,8 @@ export const REGIONS = [
         "sunlight": 4.537,
         "cloud": 73.4,
         "soil": 0.85,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -8188,6 +9714,8 @@ export const REGIONS = [
         "sunlight": 4.708,
         "cloud": 70.3,
         "soil": 0.75,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -8198,6 +9726,8 @@ export const REGIONS = [
         "sunlight": 4.678,
         "cloud": 70.8,
         "soil": 0.75,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -8208,6 +9738,8 @@ export const REGIONS = [
         "sunlight": 4.605,
         "cloud": 72.7,
         "soil": 0.83,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -8218,6 +9750,8 @@ export const REGIONS = [
         "sunlight": 4.453,
         "cloud": 74.4,
         "soil": 0.82,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -8228,6 +9762,8 @@ export const REGIONS = [
         "sunlight": 4.596,
         "cloud": 79.4,
         "soil": 0.78,
+        "water": null,
+        "air": 0.35,
         "carbon": 371.32
       },
       "2002": {
@@ -8238,6 +9774,8 @@ export const REGIONS = [
         "sunlight": 4.645,
         "cloud": 82.8,
         "soil": 0.77,
+        "water": -14.87,
+        "air": 0.33,
         "carbon": 373.45
       },
       "2003": {
@@ -8248,6 +9786,8 @@ export const REGIONS = [
         "sunlight": 4.731,
         "cloud": 75.6,
         "soil": 0.68,
+        "water": -19.64,
+        "air": 0.36,
         "carbon": 375.98
       },
       "2004": {
@@ -8258,6 +9798,8 @@ export const REGIONS = [
         "sunlight": 4.585,
         "cloud": 84.9,
         "soil": 0.68,
+        "water": -17.27,
+        "air": 0.34,
         "carbon": 377.7
       },
       "2005": {
@@ -8268,6 +9810,8 @@ export const REGIONS = [
         "sunlight": 4.51,
         "cloud": 83.7,
         "soil": 0.68,
+        "water": -17.79,
+        "air": 0.39,
         "carbon": 379.98
       },
       "2006": {
@@ -8278,6 +9822,8 @@ export const REGIONS = [
         "sunlight": 4.606,
         "cloud": 83,
         "soil": 0.74,
+        "water": 3.72,
+        "air": 0.34,
         "carbon": 382.09
       },
       "2007": {
@@ -8288,6 +9834,8 @@ export const REGIONS = [
         "sunlight": 4.534,
         "cloud": 85,
         "soil": 0.71,
+        "water": -7.09,
+        "air": 0.4,
         "carbon": 384.02
       },
       "2008": {
@@ -8298,6 +9846,8 @@ export const REGIONS = [
         "sunlight": 4.523,
         "cloud": 80.9,
         "soil": 0.83,
+        "water": 10.71,
+        "air": 0.36,
         "carbon": 385.83
       },
       "2009": {
@@ -8308,6 +9858,8 @@ export const REGIONS = [
         "sunlight": 4.721,
         "cloud": 76,
         "soil": 0.78,
+        "water": 27.72,
+        "air": 0.33,
         "carbon": 387.64
       },
       "2010": {
@@ -8318,6 +9870,8 @@ export const REGIONS = [
         "sunlight": 4.671,
         "cloud": 74.3,
         "soil": 0.75,
+        "water": -18.37,
+        "air": 0.36,
         "carbon": 390.1
       },
       "2011": {
@@ -8328,6 +9882,8 @@ export const REGIONS = [
         "sunlight": 4.739,
         "cloud": 72.3,
         "soil": 0.78,
+        "water": 5.89,
+        "air": 0.33,
         "carbon": 391.85
       },
       "2012": {
@@ -8338,6 +9894,8 @@ export const REGIONS = [
         "sunlight": 4.698,
         "cloud": 73.6,
         "soil": 0.74,
+        "water": 9.58,
+        "air": 0.36,
         "carbon": 394.06
       },
       "2013": {
@@ -8348,6 +9906,8 @@ export const REGIONS = [
         "sunlight": 4.768,
         "cloud": 73.6,
         "soil": 0.73,
+        "water": 16.71,
+        "air": 0.32,
         "carbon": 396.74
       },
       "2014": {
@@ -8358,6 +9918,8 @@ export const REGIONS = [
         "sunlight": 4.657,
         "cloud": 70.7,
         "soil": 0.72,
+        "water": 32.41,
+        "air": 0.32,
         "carbon": 398.81
       },
       "2015": {
@@ -8368,6 +9930,8 @@ export const REGIONS = [
         "sunlight": 4.743,
         "cloud": 68,
         "soil": 0.58,
+        "water": 17.58,
+        "air": 0.39,
         "carbon": 401.01
       },
       "2016": {
@@ -8378,6 +9942,8 @@ export const REGIONS = [
         "sunlight": 4.714,
         "cloud": 74.7,
         "soil": 0.63,
+        "water": -34.56,
+        "air": 0.35,
         "carbon": 404.41
       },
       "2017": {
@@ -8388,6 +9954,8 @@ export const REGIONS = [
         "sunlight": 4.603,
         "cloud": 80.3,
         "soil": 0.74,
+        "water": null,
+        "air": 0.36,
         "carbon": 406.76
       },
       "2018": {
@@ -8398,6 +9966,8 @@ export const REGIONS = [
         "sunlight": 4.727,
         "cloud": 79.3,
         "soil": 0.73,
+        "water": null,
+        "air": 0.33,
         "carbon": 408.72
       },
       "2019": {
@@ -8408,6 +9978,8 @@ export const REGIONS = [
         "sunlight": 4.719,
         "cloud": 75.8,
         "soil": 0.82,
+        "water": 24.79,
+        "air": 0.33,
         "carbon": 411.65
       },
       "2020": {
@@ -8418,6 +9990,8 @@ export const REGIONS = [
         "sunlight": 4.753,
         "cloud": 73.7,
         "soil": 0.8,
+        "water": 8.14,
+        "air": 0.35,
         "carbon": 414.21
       },
       "2021": {
@@ -8428,6 +10002,8 @@ export const REGIONS = [
         "sunlight": 4.593,
         "cloud": 80.4,
         "soil": 0.89,
+        "water": 33.3,
+        "air": 0.33,
         "carbon": 416.41
       },
       "2022": {
@@ -8438,6 +10014,8 @@ export const REGIONS = [
         "sunlight": 4.639,
         "cloud": 73.6,
         "soil": 0.81,
+        "water": 32.7,
+        "air": 0.35,
         "carbon": 418.53
       },
       "2023": {
@@ -8448,6 +10026,8 @@ export const REGIONS = [
         "sunlight": 4.653,
         "cloud": 72.2,
         "soil": 0.67,
+        "water": 1.3,
+        "air": 0.36,
         "carbon": 421.08
       },
       "2024": {
@@ -8458,6 +10038,8 @@ export const REGIONS = [
         "sunlight": 4.752,
         "cloud": 69,
         "soil": 0.66,
+        "water": -28.64,
+        "air": 0.39,
         "carbon": 424.61
       },
       "2025": {
@@ -8468,6 +10050,8 @@ export const REGIONS = [
         "sunlight": 4.65,
         "cloud": 74,
         "soil": 0.6,
+        "water": 13.01,
+        "air": 0.3,
         "carbon": 427.35
       }
     }
@@ -8496,6 +10080,8 @@ export const REGIONS = [
         "sunlight": 4.744,
         "cloud": 70.6,
         "soil": 0.88,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -8506,6 +10092,8 @@ export const REGIONS = [
         "sunlight": 4.812,
         "cloud": 68.6,
         "soil": 0.79,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -8516,6 +10104,8 @@ export const REGIONS = [
         "sunlight": 4.734,
         "cloud": 69.2,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -8526,6 +10116,8 @@ export const REGIONS = [
         "sunlight": 4.783,
         "cloud": 70.7,
         "soil": 0.7,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -8536,6 +10128,8 @@ export const REGIONS = [
         "sunlight": 4.759,
         "cloud": 69.8,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -8546,6 +10140,8 @@ export const REGIONS = [
         "sunlight": 4.785,
         "cloud": 69.2,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -8556,6 +10152,8 @@ export const REGIONS = [
         "sunlight": 4.704,
         "cloud": 68.4,
         "soil": 0.56,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -8566,6 +10164,8 @@ export const REGIONS = [
         "sunlight": 4.806,
         "cloud": 69.3,
         "soil": 0.55,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -8576,6 +10176,8 @@ export const REGIONS = [
         "sunlight": 4.813,
         "cloud": 68,
         "soil": 0.6,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -8586,6 +10188,8 @@ export const REGIONS = [
         "sunlight": 4.857,
         "cloud": 68.1,
         "soil": 0.6,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -8596,6 +10200,8 @@ export const REGIONS = [
         "sunlight": 4.779,
         "cloud": 67.2,
         "soil": 0.74,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -8606,6 +10212,8 @@ export const REGIONS = [
         "sunlight": 4.582,
         "cloud": 68.1,
         "soil": 0.64,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -8616,6 +10224,8 @@ export const REGIONS = [
         "sunlight": 4.683,
         "cloud": 69.3,
         "soil": 0.58,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -8626,6 +10236,8 @@ export const REGIONS = [
         "sunlight": 4.711,
         "cloud": 68,
         "soil": 0.51,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -8636,6 +10248,8 @@ export const REGIONS = [
         "sunlight": 4.643,
         "cloud": 71.3,
         "soil": 0.47,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -8646,6 +10260,8 @@ export const REGIONS = [
         "sunlight": 4.539,
         "cloud": 69.4,
         "soil": 0.5,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -8656,6 +10272,8 @@ export const REGIONS = [
         "sunlight": 4.709,
         "cloud": 75,
         "soil": 0.51,
+        "water": null,
+        "air": 0.46,
         "carbon": 371.32
       },
       "2002": {
@@ -8666,6 +10284,8 @@ export const REGIONS = [
         "sunlight": 4.641,
         "cloud": 74.7,
         "soil": 0.5,
+        "water": 6.21,
+        "air": 0.54,
         "carbon": 373.45
       },
       "2003": {
@@ -8676,6 +10296,8 @@ export const REGIONS = [
         "sunlight": 4.561,
         "cloud": 76.2,
         "soil": 0.46,
+        "water": 6.41,
+        "air": 0.6,
         "carbon": 375.98
       },
       "2004": {
@@ -8686,6 +10308,8 @@ export const REGIONS = [
         "sunlight": 4.537,
         "cloud": 78.6,
         "soil": 0.51,
+        "water": 1.47,
+        "air": 0.67,
         "carbon": 377.7
       },
       "2005": {
@@ -8696,6 +10320,8 @@ export const REGIONS = [
         "sunlight": 4.608,
         "cloud": 79.1,
         "soil": 0.47,
+        "water": -0.72,
+        "air": 0.58,
         "carbon": 379.98
       },
       "2006": {
@@ -8706,6 +10332,8 @@ export const REGIONS = [
         "sunlight": 4.684,
         "cloud": 79.3,
         "soil": 0.46,
+        "water": 0.58,
+        "air": 0.52,
         "carbon": 382.09
       },
       "2007": {
@@ -8716,6 +10344,8 @@ export const REGIONS = [
         "sunlight": 4.694,
         "cloud": 80.5,
         "soil": 0.66,
+        "water": 0.04,
+        "air": 0.51,
         "carbon": 384.02
       },
       "2008": {
@@ -8726,6 +10356,8 @@ export const REGIONS = [
         "sunlight": 4.726,
         "cloud": 79,
         "soil": 0.69,
+        "water": -1.16,
+        "air": 0.51,
         "carbon": 385.83
       },
       "2009": {
@@ -8736,6 +10368,8 @@ export const REGIONS = [
         "sunlight": 4.649,
         "cloud": 74.2,
         "soil": 0.68,
+        "water": -0.23,
+        "air": 0.53,
         "carbon": 387.64
       },
       "2010": {
@@ -8746,6 +10380,8 @@ export const REGIONS = [
         "sunlight": 4.647,
         "cloud": 74.1,
         "soil": 0.71,
+        "water": -0.91,
+        "air": 0.54,
         "carbon": 390.1
       },
       "2011": {
@@ -8756,6 +10392,8 @@ export const REGIONS = [
         "sunlight": 4.561,
         "cloud": 76.9,
         "soil": 0.7,
+        "water": -11.83,
+        "air": 0.62,
         "carbon": 391.85
       },
       "2012": {
@@ -8766,6 +10404,8 @@ export const REGIONS = [
         "sunlight": 4.581,
         "cloud": 76.5,
         "soil": 0.7,
+        "water": -6.8,
+        "air": 0.66,
         "carbon": 394.06
       },
       "2013": {
@@ -8776,6 +10416,8 @@ export const REGIONS = [
         "sunlight": 4.502,
         "cloud": 76.6,
         "soil": 0.61,
+        "water": -6.78,
+        "air": 0.64,
         "carbon": 396.74
       },
       "2014": {
@@ -8786,6 +10428,8 @@ export const REGIONS = [
         "sunlight": 4.54,
         "cloud": 75.6,
         "soil": 0.62,
+        "water": -1.24,
+        "air": 0.61,
         "carbon": 398.81
       },
       "2015": {
@@ -8796,6 +10440,8 @@ export const REGIONS = [
         "sunlight": 4.56,
         "cloud": 72.5,
         "soil": 0.55,
+        "water": -1.71,
+        "air": 0.64,
         "carbon": 401.01
       },
       "2016": {
@@ -8806,6 +10452,8 @@ export const REGIONS = [
         "sunlight": 4.616,
         "cloud": 74.5,
         "soil": 0.55,
+        "water": -1.94,
+        "air": 0.6,
         "carbon": 404.41
       },
       "2017": {
@@ -8816,6 +10464,8 @@ export const REGIONS = [
         "sunlight": 4.662,
         "cloud": 75.3,
         "soil": 0.63,
+        "water": null,
+        "air": 0.53,
         "carbon": 406.76
       },
       "2018": {
@@ -8826,6 +10476,8 @@ export const REGIONS = [
         "sunlight": 4.612,
         "cloud": 76.3,
         "soil": 0.6,
+        "water": null,
+        "air": 0.52,
         "carbon": 408.72
       },
       "2019": {
@@ -8836,6 +10488,8 @@ export const REGIONS = [
         "sunlight": 4.625,
         "cloud": 75.8,
         "soil": 0.62,
+        "water": -0.08,
+        "air": 0.53,
         "carbon": 411.65
       },
       "2020": {
@@ -8846,6 +10500,8 @@ export const REGIONS = [
         "sunlight": 4.662,
         "cloud": 75.8,
         "soil": 0.61,
+        "water": 0.69,
+        "air": 0.58,
         "carbon": 414.21
       },
       "2021": {
@@ -8856,6 +10512,8 @@ export const REGIONS = [
         "sunlight": 4.626,
         "cloud": 77.3,
         "soil": 0.64,
+        "water": -0.58,
+        "air": 0.58,
         "carbon": 416.41
       },
       "2022": {
@@ -8866,6 +10524,8 @@ export const REGIONS = [
         "sunlight": 4.444,
         "cloud": 79.7,
         "soil": 0.68,
+        "water": 0.77,
+        "air": 0.61,
         "carbon": 418.53
       },
       "2023": {
@@ -8876,6 +10536,8 @@ export const REGIONS = [
         "sunlight": 4.567,
         "cloud": 73.7,
         "soil": 0.59,
+        "water": 7.6,
+        "air": 0.56,
         "carbon": 421.08
       },
       "2024": {
@@ -8886,6 +10548,8 @@ export const REGIONS = [
         "sunlight": 4.436,
         "cloud": 73,
         "soil": 0.53,
+        "water": -1.92,
+        "air": 0.81,
         "carbon": 424.61
       },
       "2025": {
@@ -8896,6 +10560,8 @@ export const REGIONS = [
         "sunlight": 4.374,
         "cloud": 72.1,
         "soil": 0.59,
+        "water": -3.42,
+        "air": 0.79,
         "carbon": 427.35
       }
     }
@@ -8924,6 +10590,8 @@ export const REGIONS = [
         "sunlight": 5.473,
         "cloud": 59.1,
         "soil": 0.68,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -8934,6 +10602,8 @@ export const REGIONS = [
         "sunlight": 5.512,
         "cloud": 57.2,
         "soil": 0.65,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -8944,6 +10614,8 @@ export const REGIONS = [
         "sunlight": 5.466,
         "cloud": 56.4,
         "soil": 0.68,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -8954,6 +10626,8 @@ export const REGIONS = [
         "sunlight": 5.353,
         "cloud": 59,
         "soil": 0.61,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -8964,6 +10638,8 @@ export const REGIONS = [
         "sunlight": 5.424,
         "cloud": 57.6,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -8974,6 +10650,8 @@ export const REGIONS = [
         "sunlight": 5.537,
         "cloud": 54.3,
         "soil": 0.66,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -8984,6 +10662,8 @@ export const REGIONS = [
         "sunlight": 5.493,
         "cloud": 53.9,
         "soil": 0.63,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -8994,6 +10674,8 @@ export const REGIONS = [
         "sunlight": 5.469,
         "cloud": 54,
         "soil": 0.57,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -9004,6 +10686,8 @@ export const REGIONS = [
         "sunlight": 5.328,
         "cloud": 57.4,
         "soil": 0.64,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -9014,6 +10698,8 @@ export const REGIONS = [
         "sunlight": 5.483,
         "cloud": 56.6,
         "soil": 0.63,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -9024,6 +10710,8 @@ export const REGIONS = [
         "sunlight": 5.401,
         "cloud": 55.2,
         "soil": 0.64,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -9034,6 +10722,8 @@ export const REGIONS = [
         "sunlight": 5.392,
         "cloud": 53.8,
         "soil": 0.67,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -9044,6 +10734,8 @@ export const REGIONS = [
         "sunlight": 5.396,
         "cloud": 52.7,
         "soil": 0.65,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -9054,6 +10746,8 @@ export const REGIONS = [
         "sunlight": 5.314,
         "cloud": 55.3,
         "soil": 0.68,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -9064,6 +10758,8 @@ export const REGIONS = [
         "sunlight": 5.197,
         "cloud": 58,
         "soil": 0.72,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -9074,6 +10770,8 @@ export const REGIONS = [
         "sunlight": 5.125,
         "cloud": 59.5,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -9084,6 +10782,8 @@ export const REGIONS = [
         "sunlight": 5.52,
         "cloud": 61.6,
         "soil": 0.64,
+        "water": null,
+        "air": 0.12,
         "carbon": 371.32
       },
       "2002": {
@@ -9094,6 +10794,8 @@ export const REGIONS = [
         "sunlight": 5.723,
         "cloud": 57.7,
         "soil": 0.53,
+        "water": -7.62,
+        "air": 0.1,
         "carbon": 373.45
       },
       "2003": {
@@ -9104,6 +10806,8 @@ export const REGIONS = [
         "sunlight": 5.51,
         "cloud": 53.8,
         "soil": 0.55,
+        "water": -8.12,
+        "air": 0.12,
         "carbon": 375.98
       },
       "2004": {
@@ -9114,6 +10818,8 @@ export const REGIONS = [
         "sunlight": 5.35,
         "cloud": 52.5,
         "soil": 0.67,
+        "water": -4.35,
+        "air": 0.11,
         "carbon": 377.7
       },
       "2005": {
@@ -9124,6 +10830,8 @@ export const REGIONS = [
         "sunlight": 5.47,
         "cloud": 52,
         "soil": 0.65,
+        "water": -4.01,
+        "air": 0.12,
         "carbon": 379.98
       },
       "2006": {
@@ -9134,6 +10842,8 @@ export const REGIONS = [
         "sunlight": 5.228,
         "cloud": 53,
         "soil": 0.72,
+        "water": -0.22,
+        "air": 0.12,
         "carbon": 382.09
       },
       "2007": {
@@ -9144,6 +10854,8 @@ export const REGIONS = [
         "sunlight": 5.328,
         "cloud": 50.6,
         "soil": 0.65,
+        "water": 1.08,
+        "air": 0.12,
         "carbon": 384.02
       },
       "2008": {
@@ -9154,6 +10866,8 @@ export const REGIONS = [
         "sunlight": 5.274,
         "cloud": 53.1,
         "soil": 0.64,
+        "water": 3.49,
+        "air": 0.12,
         "carbon": 385.83
       },
       "2009": {
@@ -9164,6 +10878,8 @@ export const REGIONS = [
         "sunlight": 5.471,
         "cloud": 48.2,
         "soil": 0.64,
+        "water": 4.02,
+        "air": 0.12,
         "carbon": 387.64
       },
       "2010": {
@@ -9174,6 +10890,8 @@ export const REGIONS = [
         "sunlight": 4.849,
         "cloud": 62.6,
         "soil": 0.73,
+        "water": 4.99,
+        "air": 0.14,
         "carbon": 390.1
       },
       "2011": {
@@ -9184,6 +10902,8 @@ export const REGIONS = [
         "sunlight": 5.266,
         "cloud": 49.7,
         "soil": 0.7,
+        "water": 12.1,
+        "air": 0.14,
         "carbon": 391.85
       },
       "2012": {
@@ -9194,6 +10914,8 @@ export const REGIONS = [
         "sunlight": 5.442,
         "cloud": 48.2,
         "soil": 0.68,
+        "water": 10.88,
+        "air": 0.12,
         "carbon": 394.06
       },
       "2013": {
@@ -9204,6 +10926,8 @@ export const REGIONS = [
         "sunlight": 5.551,
         "cloud": 45.2,
         "soil": 0.64,
+        "water": 6.59,
+        "air": 0.11,
         "carbon": 396.74
       },
       "2014": {
@@ -9214,6 +10938,8 @@ export const REGIONS = [
         "sunlight": 5.481,
         "cloud": 45.9,
         "soil": 0.65,
+        "water": 7.21,
+        "air": 0.12,
         "carbon": 398.81
       },
       "2015": {
@@ -9224,6 +10950,8 @@ export const REGIONS = [
         "sunlight": 5.514,
         "cloud": 46.5,
         "soil": 0.61,
+        "water": 7.8,
+        "air": 0.12,
         "carbon": 401.01
       },
       "2016": {
@@ -9234,6 +10962,8 @@ export const REGIONS = [
         "sunlight": 5.583,
         "cloud": 47,
         "soil": 0.64,
+        "water": 10.1,
+        "air": 0.11,
         "carbon": 404.41
       },
       "2017": {
@@ -9244,6 +10974,8 @@ export const REGIONS = [
         "sunlight": 5.527,
         "cloud": 51.3,
         "soil": 0.57,
+        "water": null,
+        "air": 0.11,
         "carbon": 406.76
       },
       "2018": {
@@ -9254,6 +10986,8 @@ export const REGIONS = [
         "sunlight": 5.485,
         "cloud": 48.2,
         "soil": 0.59,
+        "water": null,
+        "air": 0.12,
         "carbon": 408.72
       },
       "2019": {
@@ -9264,6 +10998,8 @@ export const REGIONS = [
         "sunlight": 5.53,
         "cloud": 47.3,
         "soil": 0.62,
+        "water": 9.64,
+        "air": 0.13,
         "carbon": 411.65
       },
       "2020": {
@@ -9274,6 +11010,8 @@ export const REGIONS = [
         "sunlight": 5.561,
         "cloud": 48.1,
         "soil": 0.56,
+        "water": 8.21,
+        "air": 0.12,
         "carbon": 414.21
       },
       "2021": {
@@ -9284,6 +11022,8 @@ export const REGIONS = [
         "sunlight": 5.265,
         "cloud": 55.3,
         "soil": 0.67,
+        "water": 12.7,
+        "air": 0.11,
         "carbon": 416.41
       },
       "2022": {
@@ -9294,6 +11034,8 @@ export const REGIONS = [
         "sunlight": 5.355,
         "cloud": 52.4,
         "soil": 0.64,
+        "water": 12.06,
+        "air": 0.14,
         "carbon": 418.53
       },
       "2023": {
@@ -9304,6 +11046,8 @@ export const REGIONS = [
         "sunlight": 5.326,
         "cloud": 54,
         "soil": 0.65,
+        "water": 14.52,
+        "air": 0.13,
         "carbon": 421.08
       },
       "2024": {
@@ -9314,6 +11058,8 @@ export const REGIONS = [
         "sunlight": 5.291,
         "cloud": 55.2,
         "soil": 0.64,
+        "water": 15.07,
+        "air": 0.13,
         "carbon": 424.61
       },
       "2025": {
@@ -9324,6 +11070,8 @@ export const REGIONS = [
         "sunlight": 5.27,
         "cloud": 56.7,
         "soil": 0.61,
+        "water": 17.22,
+        "air": 0.13,
         "carbon": 427.35
       }
     }
@@ -9352,6 +11100,8 @@ export const REGIONS = [
         "sunlight": 5.049,
         "cloud": 80.4,
         "soil": 0.91,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -9362,6 +11112,8 @@ export const REGIONS = [
         "sunlight": 5.032,
         "cloud": 81.1,
         "soil": 0.95,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -9372,6 +11124,8 @@ export const REGIONS = [
         "sunlight": 4.978,
         "cloud": 79.4,
         "soil": 0.86,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -9382,6 +11136,8 @@ export const REGIONS = [
         "sunlight": 4.844,
         "cloud": 81.9,
         "soil": 0.95,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -9392,6 +11148,8 @@ export const REGIONS = [
         "sunlight": 4.889,
         "cloud": 83.2,
         "soil": 0.9,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -9402,6 +11160,8 @@ export const REGIONS = [
         "sunlight": 5.049,
         "cloud": 78,
         "soil": 0.84,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -9412,6 +11172,8 @@ export const REGIONS = [
         "sunlight": 4.885,
         "cloud": 79.1,
         "soil": 0.83,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -9422,6 +11184,8 @@ export const REGIONS = [
         "sunlight": 5.007,
         "cloud": 76.6,
         "soil": 0.94,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -9432,6 +11196,8 @@ export const REGIONS = [
         "sunlight": 4.922,
         "cloud": 77.7,
         "soil": 0.92,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -9442,6 +11208,8 @@ export const REGIONS = [
         "sunlight": 4.95,
         "cloud": 78.8,
         "soil": 0.91,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -9452,6 +11220,8 @@ export const REGIONS = [
         "sunlight": 4.853,
         "cloud": 79.7,
         "soil": 0.96,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -9462,6 +11232,8 @@ export const REGIONS = [
         "sunlight": 4.889,
         "cloud": 78.8,
         "soil": 0.94,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -9472,6 +11244,8 @@ export const REGIONS = [
         "sunlight": 4.922,
         "cloud": 72.8,
         "soil": 0.86,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -9482,6 +11256,8 @@ export const REGIONS = [
         "sunlight": 4.973,
         "cloud": 75.9,
         "soil": 0.9,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -9492,6 +11268,8 @@ export const REGIONS = [
         "sunlight": 4.85,
         "cloud": 79.7,
         "soil": 0.93,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -9502,6 +11280,8 @@ export const REGIONS = [
         "sunlight": 4.85,
         "cloud": 79.7,
         "soil": 0.94,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -9512,6 +11292,8 @@ export const REGIONS = [
         "sunlight": 4.891,
         "cloud": 87.3,
         "soil": 0.93,
+        "water": null,
+        "air": 0.31,
         "carbon": 371.32
       },
       "2002": {
@@ -9522,6 +11304,8 @@ export const REGIONS = [
         "sunlight": 4.842,
         "cloud": 81.9,
         "soil": 0.91,
+        "water": -2.76,
+        "air": 0.46,
         "carbon": 373.45
       },
       "2003": {
@@ -9532,6 +11316,8 @@ export const REGIONS = [
         "sunlight": 4.818,
         "cloud": 88.7,
         "soil": 0.93,
+        "water": -0.56,
+        "air": 0.29,
         "carbon": 375.98
       },
       "2004": {
@@ -9542,6 +11328,8 @@ export const REGIONS = [
         "sunlight": 4.925,
         "cloud": 88.8,
         "soil": 0.86,
+        "water": -0.66,
+        "air": 0.33,
         "carbon": 377.7
       },
       "2005": {
@@ -9552,6 +11340,8 @@ export const REGIONS = [
         "sunlight": 4.774,
         "cloud": 88.7,
         "soil": 0.92,
+        "water": 1.25,
+        "air": 0.33,
         "carbon": 379.98
       },
       "2006": {
@@ -9562,6 +11352,8 @@ export const REGIONS = [
         "sunlight": 4.69,
         "cloud": 83.6,
         "soil": 0.87,
+        "water": -2,
+        "air": 0.5,
         "carbon": 382.09
       },
       "2007": {
@@ -9572,6 +11364,8 @@ export const REGIONS = [
         "sunlight": 4.855,
         "cloud": 85.9,
         "soil": 0.94,
+        "water": 1.75,
+        "air": 0.3,
         "carbon": 384.02
       },
       "2008": {
@@ -9582,6 +11376,8 @@ export const REGIONS = [
         "sunlight": 4.744,
         "cloud": 88.5,
         "soil": 0.97,
+        "water": 1.25,
+        "air": 0.29,
         "carbon": 385.83
       },
       "2009": {
@@ -9592,6 +11388,8 @@ export const REGIONS = [
         "sunlight": 4.834,
         "cloud": 84.8,
         "soil": 0.91,
+        "water": -1.58,
+        "air": 0.37,
         "carbon": 387.64
       },
       "2010": {
@@ -9602,6 +11400,8 @@ export const REGIONS = [
         "sunlight": 4.982,
         "cloud": 85.8,
         "soil": 0.99,
+        "water": 3.45,
+        "air": 0.26,
         "carbon": 390.1
       },
       "2011": {
@@ -9612,6 +11412,8 @@ export const REGIONS = [
         "sunlight": 4.747,
         "cloud": 87.2,
         "soil": 0.96,
+        "water": 3.43,
+        "air": 0.35,
         "carbon": 391.85
       },
       "2012": {
@@ -9622,6 +11424,8 @@ export const REGIONS = [
         "sunlight": 4.802,
         "cloud": 88,
         "soil": 0.97,
+        "water": 5.99,
+        "air": 0.35,
         "carbon": 394.06
       },
       "2013": {
@@ -9632,6 +11436,8 @@ export const REGIONS = [
         "sunlight": 4.909,
         "cloud": 89.2,
         "soil": 0.97,
+        "water": 6.72,
+        "air": 0.3,
         "carbon": 396.74
       },
       "2014": {
@@ -9642,6 +11448,8 @@ export const REGIONS = [
         "sunlight": 4.807,
         "cloud": 87,
         "soil": 0.94,
+        "water": 2.65,
+        "air": 0.4,
         "carbon": 398.81
       },
       "2015": {
@@ -9652,6 +11460,8 @@ export const REGIONS = [
         "sunlight": 4.695,
         "cloud": 83.7,
         "soil": 0.92,
+        "water": 5.61,
+        "air": 0.53,
         "carbon": 401.01
       },
       "2016": {
@@ -9662,6 +11472,8 @@ export const REGIONS = [
         "sunlight": 4.924,
         "cloud": 89.8,
         "soil": 0.97,
+        "water": 6.03,
+        "air": 0.29,
         "carbon": 404.41
       },
       "2017": {
@@ -9672,6 +11484,8 @@ export const REGIONS = [
         "sunlight": 4.773,
         "cloud": 91.9,
         "soil": 0.98,
+        "water": null,
+        "air": 0.3,
         "carbon": 406.76
       },
       "2018": {
@@ -9682,6 +11496,8 @@ export const REGIONS = [
         "sunlight": 4.857,
         "cloud": 89.4,
         "soil": 0.96,
+        "water": null,
+        "air": 0.34,
         "carbon": 408.72
       },
       "2019": {
@@ -9692,6 +11508,8 @@ export const REGIONS = [
         "sunlight": 4.881,
         "cloud": 84.2,
         "soil": 0.92,
+        "water": 3.14,
+        "air": 0.35,
         "carbon": 411.65
       },
       "2020": {
@@ -9702,6 +11520,8 @@ export const REGIONS = [
         "sunlight": 4.92,
         "cloud": 88.1,
         "soil": 0.98,
+        "water": 9.1,
+        "air": 0.28,
         "carbon": 414.21
       },
       "2021": {
@@ -9712,6 +11532,8 @@ export const REGIONS = [
         "sunlight": 4.819,
         "cloud": 90.4,
         "soil": 0.97,
+        "water": 10.36,
+        "air": 0.29,
         "carbon": 416.41
       },
       "2022": {
@@ -9722,6 +11544,8 @@ export const REGIONS = [
         "sunlight": 4.725,
         "cloud": 91.9,
         "soil": 0.98,
+        "water": 12.38,
+        "air": 0.31,
         "carbon": 418.53
       },
       "2023": {
@@ -9732,6 +11556,8 @@ export const REGIONS = [
         "sunlight": 4.634,
         "cloud": 87.6,
         "soil": 0.95,
+        "water": 5.67,
+        "air": 0.3,
         "carbon": 421.08
       },
       "2024": {
@@ -9742,6 +11568,8 @@ export const REGIONS = [
         "sunlight": 4.716,
         "cloud": 88.3,
         "soil": 0.98,
+        "water": 8.23,
+        "air": 0.28,
         "carbon": 424.61
       },
       "2025": {
@@ -9752,6 +11580,8 @@ export const REGIONS = [
         "sunlight": 4.633,
         "cloud": 90.7,
         "soil": 0.95,
+        "water": 9.5,
+        "air": 0.29,
         "carbon": 427.35
       }
     }
@@ -9780,6 +11610,8 @@ export const REGIONS = [
         "sunlight": 5.18,
         "cloud": 70,
         "soil": 0.69,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -9790,6 +11622,8 @@ export const REGIONS = [
         "sunlight": 5.045,
         "cloud": 69.1,
         "soil": 0.64,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -9800,6 +11634,8 @@ export const REGIONS = [
         "sunlight": 5.245,
         "cloud": 65,
         "soil": 0.68,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -9810,6 +11646,8 @@ export const REGIONS = [
         "sunlight": 5.335,
         "cloud": 64,
         "soil": 0.71,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -9820,6 +11658,8 @@ export const REGIONS = [
         "sunlight": 5.306,
         "cloud": 67.4,
         "soil": 0.7,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -9830,6 +11670,8 @@ export const REGIONS = [
         "sunlight": 5.05,
         "cloud": 66.6,
         "soil": 0.69,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -9840,6 +11682,8 @@ export const REGIONS = [
         "sunlight": 5.058,
         "cloud": 65.5,
         "soil": 0.68,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -9850,6 +11694,8 @@ export const REGIONS = [
         "sunlight": 5.237,
         "cloud": 65.5,
         "soil": 0.75,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -9860,6 +11706,8 @@ export const REGIONS = [
         "sunlight": 5.261,
         "cloud": 66,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -9870,6 +11718,8 @@ export const REGIONS = [
         "sunlight": 5.379,
         "cloud": 61.3,
         "soil": 0.74,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -9880,6 +11730,8 @@ export const REGIONS = [
         "sunlight": 5.229,
         "cloud": 58.9,
         "soil": 0.72,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -9890,6 +11742,8 @@ export const REGIONS = [
         "sunlight": 5.142,
         "cloud": 60.8,
         "soil": 0.71,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -9900,6 +11754,8 @@ export const REGIONS = [
         "sunlight": 5.083,
         "cloud": 62.2,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -9910,6 +11766,8 @@ export const REGIONS = [
         "sunlight": 5.051,
         "cloud": 60.2,
         "soil": 0.75,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -9920,6 +11778,8 @@ export const REGIONS = [
         "sunlight": 5.342,
         "cloud": 59.5,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -9930,6 +11790,8 @@ export const REGIONS = [
         "sunlight": 5.205,
         "cloud": 61.2,
         "soil": 0.68,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -9940,6 +11802,8 @@ export const REGIONS = [
         "sunlight": 5.114,
         "cloud": 69.2,
         "soil": 0.73,
+        "water": null,
+        "air": 0.39,
         "carbon": 371.32
       },
       "2002": {
@@ -9950,6 +11814,8 @@ export const REGIONS = [
         "sunlight": 5.319,
         "cloud": 67.8,
         "soil": 0.7,
+        "water": -6.25,
+        "air": 0.37,
         "carbon": 373.45
       },
       "2003": {
@@ -9960,6 +11826,8 @@ export const REGIONS = [
         "sunlight": 5.362,
         "cloud": 65.8,
         "soil": 0.68,
+        "water": -11.9,
+        "air": 0.39,
         "carbon": 375.98
       },
       "2004": {
@@ -9970,6 +11838,8 @@ export const REGIONS = [
         "sunlight": 5.259,
         "cloud": 65.9,
         "soil": 0.75,
+        "water": -12.4,
+        "air": 0.38,
         "carbon": 377.7
       },
       "2005": {
@@ -9980,6 +11850,8 @@ export const REGIONS = [
         "sunlight": 5.068,
         "cloud": 68.4,
         "soil": 0.73,
+        "water": -2.99,
+        "air": 0.44,
         "carbon": 379.98
       },
       "2006": {
@@ -9990,6 +11862,8 @@ export const REGIONS = [
         "sunlight": 5.241,
         "cloud": 68.6,
         "soil": 0.77,
+        "water": 5.44,
+        "air": 0.39,
         "carbon": 382.09
       },
       "2007": {
@@ -10000,6 +11874,8 @@ export const REGIONS = [
         "sunlight": 5.175,
         "cloud": 67.9,
         "soil": 0.76,
+        "water": 0.7,
+        "air": 0.4,
         "carbon": 384.02
       },
       "2008": {
@@ -10010,6 +11886,8 @@ export const REGIONS = [
         "sunlight": 5.178,
         "cloud": 69.4,
         "soil": 0.74,
+        "water": 5.77,
+        "air": 0.46,
         "carbon": 385.83
       },
       "2009": {
@@ -10020,6 +11898,8 @@ export const REGIONS = [
         "sunlight": 5.171,
         "cloud": 67.2,
         "soil": 0.73,
+        "water": 3.48,
+        "air": 0.47,
         "carbon": 387.64
       },
       "2010": {
@@ -10030,6 +11910,8 @@ export const REGIONS = [
         "sunlight": 4.996,
         "cloud": 73.1,
         "soil": 0.77,
+        "water": 6.89,
+        "air": 0.51,
         "carbon": 390.1
       },
       "2011": {
@@ -10040,6 +11922,8 @@ export const REGIONS = [
         "sunlight": 5.153,
         "cloud": 69.1,
         "soil": 0.75,
+        "water": 9.38,
+        "air": 0.49,
         "carbon": 391.85
       },
       "2012": {
@@ -10050,6 +11934,8 @@ export const REGIONS = [
         "sunlight": 5.308,
         "cloud": 68,
         "soil": 0.68,
+        "water": -3.17,
+        "air": 0.48,
         "carbon": 394.06
       },
       "2013": {
@@ -10060,6 +11946,8 @@ export const REGIONS = [
         "sunlight": 5.062,
         "cloud": 71.3,
         "soil": 0.72,
+        "water": -15.29,
+        "air": 0.52,
         "carbon": 396.74
       },
       "2014": {
@@ -10070,6 +11958,8 @@ export const REGIONS = [
         "sunlight": 5.101,
         "cloud": 72,
         "soil": 0.75,
+        "water": -15.58,
+        "air": 0.55,
         "carbon": 398.81
       },
       "2015": {
@@ -10080,6 +11970,8 @@ export const REGIONS = [
         "sunlight": 5.163,
         "cloud": 70.5,
         "soil": 0.64,
+        "water": -6.97,
+        "air": 0.5,
         "carbon": 401.01
       },
       "2016": {
@@ -10090,6 +11982,8 @@ export const REGIONS = [
         "sunlight": 5.256,
         "cloud": 67.6,
         "soil": 0.6,
+        "water": -12.57,
+        "air": 0.52,
         "carbon": 404.41
       },
       "2017": {
@@ -10100,6 +11994,8 @@ export const REGIONS = [
         "sunlight": 5.052,
         "cloud": 69.2,
         "soil": 0.68,
+        "water": null,
+        "air": 0.54,
         "carbon": 406.76
       },
       "2018": {
@@ -10110,6 +12006,8 @@ export const REGIONS = [
         "sunlight": 5.04,
         "cloud": 68.2,
         "soil": 0.69,
+        "water": null,
+        "air": 0.56,
         "carbon": 408.72
       },
       "2019": {
@@ -10120,6 +12018,8 @@ export const REGIONS = [
         "sunlight": 5.148,
         "cloud": 66,
         "soil": 0.7,
+        "water": -14.35,
+        "air": 0.5,
         "carbon": 411.65
       },
       "2020": {
@@ -10130,6 +12030,8 @@ export const REGIONS = [
         "sunlight": 5.075,
         "cloud": 69,
         "soil": 0.71,
+        "water": -8.32,
+        "air": 0.52,
         "carbon": 414.21
       },
       "2021": {
@@ -10140,6 +12042,8 @@ export const REGIONS = [
         "sunlight": 4.807,
         "cloud": 73.3,
         "soil": 0.77,
+        "water": 6.12,
+        "air": 0.53,
         "carbon": 416.41
       },
       "2022": {
@@ -10150,6 +12054,8 @@ export const REGIONS = [
         "sunlight": 4.816,
         "cloud": 70.4,
         "soil": 0.75,
+        "water": 18.64,
+        "air": 0.58,
         "carbon": 418.53
       },
       "2023": {
@@ -10160,6 +12066,8 @@ export const REGIONS = [
         "sunlight": 5.145,
         "cloud": 67.4,
         "soil": 0.65,
+        "water": 10.88,
+        "air": 0.53,
         "carbon": 421.08
       },
       "2024": {
@@ -10170,6 +12078,8 @@ export const REGIONS = [
         "sunlight": 4.897,
         "cloud": 68.6,
         "soil": 0.72,
+        "water": 8.96,
+        "air": 0.58,
         "carbon": 424.61
       },
       "2025": {
@@ -10180,6 +12090,8 @@ export const REGIONS = [
         "sunlight": 4.891,
         "cloud": 68.2,
         "soil": 0.7,
+        "water": 13.04,
+        "air": 0.57,
         "carbon": 427.35
       }
     }
@@ -10208,6 +12120,8 @@ export const REGIONS = [
         "sunlight": 3.597,
         "cloud": 62.8,
         "soil": 0.68,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -10218,6 +12132,8 @@ export const REGIONS = [
         "sunlight": 3.255,
         "cloud": 67.1,
         "soil": 0.7,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -10228,6 +12144,8 @@ export const REGIONS = [
         "sunlight": 3.607,
         "cloud": 63.5,
         "soil": 0.63,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -10238,6 +12156,8 @@ export const REGIONS = [
         "sunlight": 3.247,
         "cloud": 67.8,
         "soil": 0.7,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -10248,6 +12168,8 @@ export const REGIONS = [
         "sunlight": 3.402,
         "cloud": 64.1,
         "soil": 0.7,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -10258,6 +12180,8 @@ export const REGIONS = [
         "sunlight": 3.334,
         "cloud": 68.2,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -10268,6 +12192,8 @@ export const REGIONS = [
         "sunlight": 3.436,
         "cloud": 64.9,
         "soil": 0.7,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -10278,6 +12204,8 @@ export const REGIONS = [
         "sunlight": 3.472,
         "cloud": 64.6,
         "soil": 0.65,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -10288,6 +12216,8 @@ export const REGIONS = [
         "sunlight": 3.315,
         "cloud": 60.8,
         "soil": 0.7,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -10298,6 +12228,8 @@ export const REGIONS = [
         "sunlight": 3.444,
         "cloud": 64.4,
         "soil": 0.67,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -10308,6 +12240,8 @@ export const REGIONS = [
         "sunlight": 3.443,
         "cloud": 64.9,
         "soil": 0.71,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -10318,6 +12252,8 @@ export const REGIONS = [
         "sunlight": 3.371,
         "cloud": 67,
         "soil": 0.74,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -10328,6 +12264,8 @@ export const REGIONS = [
         "sunlight": 3.536,
         "cloud": 62.6,
         "soil": 0.77,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -10338,6 +12276,8 @@ export const REGIONS = [
         "sunlight": 3.587,
         "cloud": 62.7,
         "soil": 0.68,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -10348,6 +12288,8 @@ export const REGIONS = [
         "sunlight": 3.52,
         "cloud": 66.7,
         "soil": 0.72,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -10358,6 +12300,8 @@ export const REGIONS = [
         "sunlight": 3.533,
         "cloud": 61.1,
         "soil": 0.7,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -10368,6 +12312,8 @@ export const REGIONS = [
         "sunlight": 3.472,
         "cloud": 67.8,
         "soil": 0.69,
+        "water": null,
+        "air": 0.13,
         "carbon": 371.32
       },
       "2002": {
@@ -10378,6 +12324,8 @@ export const REGIONS = [
         "sunlight": 3.533,
         "cloud": 64.4,
         "soil": 0.67,
+        "water": -2.25,
+        "air": 0.11,
         "carbon": 373.45
       },
       "2003": {
@@ -10388,6 +12336,8 @@ export const REGIONS = [
         "sunlight": 3.595,
         "cloud": 64.8,
         "soil": 0.68,
+        "water": -4.98,
+        "air": 0.12,
         "carbon": 375.98
       },
       "2004": {
@@ -10398,6 +12348,8 @@ export const REGIONS = [
         "sunlight": 3.539,
         "cloud": 66.6,
         "soil": 0.7,
+        "water": -2.25,
+        "air": 0.12,
         "carbon": 377.7
       },
       "2005": {
@@ -10408,6 +12360,8 @@ export const REGIONS = [
         "sunlight": 3.496,
         "cloud": 64.2,
         "soil": 0.68,
+        "water": -9.94,
+        "air": 0.12,
         "carbon": 379.98
       },
       "2006": {
@@ -10418,6 +12372,8 @@ export const REGIONS = [
         "sunlight": 3.581,
         "cloud": 65.1,
         "soil": 0.68,
+        "water": 0.18,
+        "air": 0.12,
         "carbon": 382.09
       },
       "2007": {
@@ -10428,6 +12384,8 @@ export const REGIONS = [
         "sunlight": 3.477,
         "cloud": 69.3,
         "soil": 0.72,
+        "water": 11.17,
+        "air": 0.12,
         "carbon": 384.02
       },
       "2008": {
@@ -10438,6 +12396,8 @@ export const REGIONS = [
         "sunlight": 3.438,
         "cloud": 69.3,
         "soil": 0.71,
+        "water": 7.03,
+        "air": 0.15,
         "carbon": 385.83
       },
       "2009": {
@@ -10448,6 +12408,8 @@ export const REGIONS = [
         "sunlight": 3.677,
         "cloud": 64.9,
         "soil": 0.69,
+        "water": -6.2,
+        "air": 0.13,
         "carbon": 387.64
       },
       "2010": {
@@ -10458,6 +12420,8 @@ export const REGIONS = [
         "sunlight": 3.36,
         "cloud": 72,
         "soil": 0.73,
+        "water": -0.85,
+        "air": 0.13,
         "carbon": 390.1
       },
       "2011": {
@@ -10468,6 +12432,8 @@ export const REGIONS = [
         "sunlight": 3.298,
         "cloud": 69.5,
         "soil": 0.74,
+        "water": 12.42,
+        "air": 0.14,
         "carbon": 391.85
       },
       "2012": {
@@ -10478,6 +12444,8 @@ export const REGIONS = [
         "sunlight": 3.409,
         "cloud": 66.7,
         "soil": 0.74,
+        "water": 15.68,
+        "air": 0.13,
         "carbon": 394.06
       },
       "2013": {
@@ -10488,6 +12456,8 @@ export const REGIONS = [
         "sunlight": 3.552,
         "cloud": 61.8,
         "soil": 0.71,
+        "water": 10.22,
+        "air": 0.12,
         "carbon": 396.74
       },
       "2014": {
@@ -10498,6 +12468,8 @@ export const REGIONS = [
         "sunlight": 3.501,
         "cloud": 65.1,
         "soil": 0.73,
+        "water": -4.58,
+        "air": 0.12,
         "carbon": 398.81
       },
       "2015": {
@@ -10508,6 +12480,8 @@ export const REGIONS = [
         "sunlight": 3.663,
         "cloud": 62.3,
         "soil": 0.67,
+        "water": -20.3,
+        "air": 0.12,
         "carbon": 401.01
       },
       "2016": {
@@ -10518,6 +12492,8 @@ export const REGIONS = [
         "sunlight": 3.412,
         "cloud": 67.2,
         "soil": 0.72,
+        "water": -7.77,
+        "air": 0.11,
         "carbon": 404.41
       },
       "2017": {
@@ -10528,6 +12504,8 @@ export const REGIONS = [
         "sunlight": 3.581,
         "cloud": 61.9,
         "soil": 0.7,
+        "water": null,
+        "air": 0.14,
         "carbon": 406.76
       },
       "2018": {
@@ -10538,6 +12516,8 @@ export const REGIONS = [
         "sunlight": 3.511,
         "cloud": 63.8,
         "soil": 0.69,
+        "water": null,
+        "air": 0.14,
         "carbon": 408.72
       },
       "2019": {
@@ -10548,6 +12528,8 @@ export const REGIONS = [
         "sunlight": 3.508,
         "cloud": 66,
         "soil": 0.67,
+        "water": -35.72,
+        "air": 0.13,
         "carbon": 411.65
       },
       "2020": {
@@ -10558,6 +12540,8 @@ export const REGIONS = [
         "sunlight": 3.52,
         "cloud": 65.9,
         "soil": 0.76,
+        "water": -27.13,
+        "air": 0.14,
         "carbon": 414.21
       },
       "2021": {
@@ -10568,6 +12552,8 @@ export const REGIONS = [
         "sunlight": 3.659,
         "cloud": 66.1,
         "soil": 0.71,
+        "water": -20.9,
+        "air": 0.12,
         "carbon": 416.41
       },
       "2022": {
@@ -10578,6 +12564,8 @@ export const REGIONS = [
         "sunlight": 3.54,
         "cloud": 63.9,
         "soil": 0.71,
+        "water": -22.6,
+        "air": 0.13,
         "carbon": 418.53
       },
       "2023": {
@@ -10588,6 +12576,8 @@ export const REGIONS = [
         "sunlight": 3.573,
         "cloud": 62.9,
         "soil": 0.67,
+        "water": -41.76,
+        "air": 0.14,
         "carbon": 421.08
       },
       "2024": {
@@ -10598,6 +12588,8 @@ export const REGIONS = [
         "sunlight": 3.529,
         "cloud": 65.7,
         "soil": 0.74,
+        "water": -44.53,
+        "air": 0.12,
         "carbon": 424.61
       },
       "2025": {
@@ -10608,6 +12600,8 @@ export const REGIONS = [
         "sunlight": 3.672,
         "cloud": 62.9,
         "soil": 0.76,
+        "water": -51.28,
+        "air": 0.12,
         "carbon": 427.35
       }
     }
@@ -10636,6 +12630,8 @@ export const REGIONS = [
         "sunlight": 4.352,
         "cloud": 76.1,
         "soil": 0.52,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -10646,6 +12642,8 @@ export const REGIONS = [
         "sunlight": 4.372,
         "cloud": 76.3,
         "soil": 0.51,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -10656,6 +12654,8 @@ export const REGIONS = [
         "sunlight": 4.587,
         "cloud": 69.2,
         "soil": 0.48,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -10666,6 +12666,8 @@ export const REGIONS = [
         "sunlight": 4.508,
         "cloud": 72.9,
         "soil": 0.5,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -10676,6 +12678,8 @@ export const REGIONS = [
         "sunlight": 4.539,
         "cloud": 72.5,
         "soil": 0.49,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -10686,6 +12690,8 @@ export const REGIONS = [
         "sunlight": 4.316,
         "cloud": 74.1,
         "soil": 0.51,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -10696,6 +12702,8 @@ export const REGIONS = [
         "sunlight": 4.545,
         "cloud": 71.5,
         "soil": 0.5,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -10706,6 +12714,8 @@ export const REGIONS = [
         "sunlight": 4.399,
         "cloud": 71.5,
         "soil": 0.49,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -10716,6 +12726,8 @@ export const REGIONS = [
         "sunlight": 4.552,
         "cloud": 72.5,
         "soil": 0.52,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -10726,6 +12738,8 @@ export const REGIONS = [
         "sunlight": 4.78,
         "cloud": 69.5,
         "soil": 0.55,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -10736,6 +12750,8 @@ export const REGIONS = [
         "sunlight": 4.564,
         "cloud": 73.8,
         "soil": 0.52,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -10746,6 +12762,8 @@ export const REGIONS = [
         "sunlight": 4.559,
         "cloud": 72.2,
         "soil": 0.56,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -10756,6 +12774,8 @@ export const REGIONS = [
         "sunlight": 4.438,
         "cloud": 74.5,
         "soil": 0.53,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -10766,6 +12786,8 @@ export const REGIONS = [
         "sunlight": 4.645,
         "cloud": 71.9,
         "soil": 0.55,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -10776,6 +12798,8 @@ export const REGIONS = [
         "sunlight": 4.92,
         "cloud": 71.9,
         "soil": 0.51,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -10786,6 +12810,8 @@ export const REGIONS = [
         "sunlight": 4.724,
         "cloud": 73,
         "soil": 0.5,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -10796,6 +12822,8 @@ export const REGIONS = [
         "sunlight": 4.995,
         "cloud": 67.5,
         "soil": 0.55,
+        "water": null,
+        "air": 0.21,
         "carbon": 371.32
       },
       "2002": {
@@ -10806,6 +12834,8 @@ export const REGIONS = [
         "sunlight": 4.729,
         "cloud": 69.2,
         "soil": 0.52,
+        "water": 48.49,
+        "air": 0.21,
         "carbon": 373.45
       },
       "2003": {
@@ -10816,6 +12846,8 @@ export const REGIONS = [
         "sunlight": 4.756,
         "cloud": 69.2,
         "soil": 0.53,
+        "water": 46.58,
+        "air": 0.2,
         "carbon": 375.98
       },
       "2004": {
@@ -10826,6 +12858,8 @@ export const REGIONS = [
         "sunlight": 4.853,
         "cloud": 67.5,
         "soil": 0.54,
+        "water": 27.2,
+        "air": 0.2,
         "carbon": 377.7
       },
       "2005": {
@@ -10836,6 +12870,8 @@ export const REGIONS = [
         "sunlight": 4.557,
         "cloud": 71.2,
         "soil": 0.54,
+        "water": 24.08,
+        "air": 0.21,
         "carbon": 379.98
       },
       "2006": {
@@ -10846,6 +12882,8 @@ export const REGIONS = [
         "sunlight": 4.609,
         "cloud": 71.3,
         "soil": 0.54,
+        "water": 1.11,
+        "air": 0.2,
         "carbon": 382.09
       },
       "2007": {
@@ -10856,6 +12894,8 @@ export const REGIONS = [
         "sunlight": 4.645,
         "cloud": 71.8,
         "soil": 0.6,
+        "water": -10.99,
+        "air": 0.23,
         "carbon": 384.02
       },
       "2008": {
@@ -10866,6 +12906,8 @@ export const REGIONS = [
         "sunlight": 4.544,
         "cloud": 73.3,
         "soil": 0.64,
+        "water": -14.5,
+        "air": 0.21,
         "carbon": 385.83
       },
       "2009": {
@@ -10876,6 +12918,8 @@ export const REGIONS = [
         "sunlight": 4.827,
         "cloud": 72,
         "soil": 0.54,
+        "water": -26.91,
+        "air": 0.19,
         "carbon": 387.64
       },
       "2010": {
@@ -10886,6 +12930,8 @@ export const REGIONS = [
         "sunlight": 4.677,
         "cloud": 72.3,
         "soil": 0.63,
+        "water": -32.2,
+        "air": 0.24,
         "carbon": 390.1
       },
       "2011": {
@@ -10896,6 +12942,8 @@ export const REGIONS = [
         "sunlight": 4.582,
         "cloud": 70.9,
         "soil": 0.67,
+        "water": -16.71,
+        "air": 0.21,
         "carbon": 391.85
       },
       "2012": {
@@ -10906,6 +12954,8 @@ export const REGIONS = [
         "sunlight": 4.649,
         "cloud": 72.8,
         "soil": 0.63,
+        "water": -40.58,
+        "air": 0.25,
         "carbon": 394.06
       },
       "2013": {
@@ -10916,6 +12966,8 @@ export const REGIONS = [
         "sunlight": 4.63,
         "cloud": 71.3,
         "soil": 0.71,
+        "water": -44.79,
+        "air": 0.24,
         "carbon": 396.74
       },
       "2014": {
@@ -10926,6 +12978,8 @@ export const REGIONS = [
         "sunlight": 4.651,
         "cloud": 71,
         "soil": 0.6,
+        "water": -47.76,
+        "air": 0.24,
         "carbon": 398.81
       },
       "2015": {
@@ -10936,6 +12990,8 @@ export const REGIONS = [
         "sunlight": 4.682,
         "cloud": 70.9,
         "soil": 0.57,
+        "water": -55.35,
+        "air": 0.24,
         "carbon": 401.01
       },
       "2016": {
@@ -10946,6 +13002,8 @@ export const REGIONS = [
         "sunlight": 4.896,
         "cloud": 68.9,
         "soil": 0.54,
+        "water": -89.11,
+        "air": 0.23,
         "carbon": 404.41
       },
       "2017": {
@@ -10956,6 +13014,8 @@ export const REGIONS = [
         "sunlight": 4.587,
         "cloud": 64.1,
         "soil": 0.53,
+        "water": null,
+        "air": 0.24,
         "carbon": 406.76
       },
       "2018": {
@@ -10966,6 +13026,8 @@ export const REGIONS = [
         "sunlight": 4.661,
         "cloud": 61.2,
         "soil": 0.53,
+        "water": null,
+        "air": 0.26,
         "carbon": 408.72
       },
       "2019": {
@@ -10976,6 +13038,8 @@ export const REGIONS = [
         "sunlight": 4.424,
         "cloud": 67,
         "soil": 0.53,
+        "water": -106.73,
+        "air": 0.26,
         "carbon": 411.65
       },
       "2020": {
@@ -10986,6 +13050,8 @@ export const REGIONS = [
         "sunlight": 4.667,
         "cloud": 63.2,
         "soil": 0.6,
+        "water": -114.96,
+        "air": 0.22,
         "carbon": 414.21
       },
       "2021": {
@@ -10996,6 +13062,8 @@ export const REGIONS = [
         "sunlight": 4.624,
         "cloud": 62.7,
         "soil": 0.55,
+        "water": -136.71,
+        "air": 0.19,
         "carbon": 416.41
       },
       "2022": {
@@ -11006,6 +13074,8 @@ export const REGIONS = [
         "sunlight": 4.608,
         "cloud": 62.1,
         "soil": 0.58,
+        "water": -136.29,
+        "air": 0.18,
         "carbon": 418.53
       },
       "2023": {
@@ -11016,6 +13086,8 @@ export const REGIONS = [
         "sunlight": 4.335,
         "cloud": 63.3,
         "soil": 0.57,
+        "water": -138.07,
+        "air": 0.2,
         "carbon": 421.08
       },
       "2024": {
@@ -11026,6 +13098,8 @@ export const REGIONS = [
         "sunlight": 4.527,
         "cloud": 62.7,
         "soil": 0.54,
+        "water": -152.85,
+        "air": 0.22,
         "carbon": 424.61
       },
       "2025": {
@@ -11036,6 +13110,8 @@ export const REGIONS = [
         "sunlight": 4.405,
         "cloud": 64.1,
         "soil": 0.61,
+        "water": -150.38,
+        "air": 0.25,
         "carbon": 427.35
       }
     }
@@ -11064,6 +13140,8 @@ export const REGIONS = [
         "sunlight": 3.918,
         "cloud": 71.5,
         "soil": 0.54,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -11074,6 +13152,8 @@ export const REGIONS = [
         "sunlight": 3.921,
         "cloud": 72,
         "soil": 0.52,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -11084,6 +13164,8 @@ export const REGIONS = [
         "sunlight": 3.821,
         "cloud": 70.5,
         "soil": 0.51,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -11094,6 +13176,8 @@ export const REGIONS = [
         "sunlight": 3.422,
         "cloud": 73.6,
         "soil": 0.56,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -11104,6 +13188,8 @@ export const REGIONS = [
         "sunlight": 3.592,
         "cloud": 75.2,
         "soil": 0.57,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -11114,6 +13200,8 @@ export const REGIONS = [
         "sunlight": 3.901,
         "cloud": 69,
         "soil": 0.57,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -11124,6 +13212,8 @@ export const REGIONS = [
         "sunlight": 3.683,
         "cloud": 73,
         "soil": 0.54,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -11134,6 +13224,8 @@ export const REGIONS = [
         "sunlight": 3.659,
         "cloud": 69.6,
         "soil": 0.55,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -11144,6 +13236,8 @@ export const REGIONS = [
         "sunlight": 3.609,
         "cloud": 71.8,
         "soil": 0.55,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -11154,6 +13248,8 @@ export const REGIONS = [
         "sunlight": 3.798,
         "cloud": 69.9,
         "soil": 0.52,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -11164,6 +13260,8 @@ export const REGIONS = [
         "sunlight": 3.742,
         "cloud": 72,
         "soil": 0.52,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -11174,6 +13272,8 @@ export const REGIONS = [
         "sunlight": 3.639,
         "cloud": 71.2,
         "soil": 0.51,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -11184,6 +13284,8 @@ export const REGIONS = [
         "sunlight": 3.848,
         "cloud": 69.3,
         "soil": 0.51,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -11194,6 +13296,8 @@ export const REGIONS = [
         "sunlight": 4.077,
         "cloud": 63.2,
         "soil": 0.54,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -11204,6 +13308,8 @@ export const REGIONS = [
         "sunlight": 3.745,
         "cloud": 67.2,
         "soil": 0.54,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -11214,6 +13320,8 @@ export const REGIONS = [
         "sunlight": 4.059,
         "cloud": 63.8,
         "soil": 0.55,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -11224,6 +13332,8 @@ export const REGIONS = [
         "sunlight": 3.796,
         "cloud": 74.2,
         "soil": 0.54,
+        "water": null,
+        "air": 0.66,
         "carbon": 371.32
       },
       "2002": {
@@ -11234,6 +13344,8 @@ export const REGIONS = [
         "sunlight": 3.937,
         "cloud": 71.5,
         "soil": 0.52,
+        "water": -0.76,
+        "air": 0.62,
         "carbon": 373.45
       },
       "2003": {
@@ -11244,6 +13356,8 @@ export const REGIONS = [
         "sunlight": 3.643,
         "cloud": 73,
         "soil": 0.56,
+        "water": -0.68,
+        "air": 0.69,
         "carbon": 375.98
       },
       "2004": {
@@ -11254,6 +13368,8 @@ export const REGIONS = [
         "sunlight": 3.748,
         "cloud": 71.4,
         "soil": 0.55,
+        "water": -0.3,
+        "air": 0.68,
         "carbon": 377.7
       },
       "2005": {
@@ -11264,6 +13380,8 @@ export const REGIONS = [
         "sunlight": 3.518,
         "cloud": 74.9,
         "soil": 0.56,
+        "water": 0.27,
+        "air": 0.73,
         "carbon": 379.98
       },
       "2006": {
@@ -11274,6 +13392,8 @@ export const REGIONS = [
         "sunlight": 3.784,
         "cloud": 68.7,
         "soil": 0.54,
+        "water": 0.08,
+        "air": 0.79,
         "carbon": 382.09
       },
       "2007": {
@@ -11284,6 +13404,8 @@ export const REGIONS = [
         "sunlight": 3.689,
         "cloud": 70,
         "soil": 0.54,
+        "water": -0.14,
+        "air": 0.78,
         "carbon": 384.02
       },
       "2008": {
@@ -11294,6 +13416,8 @@ export const REGIONS = [
         "sunlight": 3.902,
         "cloud": 67.4,
         "soil": 0.53,
+        "water": -0.03,
+        "air": 0.78,
         "carbon": 385.83
       },
       "2009": {
@@ -11304,6 +13428,8 @@ export const REGIONS = [
         "sunlight": 3.604,
         "cloud": 71.9,
         "soil": 0.54,
+        "water": 0.12,
+        "air": 0.76,
         "carbon": 387.64
       },
       "2010": {
@@ -11314,6 +13440,8 @@ export const REGIONS = [
         "sunlight": 3.68,
         "cloud": 69.4,
         "soil": 0.55,
+        "water": 0.32,
+        "air": 0.69,
         "carbon": 390.1
       },
       "2011": {
@@ -11324,6 +13452,8 @@ export const REGIONS = [
         "sunlight": 3.689,
         "cloud": 72.6,
         "soil": 0.56,
+        "water": 0.54,
+        "air": 0.79,
         "carbon": 391.85
       },
       "2012": {
@@ -11334,6 +13464,8 @@ export const REGIONS = [
         "sunlight": 3.539,
         "cloud": 77.4,
         "soil": 0.57,
+        "water": 0.96,
+        "air": 0.74,
         "carbon": 394.06
       },
       "2013": {
@@ -11344,6 +13476,8 @@ export const REGIONS = [
         "sunlight": 3.92,
         "cloud": 66.3,
         "soil": 0.56,
+        "water": 1.18,
+        "air": 0.67,
         "carbon": 396.74
       },
       "2014": {
@@ -11354,6 +13488,8 @@ export const REGIONS = [
         "sunlight": 3.679,
         "cloud": 74.3,
         "soil": 0.56,
+        "water": 1.17,
+        "air": 0.66,
         "carbon": 398.81
       },
       "2015": {
@@ -11364,6 +13500,8 @@ export const REGIONS = [
         "sunlight": 3.827,
         "cloud": 72.3,
         "soil": 0.54,
+        "water": 0.79,
+        "air": 0.59,
         "carbon": 401.01
       },
       "2016": {
@@ -11374,6 +13512,8 @@ export const REGIONS = [
         "sunlight": 3.936,
         "cloud": 71.3,
         "soil": 0.53,
+        "water": 0.37,
+        "air": 0.55,
         "carbon": 404.41
       },
       "2017": {
@@ -11384,6 +13524,8 @@ export const REGIONS = [
         "sunlight": 3.765,
         "cloud": 75.5,
         "soil": 0.56,
+        "water": null,
+        "air": 0.54,
         "carbon": 406.76
       },
       "2018": {
@@ -11394,6 +13536,8 @@ export const REGIONS = [
         "sunlight": 3.782,
         "cloud": 75.3,
         "soil": 0.56,
+        "water": null,
+        "air": 0.52,
         "carbon": 408.72
       },
       "2019": {
@@ -11404,6 +13548,8 @@ export const REGIONS = [
         "sunlight": 3.739,
         "cloud": 75.9,
         "soil": 0.57,
+        "water": 1.8,
+        "air": 0.54,
         "carbon": 411.65
       },
       "2020": {
@@ -11414,6 +13560,8 @@ export const REGIONS = [
         "sunlight": 3.652,
         "cloud": 76.7,
         "soil": 0.68,
+        "water": 1.95,
+        "air": 0.52,
         "carbon": 414.21
       },
       "2021": {
@@ -11424,6 +13572,8 @@ export const REGIONS = [
         "sunlight": 3.897,
         "cloud": 71.6,
         "soil": 0.64,
+        "water": 1.77,
+        "air": 0.5,
         "carbon": 416.41
       },
       "2022": {
@@ -11434,6 +13584,8 @@ export const REGIONS = [
         "sunlight": 4.01,
         "cloud": 71.6,
         "soil": 0.58,
+        "water": 1.49,
+        "air": 0.53,
         "carbon": 418.53
       },
       "2023": {
@@ -11444,6 +13596,8 @@ export const REGIONS = [
         "sunlight": 4.03,
         "cloud": 70.4,
         "soil": 0.55,
+        "water": 1.43,
+        "air": 0.48,
         "carbon": 421.08
       },
       "2024": {
@@ -11454,6 +13608,8 @@ export const REGIONS = [
         "sunlight": 3.874,
         "cloud": 74.3,
         "soil": 0.56,
+        "water": 1.47,
+        "air": 0.51,
         "carbon": 424.61
       },
       "2025": {
@@ -11464,6 +13620,8 @@ export const REGIONS = [
         "sunlight": 4.044,
         "cloud": 71.8,
         "soil": 0.58,
+        "water": 1.24,
+        "air": 0.45,
         "carbon": 427.35
       }
     }
@@ -11492,6 +13650,8 @@ export const REGIONS = [
         "sunlight": 4.867,
         "cloud": 61.9,
         "soil": 0.72,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -11502,6 +13662,8 @@ export const REGIONS = [
         "sunlight": 4.845,
         "cloud": 61.9,
         "soil": 0.75,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -11512,6 +13674,8 @@ export const REGIONS = [
         "sunlight": 4.753,
         "cloud": 60.2,
         "soil": 0.74,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -11522,6 +13686,8 @@ export const REGIONS = [
         "sunlight": 4.534,
         "cloud": 63.7,
         "soil": 0.75,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -11532,6 +13698,8 @@ export const REGIONS = [
         "sunlight": 4.746,
         "cloud": 58.7,
         "soil": 0.73,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -11542,6 +13710,8 @@ export const REGIONS = [
         "sunlight": 4.478,
         "cloud": 66.7,
         "soil": 0.77,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -11552,6 +13722,8 @@ export const REGIONS = [
         "sunlight": 4.562,
         "cloud": 66.1,
         "soil": 0.76,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -11562,6 +13734,8 @@ export const REGIONS = [
         "sunlight": 4.501,
         "cloud": 62.5,
         "soil": 0.75,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -11572,6 +13746,8 @@ export const REGIONS = [
         "sunlight": 4.534,
         "cloud": 62.2,
         "soil": 0.77,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -11582,6 +13758,8 @@ export const REGIONS = [
         "sunlight": 4.643,
         "cloud": 64.2,
         "soil": 0.74,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -11592,6 +13770,8 @@ export const REGIONS = [
         "sunlight": 4.515,
         "cloud": 61.7,
         "soil": 0.79,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -11602,6 +13782,8 @@ export const REGIONS = [
         "sunlight": 4.585,
         "cloud": 58.9,
         "soil": 0.74,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -11612,6 +13794,8 @@ export const REGIONS = [
         "sunlight": 4.572,
         "cloud": 60.6,
         "soil": 0.76,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -11622,6 +13806,8 @@ export const REGIONS = [
         "sunlight": 4.601,
         "cloud": 57,
         "soil": 0.79,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -11632,6 +13818,8 @@ export const REGIONS = [
         "sunlight": 4.763,
         "cloud": 50.1,
         "soil": 0.79,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -11642,6 +13830,8 @@ export const REGIONS = [
         "sunlight": 4.659,
         "cloud": 52.1,
         "soil": 0.79,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -11652,6 +13842,8 @@ export const REGIONS = [
         "sunlight": 4.705,
         "cloud": 58.7,
         "soil": 0.81,
+        "water": null,
+        "air": 0.45,
         "carbon": 371.32
       },
       "2002": {
@@ -11662,6 +13854,8 @@ export const REGIONS = [
         "sunlight": 4.681,
         "cloud": 58.5,
         "soil": 0.79,
+        "water": 0.9,
+        "air": 0.52,
         "carbon": 373.45
       },
       "2003": {
@@ -11672,6 +13866,8 @@ export const REGIONS = [
         "sunlight": 4.746,
         "cloud": 58.4,
         "soil": 0.78,
+        "water": 0.92,
+        "air": 0.47,
         "carbon": 375.98
       },
       "2004": {
@@ -11682,6 +13878,8 @@ export const REGIONS = [
         "sunlight": 4.697,
         "cloud": 55.7,
         "soil": 0.77,
+        "water": 0.51,
+        "air": 0.48,
         "carbon": 377.7
       },
       "2005": {
@@ -11692,6 +13890,8 @@ export const REGIONS = [
         "sunlight": 4.624,
         "cloud": 60.7,
         "soil": 0.76,
+        "water": -0.04,
+        "air": 0.49,
         "carbon": 379.98
       },
       "2006": {
@@ -11702,6 +13902,8 @@ export const REGIONS = [
         "sunlight": 4.708,
         "cloud": 58.5,
         "soil": 0.77,
+        "water": -0.1,
+        "air": 0.53,
         "carbon": 382.09
       },
       "2007": {
@@ -11712,6 +13914,8 @@ export const REGIONS = [
         "sunlight": 4.703,
         "cloud": 59,
         "soil": 0.79,
+        "water": 0.11,
+        "air": 0.53,
         "carbon": 384.02
       },
       "2008": {
@@ -11722,6 +13926,8 @@ export const REGIONS = [
         "sunlight": 4.664,
         "cloud": 57.8,
         "soil": 0.79,
+        "water": 0.19,
+        "air": 0.56,
         "carbon": 385.83
       },
       "2009": {
@@ -11732,6 +13938,8 @@ export const REGIONS = [
         "sunlight": 4.607,
         "cloud": 58.1,
         "soil": 0.77,
+        "water": -0.67,
+        "air": 0.61,
         "carbon": 387.64
       },
       "2010": {
@@ -11742,6 +13950,8 @@ export const REGIONS = [
         "sunlight": 4.733,
         "cloud": 64.4,
         "soil": 0.79,
+        "water": -1.23,
+        "air": 0.54,
         "carbon": 390.1
       },
       "2011": {
@@ -11752,6 +13962,8 @@ export const REGIONS = [
         "sunlight": 4.614,
         "cloud": 58,
         "soil": 0.77,
+        "water": -0.49,
+        "air": 0.62,
         "carbon": 391.85
       },
       "2012": {
@@ -11762,6 +13974,8 @@ export const REGIONS = [
         "sunlight": 4.617,
         "cloud": 59.8,
         "soil": 0.75,
+        "water": -0.82,
+        "air": 0.64,
         "carbon": 394.06
       },
       "2013": {
@@ -11772,6 +13986,8 @@ export const REGIONS = [
         "sunlight": 4.623,
         "cloud": 61.2,
         "soil": 0.81,
+        "water": -1.02,
+        "air": 0.58,
         "carbon": 396.74
       },
       "2014": {
@@ -11782,6 +13998,8 @@ export const REGIONS = [
         "sunlight": 4.768,
         "cloud": 56.9,
         "soil": 0.76,
+        "water": -0.72,
+        "air": 0.64,
         "carbon": 398.81
       },
       "2015": {
@@ -11792,6 +14010,8 @@ export const REGIONS = [
         "sunlight": 4.459,
         "cloud": 62.4,
         "soil": 0.78,
+        "water": -0.85,
+        "air": 0.72,
         "carbon": 401.01
       },
       "2016": {
@@ -11802,6 +14022,8 @@ export const REGIONS = [
         "sunlight": 4.519,
         "cloud": 62.8,
         "soil": 0.82,
+        "water": -1.55,
+        "air": 0.69,
         "carbon": 404.41
       },
       "2017": {
@@ -11812,6 +14034,8 @@ export const REGIONS = [
         "sunlight": 4.503,
         "cloud": 53.2,
         "soil": 0.84,
+        "water": null,
+        "air": 0.61,
         "carbon": 406.76
       },
       "2018": {
@@ -11822,6 +14046,8 @@ export const REGIONS = [
         "sunlight": 4.647,
         "cloud": 49.3,
         "soil": 0.81,
+        "water": null,
+        "air": 0.71,
         "carbon": 408.72
       },
       "2019": {
@@ -11832,6 +14058,8 @@ export const REGIONS = [
         "sunlight": 4.669,
         "cloud": 47.5,
         "soil": 0.83,
+        "water": -1.36,
+        "air": 0.64,
         "carbon": 411.65
       },
       "2020": {
@@ -11842,6 +14070,8 @@ export const REGIONS = [
         "sunlight": 4.524,
         "cloud": 53.2,
         "soil": 0.86,
+        "water": -0.16,
+        "air": 0.62,
         "carbon": 414.21
       },
       "2021": {
@@ -11852,6 +14082,8 @@ export const REGIONS = [
         "sunlight": 4.416,
         "cloud": 51.7,
         "soil": 0.82,
+        "water": -0.39,
+        "air": 0.67,
         "carbon": 416.41
       },
       "2022": {
@@ -11862,6 +14094,8 @@ export const REGIONS = [
         "sunlight": 4.672,
         "cloud": 47.2,
         "soil": 0.81,
+        "water": -0.68,
+        "air": 0.61,
         "carbon": 418.53
       },
       "2023": {
@@ -11872,6 +14106,8 @@ export const REGIONS = [
         "sunlight": 4.402,
         "cloud": 50.6,
         "soil": 0.8,
+        "water": -1.44,
+        "air": 0.74,
         "carbon": 421.08
       },
       "2024": {
@@ -11882,6 +14118,8 @@ export const REGIONS = [
         "sunlight": 4.292,
         "cloud": 52.6,
         "soil": 0.82,
+        "water": -1.01,
+        "air": 0.75,
         "carbon": 424.61
       },
       "2025": {
@@ -11892,6 +14130,8 @@ export const REGIONS = [
         "sunlight": 4.472,
         "cloud": 49,
         "soil": 0.81,
+        "water": -0.53,
+        "air": 0.64,
         "carbon": 427.35
       }
     }
@@ -11920,6 +14160,8 @@ export const REGIONS = [
         "sunlight": 5.461,
         "cloud": 40.3,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 346.35
       },
       "1986": {
@@ -11930,6 +14172,8 @@ export const REGIONS = [
         "sunlight": 5.391,
         "cloud": 40.6,
         "soil": 0.37,
+        "water": null,
+        "air": null,
         "carbon": 347.61
       },
       "1987": {
@@ -11940,6 +14184,8 @@ export const REGIONS = [
         "sunlight": 5.267,
         "cloud": 46.1,
         "soil": 0.37,
+        "water": null,
+        "air": null,
         "carbon": 349.31
       },
       "1988": {
@@ -11950,6 +14196,8 @@ export const REGIONS = [
         "sunlight": 5.244,
         "cloud": 48.6,
         "soil": 0.38,
+        "water": null,
+        "air": null,
         "carbon": 351.69
       },
       "1989": {
@@ -11960,6 +14208,8 @@ export const REGIONS = [
         "sunlight": 5.61,
         "cloud": 36.9,
         "soil": 0.36,
+        "water": null,
+        "air": null,
         "carbon": 353.2
       },
       "1990": {
@@ -11970,6 +14220,8 @@ export const REGIONS = [
         "sunlight": 5.508,
         "cloud": 38.6,
         "soil": 0.36,
+        "water": null,
+        "air": null,
         "carbon": 354.45
       },
       "1991": {
@@ -11980,6 +14232,8 @@ export const REGIONS = [
         "sunlight": 5.45,
         "cloud": 37.7,
         "soil": 0.37,
+        "water": null,
+        "air": null,
         "carbon": 355.7
       },
       "1992": {
@@ -11990,6 +14244,8 @@ export const REGIONS = [
         "sunlight": 5.236,
         "cloud": 39.6,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 356.54
       },
       "1993": {
@@ -12000,6 +14256,8 @@ export const REGIONS = [
         "sunlight": 5.452,
         "cloud": 36.3,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 357.21
       },
       "1994": {
@@ -12010,6 +14268,8 @@ export const REGIONS = [
         "sunlight": 5.375,
         "cloud": 40.4,
         "soil": 0.36,
+        "water": null,
+        "air": null,
         "carbon": 358.96
       },
       "1995": {
@@ -12020,6 +14280,8 @@ export const REGIONS = [
         "sunlight": 5.346,
         "cloud": 41.1,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 360.97
       },
       "1996": {
@@ -12030,6 +14292,8 @@ export const REGIONS = [
         "sunlight": 5.568,
         "cloud": 37.5,
         "soil": 0.37,
+        "water": null,
+        "air": null,
         "carbon": 362.74
       },
       "1997": {
@@ -12040,6 +14304,8 @@ export const REGIONS = [
         "sunlight": 5.72,
         "cloud": 36,
         "soil": 0.37,
+        "water": null,
+        "air": null,
         "carbon": 363.88
       },
       "1998": {
@@ -12050,6 +14316,8 @@ export const REGIONS = [
         "sunlight": 5.648,
         "cloud": 38.2,
         "soil": 0.39,
+        "water": null,
+        "air": null,
         "carbon": 366.84
       },
       "1999": {
@@ -12060,6 +14328,8 @@ export const REGIONS = [
         "sunlight": 5.746,
         "cloud": 32.9,
         "soil": 0.36,
+        "water": null,
+        "air": null,
         "carbon": 368.54
       },
       "2000": {
@@ -12070,6 +14340,8 @@ export const REGIONS = [
         "sunlight": 5.778,
         "cloud": 34.3,
         "soil": 0.36,
+        "water": null,
+        "air": null,
         "carbon": 369.71
       },
       "2001": {
@@ -12080,6 +14352,8 @@ export const REGIONS = [
         "sunlight": 5.695,
         "cloud": 35.5,
         "soil": 0.37,
+        "water": null,
+        "air": 0.09,
         "carbon": 371.32
       },
       "2002": {
@@ -12090,6 +14364,8 @@ export const REGIONS = [
         "sunlight": 5.851,
         "cloud": 31.8,
         "soil": 0.36,
+        "water": -2.13,
+        "air": 0.08,
         "carbon": 373.45
       },
       "2003": {
@@ -12100,6 +14376,8 @@ export const REGIONS = [
         "sunlight": 5.608,
         "cloud": 37.8,
         "soil": 0.37,
+        "water": -0.45,
+        "air": 0.09,
         "carbon": 375.98
       },
       "2004": {
@@ -12110,6 +14388,8 @@ export const REGIONS = [
         "sunlight": 5.741,
         "cloud": 31.1,
         "soil": 0.37,
+        "water": -1.66,
+        "air": 0.08,
         "carbon": 377.7
       },
       "2005": {
@@ -12120,6 +14400,8 @@ export const REGIONS = [
         "sunlight": 5.584,
         "cloud": 37.3,
         "soil": 0.4,
+        "water": 6.33,
+        "air": 0.09,
         "carbon": 379.98
       },
       "2006": {
@@ -12130,6 +14412,8 @@ export const REGIONS = [
         "sunlight": 5.66,
         "cloud": 36.7,
         "soil": 0.37,
+        "water": 3.34,
+        "air": 0.09,
         "carbon": 382.09
       },
       "2007": {
@@ -12140,6 +14424,8 @@ export const REGIONS = [
         "sunlight": 5.773,
         "cloud": 33.9,
         "soil": 0.36,
+        "water": -1.86,
+        "air": 0.09,
         "carbon": 384.02
       },
       "2008": {
@@ -12150,6 +14436,8 @@ export const REGIONS = [
         "sunlight": 5.785,
         "cloud": 31.8,
         "soil": 0.37,
+        "water": -2.04,
+        "air": 0.09,
         "carbon": 385.83
       },
       "2009": {
@@ -12160,6 +14448,8 @@ export const REGIONS = [
         "sunlight": 5.655,
         "cloud": 35.7,
         "soil": 0.37,
+        "water": -4.11,
+        "air": 0.1,
         "carbon": 387.64
       },
       "2010": {
@@ -12170,6 +14460,8 @@ export const REGIONS = [
         "sunlight": 5.644,
         "cloud": 39.6,
         "soil": 0.38,
+        "water": -1.75,
+        "air": 0.08,
         "carbon": 390.1
       },
       "2011": {
@@ -12180,6 +14472,8 @@ export const REGIONS = [
         "sunlight": 5.717,
         "cloud": 32.8,
         "soil": 0.38,
+        "water": 1.35,
+        "air": 0.08,
         "carbon": 391.85
       },
       "2012": {
@@ -12190,6 +14484,8 @@ export const REGIONS = [
         "sunlight": 5.75,
         "cloud": 29.4,
         "soil": 0.36,
+        "water": -2.68,
+        "air": 0.09,
         "carbon": 394.06
       },
       "2013": {
@@ -12200,6 +14496,8 @@ export const REGIONS = [
         "sunlight": 5.751,
         "cloud": 27.6,
         "soil": 0.36,
+        "water": -6.53,
+        "air": 0.09,
         "carbon": 396.74
       },
       "2014": {
@@ -12210,6 +14508,8 @@ export const REGIONS = [
         "sunlight": 5.697,
         "cloud": 33,
         "soil": 0.37,
+        "water": -11.27,
+        "air": 0.08,
         "carbon": 398.81
       },
       "2015": {
@@ -12220,6 +14520,8 @@ export const REGIONS = [
         "sunlight": 5.613,
         "cloud": 33.3,
         "soil": 0.38,
+        "water": -13.1,
+        "air": 0.08,
         "carbon": 401.01
       },
       "2016": {
@@ -12230,6 +14532,8 @@ export const REGIONS = [
         "sunlight": 5.703,
         "cloud": 32.7,
         "soil": 0.37,
+        "water": -13.14,
+        "air": 0.08,
         "carbon": 404.41
       },
       "2017": {
@@ -12240,6 +14544,8 @@ export const REGIONS = [
         "sunlight": 5.713,
         "cloud": 32.8,
         "soil": 0.38,
+        "water": null,
+        "air": 0.08,
         "carbon": 406.76
       },
       "2018": {
@@ -12250,6 +14556,8 @@ export const REGIONS = [
         "sunlight": 5.757,
         "cloud": 32,
         "soil": 0.37,
+        "water": null,
+        "air": 0.09,
         "carbon": 408.72
       },
       "2019": {
@@ -12260,6 +14568,8 @@ export const REGIONS = [
         "sunlight": 5.601,
         "cloud": 34.7,
         "soil": 0.38,
+        "water": -8.76,
+        "air": 0.08,
         "carbon": 411.65
       },
       "2020": {
@@ -12270,6 +14580,8 @@ export const REGIONS = [
         "sunlight": 5.75,
         "cloud": 33.3,
         "soil": 0.36,
+        "water": -11.42,
+        "air": 0.09,
         "carbon": 414.21
       },
       "2021": {
@@ -12280,6 +14592,8 @@ export const REGIONS = [
         "sunlight": 5.655,
         "cloud": 37.1,
         "soil": 0.36,
+        "water": -16.19,
+        "air": 0.1,
         "carbon": 416.41
       },
       "2022": {
@@ -12290,6 +14604,8 @@ export const REGIONS = [
         "sunlight": 5.712,
         "cloud": 31.8,
         "soil": 0.36,
+        "water": -16.88,
+        "air": 0.1,
         "carbon": 418.53
       },
       "2023": {
@@ -12300,6 +14616,8 @@ export const REGIONS = [
         "sunlight": 5.505,
         "cloud": 33.8,
         "soil": 0.38,
+        "water": -8.37,
+        "air": 0.11,
         "carbon": 421.08
       },
       "2024": {
@@ -12310,6 +14628,8 @@ export const REGIONS = [
         "sunlight": 5.605,
         "cloud": 31,
         "soil": 0.37,
+        "water": -8.75,
+        "air": 0.11,
         "carbon": 424.61
       },
       "2025": {
@@ -12320,6 +14640,8 @@ export const REGIONS = [
         "sunlight": 5.593,
         "cloud": 30.7,
         "soil": 0.37,
+        "water": -13.15,
+        "air": 0.12,
         "carbon": 427.35
       }
     }
